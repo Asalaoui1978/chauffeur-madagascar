@@ -13,3 +13,7 @@ jobs:
           node-version: 22
       - run: npm install
       - run: npm run build
+      - name: Contrôle SEO (hreflang et sitemap)
+        run: |
+          grep -o '<link rel="alternate"[^>]*>' dist/it/index.html
+          grep -c "<loc>" dist/sitemap-0.xml
