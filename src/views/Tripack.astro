@@ -1,0 +1,72 @@
+---
+import Base from '../layouts/Base.astro';
+import Photo from '../components/Photo.astro';
+import { site, whatsappLink } from '../data/site';
+import { L, t, parseUrl } from '../i18n';
+
+const { lang } = parseUrl(Astro.url);
+const tr = t(lang);
+const person = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Patrick « Tripack »',
+  jobTitle: tr.home_eyebrow,
+  knowsLanguage: site.languages,
+  image: new URL('/images/threepac/threepac-portrait.jpg', site.url).href,
+  sameAs: [site.facebook],
+  worksFor: { '@id': `${site.url}/#threepac` },
+};
+---
+<Base
+  title={tr.tp_title}
+  description={tr.tp_desc}
+  image="/images/threepac/threepac-portrait.jpg"
+  breadcrumb={[{ name: tr.home_crumb, url: L(lang, '/') }, { name: tr.tp_h1, url: L(lang, '/tripack/') }]}
+  jsonLd={person}
+>
+  <section class="hero small">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb"><ol><li><a href={L(lang, '/')}>{tr.home_crumb}</a></li><li>{tr.tp_h1}</li></ol></nav>
+      <h1>{tr.tp_h1}</h1>
+      <p class="lead">{tr.tp_lead}</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container narrow">
+      <div class="grid grid-2" style="align-items:center;margin-bottom:1.5rem">
+        <div class="card-media" style="border-radius:var(--radius);aspect-ratio:3/4"><Photo photoKey="threepac-portrait" eager={true} /></div>
+        <div class="card-media" style="border-radius:var(--radius);aspect-ratio:3/4"><Photo photoKey="threepac-4x4" /></div>
+      </div>
+      <p class="lead">{tr.tp_quote}</p>
+
+      <h2>{tr.tp_h_name}</h2>
+      <p>{tr.tp_name_p}</p>
+      {/* [À VALIDER avec Patrick] l'origine réelle du surnom */}
+
+      <h2>{tr.tp_h_road}</h2>
+      <p>{tr.tp_road_p1}</p>
+      <p>{tr.tp_road_p2}</p>
+
+      <div class="conseil"><strong>{tr.tp_brings}</strong>
+        <ul>{tr.tp_brings_list.map((x) => <li>{x}</li>)}</ul>
+      </div>
+
+      <h2>{tr.tp_h_vehicle}</h2>
+      <p>{site.vehicle}. {tr.tp_vehicle_p}</p>
+      <div class="grid grid-2" style="margin:1rem 0">
+        <div class="card-media" style="border-radius:var(--radius)"><Photo photoKey="tableau-de-bord" /></div>
+        <div class="card-media" style="border-radius:var(--radius)"><Photo photoKey="interieur-vehicule" /></div>
+      </div>
+
+      <h2>{tr.tp_h_lang}</h2>
+      <p>{tr.tp_lang_p} : {site.languages.join(', ')}.</p>
+
+      <div class="actions">
+        <a class="btn btn-whatsapp" href={whatsappLink(tr.wa_default)} target="_blank" rel="noopener">{tr.tp_write}</a>
+        <a class="btn btn-ghost" href={site.facebook} target="_blank" rel="noopener">{tr.tp_fb}</a>
+        <a class="btn btn-ghost" href={L(lang, '/itineraires/')}>{tr.tp_see_itins}</a>
+      </div>
+    </div>
+  </section>
+</Base>

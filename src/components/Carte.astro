@@ -1,13 +1,16 @@
 ---
 // Carte interactive (Leaflet + OpenStreetMap), chargée uniquement sur les pages qui l'utilisent.
 import type { Lieu } from '../data/lieux';
+import { L, t, parseUrl } from '../i18n';
 
 interface Props { points: Lieu[]; ligne?: boolean; id?: string }
 const { points, ligne = true, id = 'carte' } = Astro.props;
-const data = points.map((p) => ({ name: p.name, lat: p.lat, lng: p.lng, url: `/guide/${p.slug}/` }));
+const { lang } = parseUrl(Astro.url);
+const tr = t(lang);
+const data = points.map((p) => ({ name: p.name, lat: p.lat, lng: p.lng, url: L(lang, `/guide/${p.slug}/`) }));
 ---
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
-<div class="map" id={id} data-points={JSON.stringify(data)} data-ligne={ligne ? '1' : '0'} role="img" aria-label="Carte de l'itinéraire"></div>
+<div class="map" id={id} data-points={JSON.stringify(data)} data-ligne={ligne ? '1' : '0'} data-label={tr.see_sheet} role="img" aria-label={tr.map_aria}></div>
 <script is:inline src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="" defer></script>
 <script is:inline define:vars={{ id }}>
   window.addEventListener('load', () => {
@@ -23,7 +26,7 @@ const data = points.map((p) => ({ name: p.name, lat: p.lat, lng: p.lng, url: `/g
     pts.forEach((p, i) => {
       L.circleMarker([p.lat, p.lng], { radius: 8, color: '#fff', weight: 2, fillColor: '#b4441f', fillOpacity: 1 })
         .addTo(map)
-        .bindPopup(`<strong>${i + 1}. ${p.name}</strong><br><a href="${p.url}">Voir la fiche</a>`);
+        .bindPopup(`<strong>${i + 1}. ${p.name}</strong><br><a href="${p.url}">${el.dataset.label}</a>`);
     });
     if (el.dataset.ligne === '1' && latlngs.length > 1) {
       L.polyline(latlngs, { color: '#b4441f', weight: 4, opacity: 0.8, dashArray: '8 8' }).addTo(map);

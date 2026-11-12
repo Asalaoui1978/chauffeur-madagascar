@@ -1,0 +1,47 @@
+---
+import Base from '../layouts/Base.astro';
+import { L, t, parseUrl } from '../i18n';
+
+const { lang } = parseUrl(Astro.url);
+const tr = t(lang);
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  inLanguage: lang,
+  mainEntity: tr.faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })),
+};
+---
+<Base
+  title={tr.in_title}
+  description={tr.in_desc}
+  breadcrumb={[{ name: tr.home_crumb, url: L(lang, '/') }, { name: tr.in_h1, url: L(lang, '/infos-pratiques/') }]}
+  jsonLd={faqLd}
+>
+  <section class="hero small">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb"><ol><li><a href={L(lang, '/')}>{tr.home_crumb}</a></li><li>{tr.in_h1}</li></ol></nav>
+      <h1>{tr.in_h1}</h1>
+      <p class="lead">{tr.in_lead}</p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container narrow">
+      <h2>{tr.roads_h2}</h2>
+      <p>{tr.roads_p}</p>
+
+      <h2>{tr.pack_h2}</h2>
+      <ul>{tr.pack_list.map((x) => <li>{x}</li>)}</ul>
+
+      <h2>{tr.tipping_h2}</h2>
+      <p>{tr.tipping_p}</p>
+
+      <h2>{tr.fady_h2}</h2>
+      <p>{tr.fady_p}</p>
+
+      <h2>{tr.faq_h2}</h2>
+      {tr.faq.map(([q, a]) => (<details><summary>{q}</summary><p>{a}</p></details>))}
+
+      <div class="actions"><a class="btn btn-primary" href={L(lang, '/contact/')}>{tr.other_q}</a></div>
+    </div>
+  </section>
+</Base>

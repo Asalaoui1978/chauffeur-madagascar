@@ -1,0 +1,68 @@
+---
+import Base from '../layouts/Base.astro';
+import Photo from '../components/Photo.astro';
+import Carte from '../components/Carte.astro';
+import { getItineraires, getLieux } from '../data/localized';
+import { themes } from '../data/lieux';
+import { L, t, parseUrl } from '../i18n';
+
+const { lang } = parseUrl(Astro.url);
+const tr = t(lang);
+const tt = (k: string) => (tr as Record<string, unknown>)[k] as string ?? k;
+const itineraires = getItineraires(lang);
+const lieux = getLieux(lang);
+const tous = [...new Set(itineraires.flatMap((it) => it.route))].map((s) => lieux.find((l) => l.slug === s)).filter((l): l is NonNullable<typeof l> => Boolean(l));
+---
+<Base
+  title={tr.il_title}
+  description={tr.il_desc}
+  breadcrumb={[{ name: tr.home_crumb, url: L(lang, '/') }, { name: tr.il_h1, url: L(lang, '/itineraires/') }]}
+>
+  <section class="hero small">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb"><ol><li><a href={L(lang, '/')}>{tr.home_crumb}</a></li><li>{tr.il_h1}</li></ol></nav>
+      <h1>{tr.il_h1}</h1>
+      <p class="lead">{tr.il_lead}</p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <h2 style="margin-top:0">{tr.il_all}</h2>
+      <Carte points={tous} ligne={false} />
+
+      <div class="filters" id="filtres" role="group" aria-label={tr.filter_aria}>
+        <button class="on" data-f="tous">{tr.filter_all}</button>
+        {themes.map((th) => <button data-f={th}>{tt(`th_${th}`)}</button>)}
+      </div>
+      <div class="grid grid-2">
+        {itineraires.map((it) => (
+          <a class="card" href={L(lang, `/itineraires/${it.slug}/`)} data-themes={it.themes.join('|')}>
+            <div class="card-media"><Photo photoKey={it.photo} width={900} label={it.short} /></div>
+            <div class="card-body">
+              <p class="eyebrow" style="margin:0">{it.short} · <span class="niveau">{tt(`lvl_${it.niveau}`)}</span></p>
+              <h2 style="font-size:1.45rem;margin:.3rem 0 .6rem">{it.title}</h2>
+              <p class="muted">{it.description}</p>
+              {it.themes.map((th) => <span class="tag">{tt(`th_${th}`)}</span>)}
+              <p style="font-size:.9rem;margin:.6rem 0 0">🗓 {it.duree} · 📏 {it.distance} · 🚙 {it.vehicule}</p>
+              <p style="font-size:.9rem;margin:.3rem 0 0">👥 {tr.ideal_for} : {it.idealPour}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+    <div class="container narrow">
+      <h2>{tr.il_combine_h2}</h2>
+      {tr.il_combos.map(([h, p]) => <p><strong>{h}</strong> : {p}</p>)}
+      <div class="actions"><a class="btn btn-primary" href={L(lang, '/contact/')}>{tr.il_build}</a></div>
+    </div>
+  </section>
+  <script>
+    const buttons = document.querySelectorAll<HTMLButtonElement>('#filtres button');
+    const cards = document.querySelectorAll<HTMLElement>('[data-themes]');
+    buttons.forEach((b) => b.addEventListener('click', () => {
+      buttons.forEach((x) => x.classList.toggle('on', x === b));
+      const f = b.dataset.f;
+      cards.forEach((c) => c.classList.toggle('hidden', f !== 'tous' && !(c.dataset.themes || '').split('|').includes(f || '')));
+    }));
+  </script>
+</Base>

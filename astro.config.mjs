@@ -6,5 +6,9 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   site: 'https://chauffeurmadagascar.com',
   trailingSlash: 'always',
-  integrations: [sitemap()],
+  integrations: [
+    sitemap({
+      i18n: { defaultLocale: 'fr', locales: { fr: 'fr', en: 'en', it: 'it', es: 'es' } },
+    }),
+  ],
 });

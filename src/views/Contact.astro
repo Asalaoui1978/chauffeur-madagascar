@@ -1,0 +1,71 @@
+---
+import Base from '../layouts/Base.astro';
+import { getItineraires } from '../data/localized';
+import { site, whatsappLink } from '../data/site';
+import { L, t, parseUrl } from '../i18n';
+
+const { lang } = parseUrl(Astro.url);
+const tr = t(lang);
+const itineraires = getItineraires(lang);
+const msg = { hello: tr.m_hello, we: tr.m_we, trav: tr.m_trav, to: tr.m_to, itin: tr.m_itin };
+---
+<Base
+  title={tr.ct_title}
+  description={tr.ct_desc}
+  breadcrumb={[{ name: tr.home_crumb, url: L(lang, '/') }, { name: tr.nav_contact, url: L(lang, '/contact/') }]}
+>
+  <section class="hero small">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb"><ol><li><a href={L(lang, '/')}>{tr.home_crumb}</a></li><li>{tr.nav_contact}</li></ol></nav>
+      <h1>{tr.ct_h1}</h1>
+      <p class="lead">{tr.ct_lead}</p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container narrow">
+      <h2>{tr.prices_h2}</h2>
+      <p>{tr.prices_p}</p>
+
+      <h2>{tr.project_h2}</h2>
+      <form class="devis" id="devis">
+        <div class="row-2">
+          <label>{tr.f_firstname}<input name="prenom" required autocomplete="given-name" /></label>
+          <label>{tr.f_people}<input name="personnes" type="number" min="1" value="2" /></label>
+        </div>
+        <div class="row-2">
+          <label>{tr.f_from}<input name="debut" type="date" /></label>
+          <label>{tr.f_to}<input name="fin" type="date" /></label>
+        </div>
+        <label>{tr.f_itin}
+          <select name="itineraire" id="itineraire">
+            {itineraires.map((it) => <option value={it.slug}>{it.short}</option>)}
+            <option value="boucle">{tr.f_loop}</option>
+            <option value="sur-mesure">{tr.f_custom}</option>
+          </select>
+        </label>
+        <label>{tr.f_msg}<textarea name="message" rows="5" placeholder={tr.f_msg_ph}></textarea></label>
+        <button class="btn btn-whatsapp" type="submit">{tr.f_send}</button>
+        <p class="muted" style="font-size:.9rem;margin:0">{tr.f_note}{site.email && <> <a href={`mailto:${site.email}`}>{site.email}</a></>}</p>
+      </form>
+
+      <div class="actions">
+        <a class="btn btn-whatsapp" href={whatsappLink(tr.wa_default)} target="_blank" rel="noopener">WhatsApp : {site.phoneDisplay}</a>
+        <a class="btn btn-ghost" href={site.facebook} target="_blank" rel="noopener">Facebook : {site.facebookName}</a>
+      </div>
+    </div>
+  </section>
+  <script is:inline define:vars={{ numero: site.whatsapp, msg }}>
+    const params = new URLSearchParams(location.search);
+    const sel = document.getElementById('itineraire');
+    if (sel && params.get('itineraire')) sel.value = params.get('itineraire');
+    document.getElementById('devis')?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const f = new FormData(e.target);
+      const opt = sel.options[sel.selectedIndex].text;
+      const text = `${msg.hello} ${f.get('prenom')}.\n` +
+        `${msg.we} ${f.get('personnes')} ${msg.trav} ${f.get('debut') || '?'} ${msg.to} ${f.get('fin') || '?'}.\n` +
+        `${msg.itin} : ${opt}.\n${f.get('message') || ''}`;
+      window.open(`https://wa.me/${numero}?text=${encodeURIComponent(text)}`, '_blank');
+    });
+  </script>
+</Base>

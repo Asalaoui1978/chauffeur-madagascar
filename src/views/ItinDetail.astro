@@ -1,0 +1,104 @@
+---
+import Base from '../layouts/Base.astro';
+import Carte from '../components/Carte.astro';
+import { getItineraires, getLieux } from '../data/localized';
+import { site, whatsappLink } from '../data/site';
+import { getPhoto, photoUrl, photoPage } from '../data/photos';
+import { L, t, fill, parseUrl } from '../i18n';
+
+interface Props { slug: string }
+const { slug } = Astro.props;
+const { lang } = parseUrl(Astro.url);
+const tr = t(lang);
+const tt = (k: string) => (tr as Record<string, unknown>)[k] as string ?? k;
+const itineraires = getItineraires(lang);
+const lieux = getLieux(lang);
+const getLieu = (s: string) => lieux.find((l) => l.slug === s);
+const it = itineraires.find((x) => x.slug === slug)!;
+const points = it.route.map((s) => getLieu(s)).filter((l): l is NonNullable<typeof l> => Boolean(l));
+const url = L(lang, `/itineraires/${it.slug}/`);
+const heroPhoto = getPhoto(it.photo);
+const autres = itineraires.filter((x) => x.slug !== it.slug);
+
+const trip = {
+  '@context': 'https://schema.org',
+  '@type': 'TouristTrip',
+  name: it.title,
+  description: it.description,
+  inLanguage: lang,
+  provider: { '@id': `${site.url}/#threepac` },
+  itinerary: {
+    '@type': 'ItemList',
+    itemListElement: points.map((p, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      item: { '@type': 'TouristAttraction', name: p.name, url: new URL(L(lang, `/guide/${p.slug}/`), site.url).href, geo: { '@type': 'GeoCoordinates', latitude: p.lat, longitude: p.lng } },
+    })),
+  },
+};
+---
+<Base
+  title={it.title}
+  description={it.description}
+  image={heroPhoto ? photoUrl(heroPhoto, 1200) : undefined}
+  breadcrumb={[{ name: tr.home_crumb, url: L(lang, '/') }, { name: tr.il_h1, url: L(lang, '/itineraires/') }, { name: it.short, url }]}
+  jsonLd={trip}
+>
+  <section class="hero small" style={heroPhoto ? `--hero-img:url("${photoUrl(heroPhoto, 1920)}");padding:8rem 0 4rem` : undefined}>
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb"><ol><li><a href={L(lang, '/')}>{tr.home_crumb}</a></li><li><a href={L(lang, '/itineraires/')}>{tr.il_h1}</a></li><li>{it.short}</li></ol></nav>
+      <p class="eyebrow">{it.themes.map((th) => tt(`th_${th}`)).join(' · ')}</p>
+      <h1>{it.title}</h1>
+    </div>
+    {heroPhoto && heroPhoto.author && <p class="hero-credit">Photo : <a href={photoPage(heroPhoto)} target="_blank" rel="noopener">{heroPhoto.author}</a>, Wikimedia Commons</p>}
+  </section>
+
+  <section class="section">
+    <div class="container narrow">
+      <div class="facts">
+        <div class="fact"><strong>{tr.f_distance}</strong>{it.distance}</div>
+        <div class="fact"><strong>{tr.f_duree}</strong>{it.duree}</div>
+        <div class="fact"><strong>{tr.f_saison}</strong>{it.saison}</div>
+        <div class="fact"><strong>{tr.f_vehicule}</strong>{it.vehicule}</div>
+        <div class="fact"><strong>{tr.f_niveau}</strong>{tt(`lvl_${it.niveau}`)}</div>
+      </div>
+      {it.intro.map((p) => <p>{p}</p>)}
+
+      <h2>{tr.highlights_h2}</h2>
+      <ul class="highlights">{it.pointsForts.map((p) => <li>{p}</li>)}</ul>
+      <p><strong>{tr.ideal_for} :</strong> {it.idealPour}.</p>
+
+      <h2>{tr.map_h2}</h2>
+      <Carte points={points} />
+
+      <h2>{tr.program_h2}</h2>
+      <ol class="timeline">
+        {it.jours.map((j) => (
+          <li>
+            <span class="jour">{j.jour}</span>
+            <h3>{j.titre}</h3>
+            {j.route && <div class="route">🚙 {j.route}</div>}
+            <p>{j.texte}</p>
+            <p style="font-size:.92rem">
+              {j.lieux.map((s) => { const l = getLieu(s); return l ? <a class="tag" href={L(lang, `/guide/${l.slug}/`)}>{l.name}</a> : null; })}
+            </p>
+          </li>
+        ))}
+      </ol>
+      <p class="muted" style="font-size:.9rem">{tr.indicative}</p>
+
+      <div class="conseil">
+        <strong>{tr.tips_title}</strong>
+        <ul>{it.conseils.map((c) => <li>{c}</li>)}</ul>
+      </div>
+
+      <div class="actions">
+        <a class="btn btn-whatsapp" href={whatsappLink(fill(tr.trip_msg, { x: it.short }))} target="_blank" rel="noopener">{tr.want_trip}</a>
+        <a class="btn btn-ghost" href={`${L(lang, '/contact/')}?itineraire=${it.slug}`}>{tr.ask_quote}</a>
+      </div>
+
+      <h2>{tr.other_routes}</h2>
+      <ul>{autres.map((a) => <li><a href={L(lang, `/itineraires/${a.slug}/`)}>{a.title}</a></li>)}</ul>
+    </div>
+  </section>
+</Base>

@@ -1,6 +1,8 @@
 ---
 import '../styles/global.css';
 import { site, whatsappLink } from '../data/site';
+import { langs, langNames, ogLocale, L, t, parseUrl } from '../i18n';
+import { getItineraires } from '../data/localized';
 
 interface Props {
   title: string;
@@ -8,9 +10,14 @@ interface Props {
   image?: string;
   jsonLd?: object | object[];
   breadcrumb?: { name: string; url: string }[];
+  translated?: boolean; // false pour les pages qui n'existent qu'en français (blog, crédits)
 }
 
-const { title, description, image = '/images/threepac/threepac-4x4.jpg', jsonLd, breadcrumb } = Astro.props;
+const { title, description, image = '/images/threepac/threepac-4x4.jpg', jsonLd, breadcrumb, translated = true } = Astro.props;
+const { lang, path: neutral } = parseUrl(Astro.url);
+const tr = t(lang);
+const itins = getItineraires(lang);
+const alternates = translated ? langs.map((l) => ({ lang: l, href: new URL(L(l, neutral), site.url).href })) : [];
 const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).href;
 const ogImage = new URL(image, Astro.site ?? site.url).href;
 const fullTitle = title.includes(site.name) ? title : `${title} | ${site.name}`;
@@ -21,7 +28,7 @@ const business = {
   '@type': 'TravelAgency',
   '@id': `${site.url}/#threepac`,
   name: `${site.driver} – ${site.name}`,
-  description: 'Chauffeur-guide privé à Madagascar depuis 20 ans : RN7, côte Ouest et Tsingy de Bemaraha, Sud-Est et canal des Pangalanes, route du Nord jusqu\'à Nosy Be.',
+  description: tr.footer_about,
   url: site.url,
   telephone: site.phoneDisplay,
   ...(site.email ? { email: site.email } : {}),
@@ -29,6 +36,7 @@ const business = {
   address: { '@type': 'PostalAddress', addressLocality: 'Antananarivo', addressCountry: 'MG' },
   founder: { '@type': 'Person', name: `${site.driverRealName} « ${site.driver} »`, jobTitle: 'Chauffeur-guide' },
   knowsLanguage: site.languages,
+  sameAs: [site.facebook],
 };
 
 const crumbs = breadcrumb && breadcrumb.length > 0 ? {
@@ -40,16 +48,19 @@ const crumbs = breadcrumb && breadcrumb.length > 0 ? {
 const ld = [business, crumbs, ...(Array.isArray(jsonLd) ? jsonLd : jsonLd ? [jsonLd] : [])].filter(Boolean);
 
 const nav = [
-  { href: '/tripack/', label: 'Qui est Tripack ?' },
-  { href: '/itineraires/', label: 'Itinéraires' },
-  { href: '/guide/', label: 'Mini-guide' },
-  { href: '/galerie/', label: 'Galerie' },
-  { href: '/infos-pratiques/', label: 'Infos pratiques' },
-  { href: '/contact/', label: 'Devis & contact' },
+  { href: L(lang, '/tripack/'), label: tr.nav_tripack },
+  { href: L(lang, '/itineraires/'), label: tr.nav_itin },
+  { href: L(lang, '/guide/'), label: tr.nav_guide },
+  { href: L(lang, '/galerie/'), label: tr.nav_galerie },
+  { href: '/blog/', label: tr.nav_blog },
+  { href: L(lang, '/infos-pratiques/'), label: tr.nav_infos },
+  { href: L(lang, '/contact/'), label: tr.nav_contact },
 ];
+const path = Astro.url.pathname;
+const flags: Record<string, string> = { fr: 'FR', en: 'EN', it: 'IT', es: 'ES' };
 ---
 <!doctype html>
-<html lang="fr">
+<html lang={lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -61,7 +72,9 @@ const nav = [
     <meta name="theme-color" content="#b4441f" />
 
     <meta property="og:type" content="website" />
-    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:locale" content={ogLocale[lang]} />
+    {alternates.map((a) => <link rel="alternate" hreflang={a.lang} href={a.href} />)}
+    {translated && <link rel="alternate" hreflang="x-default" href={new URL(neutral, site.url).href} />}
     <meta property="og:site_name" content={site.name} />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
@@ -74,13 +87,15 @@ const nav = [
   </head>
   <body>
     <div class="progress" id="progress" aria-hidden="true"></div>
-    <a class="sr-only" href="#contenu" style="position:absolute;left:-9999px">Aller au contenu</a>
     <header class="site-header">
       <div class="container">
-        <a class="logo" href="/"><span aria-hidden="true">🚙</span><span>Tri<b style="color:var(--laterite)">pack</b></span></a>
-        <button class="menu-toggle" aria-label="Ouvrir le menu" aria-expanded="false" id="menu-toggle">☰</button>
+        <a class="logo" href={L(lang, '/')}><span aria-hidden="true">🚙</span><span>Tri<b style="color:var(--laterite)">pack</b></span></a>
+        <button class="menu-toggle" aria-label={tr.menu_open} aria-expanded="false" id="menu-toggle">☰</button>
         <nav class="nav" id="nav" aria-label="Menu principal">
           {nav.map((n) => <a href={n.href} aria-current={path.startsWith(n.href) ? 'page' : undefined}>{n.label}</a>)}
+          <span class="langs">
+            {langs.map((l) => <a href={translated ? L(l, neutral) : L(l, '/')} hreflang={l} lang={l} title={langNames[l]} aria-current={l === lang ? 'true' : undefined}>{flags[l]}</a>)}
+          </span>
         </nav>
       </div>
     </header>
@@ -92,34 +107,32 @@ const nav = [
     <footer class="site-footer">
       <div class="container grid grid-3">
         <div>
-          <h3>Tripack – Chauffeur Madagascar</h3>
-          <p>Chauffeur-guide privé depuis 20 ans. RN7, côte Ouest, Tsingy, Sud-Est, Nosy Be… On fait la route ensemble.</p>
+          <h3>{tr.footer_about_title}</h3>
+          <p>{tr.footer_about}</p>
         </div>
         <div>
-          <h3>Itinéraires</h3>
+          <h3>{tr.footer_itin}</h3>
           <ul>
-            <li><a href="/itineraires/rn7-tana-tulear/">RN7 : Tana → Tuléar</a></li>
-            <li><a href="/itineraires/cote-ouest-tsingy/">Côte Ouest et Tsingy</a></li>
-            <li><a href="/itineraires/sud-est-manakara-pangalanes/">Sud-Est et Pangalanes</a></li>
-            <li><a href="/itineraires/tana-nosy-be/">Route du Nord : Nosy Be</a></li>
-            <li><a href="/guide/">Mini-guide de Madagascar</a></li>
-            <li><a href={site.beloSurMerSite}>Découvrir Belo-sur-Mer</a></li>
+            {itins.map((it) => <li><a href={L(lang, `/itineraires/${it.slug}/`)}>{it.short}</a></li>)}
+            <li><a href={L(lang, '/guide/')}>{tr.guide_all}</a></li>
+            <li><a href="/blog/">{tr.nav_blog}</a></li>
+            <li><a href={site.beloSurMerSite}>{tr.footer_belo}</a></li>
           </ul>
         </div>
         <div>
-          <h3>Contact</h3>
+          <h3>{tr.footer_contact}</h3>
           <ul>
-            <li><a href={whatsappLink()}>WhatsApp : {site.phoneDisplay}</a></li>
+            <li><a href={whatsappLink(tr.wa_default)}>WhatsApp : {site.phoneDisplay}</a></li>
             <li><a href={site.facebook} target="_blank" rel="noopener">Facebook : {site.facebookName}</a></li>
             {site.email && <li><a href={`mailto:${site.email}`}>{site.email}</a></li>}
-            <li><a href="/contact/">Demander un devis</a></li>
+            <li><a href={L(lang, '/contact/')}>{tr.footer_quote}</a></li>
           </ul>
         </div>
       </div>
-      <div class="container"><p class="muted" style="color:#9c928a;margin-top:2rem;font-size:.9rem">© {new Date().getFullYear()} {site.name}. Distances et durées indicatives. <a href="/credits-photos/">Crédits photos</a></p></div>
+      <div class="container"><p class="muted" style="color:#9c928a;margin-top:2rem;font-size:.9rem">© {new Date().getFullYear()} {site.name}. {tr.footer_note} <a href="/credits-photos/">{tr.credits}</a></p></div>
     </footer>
 
-    <a class="wa-float" href={whatsappLink()} aria-label="Écrire à Tripack sur WhatsApp" target="_blank" rel="noopener">
+    <a class="wa-float" href={whatsappLink(tr.wa_default)} aria-label={tr.wa_aria} target="_blank" rel="noopener">
       <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3C8.8 3 3 8.7 3 15.8c0 2.5.7 4.9 2 7L3 29l6.4-2c2 1.1 4.3 1.7 6.6 1.7 7.2 0 13-5.7 13-12.8S23.2 3 16 3zm0 23.3c-2.1 0-4.1-.6-5.9-1.7l-.4-.3-3.8 1.2 1.2-3.7-.3-.4c-1.2-1.8-1.9-3.9-1.9-6.1C4.9 9.8 9.9 5 16 5s11.1 4.8 11.1 10.8S22.1 26.3 16 26.3zm6.1-8.1c-.3-.2-2-1-2.3-1.1-.3-.1-.5-.2-.8.2-.2.3-.9 1.1-1.1 1.3-.2.2-.4.2-.7.1-.3-.2-1.4-.5-2.7-1.7-1-.9-1.7-2-1.9-2.3-.2-.3 0-.5.1-.7l.5-.6c.2-.2.2-.4.3-.6.1-.2 0-.4 0-.6-.1-.2-.8-1.8-1-2.5-.3-.6-.5-.6-.8-.6h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.1-1.2 2.7s1.2 3.2 1.4 3.4c.2.2 2.4 3.6 5.8 5 .8.3 1.4.5 1.9.7.8.3 1.6.2 2.2.1.7-.1 2-.8 2.3-1.6.3-.8.3-1.5.2-1.6-.1-.2-.3-.3-.7-.4z"/></svg>
     </a>
 

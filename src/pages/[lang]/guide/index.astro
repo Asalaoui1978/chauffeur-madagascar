@@ -1,0 +1,7 @@
+---
+import View from '../../../views/GuideList.astro';
+export function getStaticPaths() {
+  return ['en', 'it', 'es'].map((lang) => ({ params: { lang } }));
+}
+---
+<View />

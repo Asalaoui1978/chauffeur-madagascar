@@ -1,0 +1,170 @@
+---
+import Base from '../layouts/Base.astro';
+import Photo from '../components/Photo.astro';
+import { getItineraires, getLieux } from '../data/localized';
+import { getPhoto, photoUrl, videos, galerie } from '../data/photos';
+import { whatsappLink } from '../data/site';
+import { L, t, parseUrl } from '../i18n';
+
+const { lang } = parseUrl(Astro.url);
+const tr = t(lang);
+const itineraires = getItineraires(lang);
+const lieux = getLieux(lang);
+const tt = (k: string) => (tr as Record<string, unknown>)[k] as string ?? k;
+
+const slides = ['sifaka-danseur', 'allee-des-baobabs', 'piste-rouge', 'tsingy-de-bemaraha', 'coucher-soleil', 'isalo', 'nosy-be']
+  .map((k) => getPhoto(k))
+  .filter((p): p is NonNullable<typeof p> => Boolean(p));
+
+const incontournables = ['allee-des-baobabs', 'tsingy-de-bemaraha', 'isalo', 'nosy-be', 'ranomafana', 'canal-des-pangalanes']
+  .map((s) => lieux.find((l) => l.slug === s))
+  .filter((l): l is NonNullable<typeof l> => Boolean(l));
+const videoTitles = [tr.vid_piste, tr.vid_zebus, tr.vid_dust];
+---
+<Base title={tr.home_title} description={tr.home_desc}>
+  <section class="hero" style="padding:9rem 0 7rem">
+    <div class="slideshow" aria-hidden="true">
+      {slides.map((p, i) => <div class={`slide ${i === 0 ? 'active' : ''}`} style={`background-image:url("${photoUrl(p, 1920)}")`}></div>)}
+    </div>
+    <div class="container">
+      <p class="eyebrow">{tr.home_eyebrow}</p>
+      <h1>{tr.home_h1a}<br />{tr.home_h1b}</h1>
+      <p class="lead">{tr.home_lead}</p>
+      <div class="actions">
+        <a class="btn btn-whatsapp" href={whatsappLink(tr.wa_default)} target="_blank" rel="noopener">{tr.write_wa}</a>
+        <a class="btn btn-ghost" href={L(lang, '/itineraires/')}>{tr.see_itins}</a>
+      </div>
+    </div>
+    <p class="hero-credit"><a href="/credits-photos/">{tr.credits}</a></p>
+  </section>
+
+  <section class="section" style="padding:2.5rem 0">
+    <div class="container stats">
+      <div class="stat reveal"><strong data-count="20">20</strong><span>{tr.stat_years}</span></div>
+      <div class="stat reveal"><strong data-count={itineraires.length}>{itineraires.length}</strong><span>{tr.stat_routes}</span></div>
+      <div class="stat reveal"><strong data-count={lieux.length}>{lieux.length}</strong><span>{tr.stat_stops}</span></div>
+      <div class="stat reveal"><strong>100 %</strong><span>{tr.stat_custom}</span></div>
+    </div>
+  </section>
+
+  <section class="section alt">
+    <div class="container">
+      <p class="eyebrow">{tr.itins_eyebrow}</p>
+      <h2>{tr.itins_h2}</h2>
+      <div class="grid grid-2">
+        {itineraires.map((it) => (
+          <a class="card reveal" href={L(lang, `/itineraires/${it.slug}/`)}>
+            <div class="card-media"><Photo photoKey={it.photo} width={900} label={it.short} /></div>
+            <div class="card-body">
+              <p class="eyebrow" style="margin:0">{it.short} · <span class="niveau">{tt(`lvl_${it.niveau}`)}</span></p>
+              <h3>{it.title}</h3>
+              <p class="muted">{it.description}</p>
+              {it.themes.map((th) => <span class="tag">{tt(`th_${th}`)}</span>)}
+              <p style="font-size:.9rem;margin:.6rem 0 0">🗓 {it.duree} · 🚙 {it.vehicule}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container grid grid-2" style="align-items:center">
+      <div class="card-media reveal" style="border-radius:var(--radius);aspect-ratio:4/5">
+        <Photo photoKey="threepac-portrait" />
+      </div>
+      <div>
+        <p class="eyebrow">{tr.driver_eyebrow}</p>
+        <h2>{tr.driver_h2}</h2>
+        <p>{tr.driver_p1}</p>
+        <p>{tr.driver_p2}</p>
+        <div class="actions"><a class="btn btn-primary" href={L(lang, '/tripack/')}>{tr.meet}</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="background:var(--encre);color:#f3ece4">
+    <div class="container">
+      <p class="eyebrow">{tr.images_eyebrow}</p>
+      <h2 style="color:#fff">{tr.images_h2}</h2>
+      <div class="videos">
+        {videos.map((v, i) => (
+          <figure class={`video reveal ${v.vertical ? 'vertical' : ''}`}>
+            <video src={v.src} poster={v.poster} muted loop playsinline preload="none" data-autoplay></video>
+            <figcaption>{videoTitles[i] ?? v.titre}</figcaption>
+          </figure>
+        ))}
+      </div>
+      <div class="mosaic">
+        {galerie.slice(2, 8).map((k) => <a href={L(lang, '/galerie/')} class="mosaic-item reveal"><Photo photoKey={k} width={600} /></a>)}
+      </div>
+      <div class="actions"><a class="btn btn-ghost" href={L(lang, '/galerie/')} style="color:#fff">{tr.all_gallery}</a></div>
+    </div>
+  </section>
+
+  <section class="section alt">
+    <div class="container">
+      <p class="eyebrow">{tr.guide_eyebrow}</p>
+      <h2>{tr.guide_h2}</h2>
+      <div class="grid grid-3">
+        {incontournables.map((l) => (
+          <a class="card reveal" href={L(lang, `/guide/${l.slug}/`)}>
+            <div class="card-media"><Photo photoKey={l.slug} width={700} label={l.name} /></div>
+            <div class="card-body"><h3>{l.name}</h3><p class="muted">{l.description}</p></div>
+          </a>
+        ))}
+      </div>
+      <div class="actions"><a class="btn btn-ghost" href={L(lang, '/guide/')}>{tr.all_guide}</a></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container narrow">
+      <h2>{tr.why_h2}</h2>
+      <p>{tr.why_p1}</p>
+      <p>{tr.why_p2}</p>
+      <div class="actions"><a class="btn btn-primary" href={L(lang, '/contact/')}>{tr.quote_free}</a></div>
+    </div>
+  </section>
+
+  <section class="section alt">
+    <div class="container narrow">
+      <p class="eyebrow">{tr.reviews_eyebrow}</p>
+      <h2>{tr.reviews_h2}</h2>
+      {/* [À COMPLÉTER] ajouter de vrais avis clients ou le lien vers la fiche Google. Ne pas inventer d'avis. */}
+      <p class="muted">{tr.reviews_p} <a href={whatsappLink(tr.review_msg)}>{tr.reviews_link}</a>.</p>
+    </div>
+  </section>
+
+  <script>
+    const slides = document.querySelectorAll('.slideshow .slide');
+    let i = 0;
+    if (slides.length > 1 && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setInterval(() => {
+        slides[i].classList.remove('active');
+        i = (i + 1) % slides.length;
+        slides[i].classList.add('active');
+      }, 6000);
+    }
+    const counters = document.querySelectorAll<HTMLElement>('[data-count]');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        const el = e.target as HTMLElement;
+        const end = Number(el.dataset.count);
+        let n = 0;
+        const step = Math.max(1, Math.round(end / 30));
+        const timer = setInterval(() => { n = Math.min(end, n + step); el.textContent = String(n); if (n >= end) clearInterval(timer); }, 40);
+        io.unobserve(el);
+      });
+    }, { threshold: 0.5 });
+    counters.forEach((c) => io.observe(c));
+    const vio = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        const v = e.target as HTMLVideoElement;
+        if (e.isIntersecting) v.play().catch(() => {}); else v.pause();
+      });
+    }, { threshold: 0.4 });
+    document.querySelectorAll<HTMLVideoElement>('video[data-autoplay]').forEach((v) => vio.observe(v));
+  </script>
+</Base>

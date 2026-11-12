@@ -1,0 +1,9 @@
+---
+import View from '../../../views/ItinDetail.astro';
+import { itineraires } from '../../../data/itineraires';
+export function getStaticPaths() {
+  return ['en', 'it', 'es'].flatMap((lang) => itineraires.map((it) => ({ params: { lang, slug: it.slug } })));
+}
+const { slug } = Astro.params;
+---
+<View slug={slug!} />

@@ -1,0 +1,97 @@
+---
+import Base from '../layouts/Base.astro';
+import Carte from '../components/Carte.astro';
+import Photo from '../components/Photo.astro';
+import { getItineraires, getLieux } from '../data/localized';
+import { themesParLieu } from '../data/lieux';
+import { getPhoto, photoUrl, photoPage } from '../data/photos';
+import { site, whatsappLink } from '../data/site';
+import { L, t, fill, parseUrl } from '../i18n';
+
+interface Props { slug: string }
+const { slug } = Astro.props;
+const { lang } = parseUrl(Astro.url);
+const tr = t(lang);
+const tt = (k: string) => (tr as Record<string, unknown>)[k] as string ?? k;
+const lieux = getLieux(lang);
+const l = lieux.find((x) => x.slug === slug)!;
+const url = L(lang, `/guide/${l.slug}/`);
+const heroPhoto = getPhoto(l.slug);
+const lieuThemes = themesParLieu[l.slug] ?? [];
+const galeries: Record<string, string[]> = {
+  'nosy-be': ['nosy-komba'],
+  mahajanga: ['cirque-rouge'],
+  'tsingy-de-bemaraha': ['tsingy-circuit'],
+  morondava: ['allee-des-baobabs'],
+  fianarantsoa: ['rizieres'],
+  manakara: ['canal-des-pangalanes'],
+  kirindy: ['microcebe'],
+};
+const extras = galeries[l.slug] ?? [];
+const surItineraires = getItineraires(lang).filter((it) => it.route.includes(l.slug) || it.jours.some((j) => j.lieux.includes(l.slug)));
+const idx = lieux.findIndex((x) => x.slug === l.slug);
+const voisins = [lieux[idx - 1], lieux[idx + 1]].filter(Boolean);
+
+const attraction = {
+  '@context': 'https://schema.org',
+  '@type': 'TouristAttraction',
+  name: l.name,
+  description: l.description,
+  url: new URL(url, site.url).href,
+  geo: { '@type': 'GeoCoordinates', latitude: l.lat, longitude: l.lng },
+  containedInPlace: { '@type': 'Country', name: 'Madagascar' },
+};
+---
+<Base
+  title={fill(tr.gd_title, { x: l.name })}
+  description={l.description}
+  image={l.image ?? (heroPhoto ? photoUrl(heroPhoto, 1200) : undefined)}
+  breadcrumb={[{ name: tr.home_crumb, url: L(lang, '/') }, { name: tr.gl_h1, url: L(lang, '/guide/') }, { name: l.name, url }]}
+  jsonLd={attraction}
+>
+  <section class="hero small" style={heroPhoto ? `--hero-img:url("${photoUrl(heroPhoto, 1920)}");padding:8rem 0 4rem` : undefined}>
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb"><ol><li><a href={L(lang, '/')}>{tr.home_crumb}</a></li><li><a href={L(lang, '/guide/')}>{tr.gl_h1}</a></li><li>{l.name}</li></ol></nav>
+      <p class="eyebrow">{l.region}{lieuThemes.length > 0 && ` · ${lieuThemes.map((th) => tt(`th_${th}`)).join(' · ')}`}</p>
+      <h1>{l.name}</h1>
+    </div>
+    {heroPhoto && heroPhoto.author && <p class="hero-credit">Photo : <a href={photoPage(heroPhoto)} target="_blank" rel="noopener">{heroPhoto.author}</a>, Wikimedia Commons</p>}
+  </section>
+  <section class="section">
+    <div class="container narrow">
+      <p class="lead">{l.intro}</p>
+      <h2>{tr.to_see_h2}</h2>
+      <ul>{l.aVoir.map((a) => <li>{a}</li>)}</ul>
+
+      <div class="conseil"><strong>{tr.tip_label}</strong> {l.conseil}</div>
+
+      {extras.length > 0 && (
+        <div class="grid grid-2" style="margin:1.5rem 0">
+          {extras.map((k) => <div class="card-media" style="border-radius:var(--radius)"><Photo photoKey={k} width={900} /></div>)}
+        </div>
+      )}
+
+      {l.slug === 'belo-sur-mer' && (
+        <p>{tr.belo_p} <a href={site.beloSurMerSite}>{tr.belo_link}</a>.</p>
+      )}
+
+      <h2>{fill(tr.where_h2, { x: l.name })}</h2>
+      <Carte points={[l]} ligne={false} />
+
+      {surItineraires.length > 0 && (
+        <>
+          <h2>{tr.on_itin_h2}</h2>
+          <ul>{surItineraires.map((it) => <li><a href={L(lang, `/itineraires/${it.slug}/`)}>{it.title}</a></li>)}</ul>
+        </>
+      )}
+
+      <div class="actions">
+        <a class="btn btn-whatsapp" href={whatsappLink(fill(tr.go_msg, { x: l.name }))} target="_blank" rel="noopener">{tr.go_with}</a>
+      </div>
+
+      {voisins.length > 0 && (
+        <p style="margin-top:2.5rem">{tr.read_more} {voisins.map((v, i) => <>{i > 0 && ' · '}<a href={L(lang, `/guide/${v.slug}/`)}>{v.name}</a></>)}</p>
+      )}
+    </div>
+  </section>
+</Base>

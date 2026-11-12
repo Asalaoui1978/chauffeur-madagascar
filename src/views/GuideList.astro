@@ -1,0 +1,81 @@
+---
+import Base from '../layouts/Base.astro';
+import Carte from '../components/Carte.astro';
+import Photo from '../components/Photo.astro';
+import { getItineraires, getLieux } from '../data/localized';
+import { themes, themesParLieu } from '../data/lieux';
+import { L, t, fill, parseUrl } from '../i18n';
+
+const { lang } = parseUrl(Astro.url);
+const tr = t(lang);
+const tt = (k: string) => (tr as Record<string, unknown>)[k] as string ?? k;
+const lieux = getLieux(lang);
+const itineraires = getItineraires(lang);
+const routeDe = (slug: string) => itineraires.filter((it) => it.route.includes(slug)).map((it) => it.slug);
+---
+<Base
+  title={tr.gl_title}
+  description={tr.gl_desc}
+  breadcrumb={[{ name: tr.home_crumb, url: L(lang, '/') }, { name: tr.gl_h1, url: L(lang, '/guide/') }]}
+>
+  <section class="hero small">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb"><ol><li><a href={L(lang, '/')}>{tr.home_crumb}</a></li><li>{tr.gl_h1}</li></ol></nav>
+      <h1>{tr.gl_h1}</h1>
+      <p class="lead">{fill(tr.gl_lead, { n: lieux.length })}</p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <Carte points={lieux} ligne={false} />
+
+      <p style="margin:1.5rem 0 0;font-weight:600">{tr.by_theme}</p>
+      <div class="filters" data-group="theme" role="group">
+        <button class="on" data-f="tous">{tr.all_f}</button>
+        {themes.map((th) => <button data-f={th}>{tt(`th_${th}`)}</button>)}
+      </div>
+      <p style="margin:0;font-weight:600">{tr.by_route}</p>
+      <div class="filters" data-group="route" role="group">
+        <button class="on" data-f="tous">{tr.all_routes_f}</button>
+        {itineraires.map((it) => <button data-f={it.slug}>{it.short}</button>)}
+      </div>
+
+      <div class="grid grid-3" id="lieux">
+        {lieux.map((l) => (
+          <a class="card" href={L(lang, `/guide/${l.slug}/`)} data-theme={(themesParLieu[l.slug] ?? []).join('|')} data-route={routeDe(l.slug).join('|')}>
+            <div class="card-media"><Photo photoKey={l.slug} width={700} label={l.name} /></div>
+            <div class="card-body">
+              <span class="tag">{l.region}</span>{(themesParLieu[l.slug] ?? []).map((th) => <span class="tag" style="background:#e6f0ec;color:#24513f">{tt(`th_${th}`)}</span>)}
+              <h2 style="font-size:1.25rem;margin:.4rem 0">{l.name}</h2>
+              <p class="muted">{l.description}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+      <p id="aucun" class="muted" hidden>{tr.none_match}</p>
+    </div>
+  </section>
+  <script>
+    const state: Record<string, string> = { theme: 'tous', route: 'tous' };
+    const cards = document.querySelectorAll<HTMLElement>('#lieux > .card');
+    const vide = document.getElementById('aucun');
+    const apply = () => {
+      let n = 0;
+      cards.forEach((c) => {
+        const okT = state.theme === 'tous' || (c.dataset.theme || '').split('|').includes(state.theme);
+        const okR = state.route === 'tous' || (c.dataset.route || '').split('|').includes(state.route);
+        c.classList.toggle('hidden', !(okT && okR));
+        if (okT && okR) n++;
+      });
+      if (vide) vide.hidden = n > 0;
+    };
+    document.querySelectorAll<HTMLElement>('.filters[data-group]').forEach((g) => {
+      const btns = g.querySelectorAll<HTMLButtonElement>('button');
+      btns.forEach((b) => b.addEventListener('click', () => {
+        btns.forEach((x) => x.classList.toggle('on', x === b));
+        state[g.dataset.group || ''] = b.dataset.f || 'tous';
+        apply();
+      }));
+    });
+  </script>
+</Base>

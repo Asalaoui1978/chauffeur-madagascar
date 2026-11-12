@@ -1,0 +1,70 @@
+---
+import Base from '../layouts/Base.astro';
+import { galerie, videos, getPhoto, photoUrl } from '../data/photos';
+import { whatsappLink } from '../data/site';
+import { L, t, parseUrl } from '../i18n';
+
+const { lang } = parseUrl(Astro.url);
+const tr = t(lang);
+const items = galerie.map((k) => getPhoto(k)).filter((p): p is NonNullable<typeof p> => Boolean(p));
+const videoTitles = [tr.vid_piste, tr.vid_zebus, tr.vid_dust];
+---
+<Base
+  title={tr.ga_title}
+  description={tr.ga_desc}
+  image="/images/threepac/sifaka-danseur-piste-rouge.jpg"
+  breadcrumb={[{ name: tr.home_crumb, url: L(lang, '/') }, { name: tr.nav_galerie, url: L(lang, '/galerie/') }]}
+>
+  <section class="hero small">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb"><ol><li><a href={L(lang, '/')}>{tr.home_crumb}</a></li><li>{tr.nav_galerie}</li></ol></nav>
+      <h1>{tr.ga_h1}</h1>
+      <p class="lead">{tr.ga_lead}</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2 style="margin-top:0">{tr.ga_videos}</h2>
+      <div class="videos">
+        {videos.map((v, i) => (
+          <figure class={`video ${v.vertical ? 'vertical' : ''}`}>
+            <video src={v.src} poster={v.poster} controls muted playsinline preload="none"></video>
+            <figcaption>{videoTitles[i] ?? v.titre}</figcaption>
+          </figure>
+        ))}
+      </div>
+
+      <h2>{tr.ga_photos}</h2>
+      <div class="mosaic" id="galerie">
+        {items.map((p) => (
+          <a class="mosaic-item" href={photoUrl(p)} data-alt={p.alt}>
+            <figure class="photo"><img src={photoUrl(p)} alt={p.alt} loading="lazy" decoding="async" /></figure>
+          </a>
+        ))}
+      </div>
+
+      <div class="actions"><a class="btn btn-whatsapp" href={whatsappLink(tr.wa_default)} target="_blank" rel="noopener">{tr.ga_go}</a></div>
+    </div>
+  </section>
+
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
+    <button type="button" aria-label={tr.close}>×</button>
+    <div><img alt="" /><p></p></div>
+  </div>
+
+  <script>
+    const lb = document.getElementById('lightbox');
+    const img = lb?.querySelector('img');
+    const cap = lb?.querySelector('p');
+    document.querySelectorAll<HTMLAnchorElement>('#galerie a').forEach((a) => a.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (!lb || !img || !cap) return;
+      img.src = a.href; img.alt = a.dataset.alt || ''; cap.textContent = a.dataset.alt || '';
+      lb.classList.add('open');
+    }));
+    const close = () => lb?.classList.remove('open');
+    lb?.addEventListener('click', (e) => { if (e.target === lb || (e.target as HTMLElement).tagName === 'BUTTON') close(); });
+    addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+  </script>
+</Base>
