@@ -6,14 +6,14 @@ import { whatsappLink } from '../data/site';
 const items = galerie.map((k) => getPhoto(k)).filter((p): p is NonNullable<typeof p> => Boolean(p));
 ---
 <Base
-  title="Galerie photos et vidéos – En route avec ThreePac à Madagascar"
-  description="Photos et vidéos des voyages de ThreePac, chauffeur-guide à Madagascar : pistes rouges, lémuriens, sifakas, marchés aux zébus, plages du Sud et couchers de soleil."
+  title="Galerie photos et vidéos – En route avec Tripack à Madagascar"
+  description="Photos et vidéos des voyages de Tripack, chauffeur-guide à Madagascar : pistes rouges, lémuriens, sifakas, marchés aux zébus, plages du Sud et couchers de soleil."
   breadcrumb={[{ name: 'Accueil', url: '/' }, { name: 'Galerie', url: '/galerie/' }]}
 >
   <section class="hero small">
     <div class="container">
       <nav class="breadcrumb" aria-label="Fil d'Ariane"><ol><li><a href="/">Accueil</a></li><li>Galerie</li></ol></nav>
-      <h1>En route avec ThreePac</h1>
+      <h1>En route avec Tripack</h1>
       <p class="lead">Des images prises sur la route, au fil des voyages : pistes, lémuriens, villages et océan.</p>
     </div>
   </section>
@@ -39,7 +39,7 @@ const items = galerie.map((k) => getPhoto(k)).filter((p): p is NonNullable<typeo
         ))}
       </div>
 
-      <div class="actions"><a class="btn btn-whatsapp" href={whatsappLink()} target="_blank" rel="noopener">Partir avec ThreePac</a></div>
+      <div class="actions"><a class="btn btn-whatsapp" href={whatsappLink()} target="_blank" rel="noopener">Partir avec Tripack</a></div>
     </div>
   </section>
 

@@ -2,7 +2,7 @@
 export const site = {
   name: 'Chauffeur Madagascar',
   tagline: 'Votre chauffeur-guide sur les routes de Madagascar',
-  driver: 'ThreePac',
+  driver: 'Tripack',
   driverRealName: 'Patrick',
   url: 'https://chauffeurmadagascar.com',
   whatsapp: '261347090909',
@@ -16,5 +16,5 @@ export const site = {
   beloSurMerSite: 'https://visitbelosurmer.com/',
 };
 
-export const whatsappLink = (message = 'Bonjour ThreePac, je prépare un voyage à Madagascar et je voudrais un devis.') =>
+export const whatsappLink = (message = 'Bonjour Tripack, je prépare un voyage à Madagascar et je voudrais un devis.') =>
   `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(message)}`;

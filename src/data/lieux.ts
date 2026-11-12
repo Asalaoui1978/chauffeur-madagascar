@@ -8,7 +8,7 @@ export type Lieu = {
   description: string; // meta description (≈ 150 caractères)
   intro: string;
   aVoir: string[];
-  conseil: string; // « Le conseil de ThreePac »
+  conseil: string; // « Le conseil de Tripack »
   image?: string; // [À COMPLÉTER] ex. '/images/lieux/antsirabe.jpg'
 };
 
@@ -19,7 +19,7 @@ export const lieux: Lieu[] = [
     region: 'Hautes Terres',
     lat: -18.879, lng: 47.508,
     description: "Antananarivo, la capitale de Madagascar : collines, marchés, Rova et point de départ idéal d'un circuit avec chauffeur sur la RN7.",
-    intro: "Tana, comme tout le monde l'appelle, s'étale sur douze collines au cœur des Hautes Terres. C'est ici que commencent presque tous les voyages, et c'est ici que ThreePac vient vous chercher à l'aéroport d'Ivato.",
+    intro: "Tana, comme tout le monde l'appelle, s'étale sur douze collines au cœur des Hautes Terres. C'est ici que commencent presque tous les voyages, et c'est ici que Tripack vient vous chercher à l'aéroport d'Ivato.",
     aVoir: [
       'Le Rova, ancien palais royal, qui domine toute la ville',
       'La colline royale d\'Ambohimanga, classée au patrimoine mondial de l\'UNESCO, à une heure de route',

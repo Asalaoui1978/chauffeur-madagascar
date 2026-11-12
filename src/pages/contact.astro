@@ -4,8 +4,8 @@ import { itineraires } from '../data/itineraires';
 import { site, whatsappLink } from '../data/site';
 ---
 <Base
-  title="Devis chauffeur à Madagascar – Contacter ThreePac"
-  description="Demandez un devis gratuit à ThreePac, chauffeur-guide à Madagascar : RN7, côte Ouest, Morondava, Tsingy. Réponse rapide sur WhatsApp."
+  title="Devis chauffeur à Madagascar – Contacter Tripack"
+  description="Demandez un devis gratuit à Tripack, chauffeur-guide à Madagascar : RN7, côte Ouest, Morondava, Tsingy. Réponse rapide sur WhatsApp."
   breadcrumb={[{ name: 'Accueil', url: '/' }, { name: 'Devis & contact', url: '/contact/' }]}
 >
   <section class="hero small">
@@ -56,7 +56,7 @@ import { site, whatsappLink } from '../data/site';
       e.preventDefault();
       const f = new FormData(e.target);
       const opt = sel.options[sel.selectedIndex].text;
-      const msg = `Bonjour ThreePac, je m'appelle ${f.get('prenom')}.\n` +
+      const msg = `Bonjour Tripack, je m'appelle ${f.get('prenom')}.\n` +
         `Nous sommes ${f.get('personnes')} voyageur(s), du ${f.get('debut') || '?'} au ${f.get('fin') || '?'}.\n` +
         `Itinéraire : ${opt}.\n${f.get('message') || ''}`;
       window.open(`https://wa.me/${numero}?text=${encodeURIComponent(msg)}`, '_blank');

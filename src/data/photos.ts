@@ -10,11 +10,11 @@ export type Photo = {
 };
 
 export const photos: Record<string, Photo> = {
-  // ——— Photos de ThreePac (libres de droits, fournies par le propriétaire du site) ———
-  'threepac-portrait': { src: '/images/threepac/threepac-portrait.jpg', author: '', alt: 'Patrick « ThreePac », chauffeur-guide à Madagascar' },
-  'threepac-4x4': { src: '/images/threepac/threepac-4x4.jpg', author: '', alt: 'Le 4x4 de ThreePac, prêt pour la route, au-dessus de Tana' },
-  'interieur-vehicule': { src: '/images/threepac/interieur-vehicule.jpg', author: '', alt: "L'intérieur du véhicule de ThreePac" },
-  'tableau-de-bord': { src: '/images/threepac/tableau-de-bord.jpg', author: '', alt: 'Le poste de conduite de ThreePac' },
+  // ——— Photos de Tripack (libres de droits, fournies par le propriétaire du site) ———
+  'threepac-portrait': { src: '/images/threepac/threepac-portrait.jpg', author: '', alt: 'Patrick « Tripack », chauffeur-guide à Madagascar' },
+  'threepac-4x4': { src: '/images/threepac/threepac-4x4.jpg', author: '', alt: 'Le 4x4 de Tripack, prêt pour la route, au-dessus de Tana' },
+  'interieur-vehicule': { src: '/images/threepac/interieur-vehicule.jpg', author: '', alt: "L'intérieur du véhicule de Tripack" },
+  'tableau-de-bord': { src: '/images/threepac/tableau-de-bord.jpg', author: '', alt: 'Le poste de conduite de Tripack' },
   'piste-rouge': { src: '/images/threepac/piste-rouge.jpg', author: '', alt: "Piste de terre rouge dans le Sud de Madagascar" },
   'sifaka-danseur': { src: '/images/threepac/sifaka-danseur-piste-rouge.jpg', author: '', alt: 'Un sifaka traverse la piste rouge en dansant' },
   'sifaka-et-son-petit': { src: '/images/threepac/sifaka-et-son-petit.jpg', author: '', alt: 'Une maman sifaka et son petit dans la forêt sèche' },
@@ -60,11 +60,11 @@ export const photoPage = (p: Photo) =>
 
 export const getPhoto = (key?: string) => (key ? photos[key] : undefined);
 
-// Galerie : photos de ThreePac, dans l'ordre d'affichage
+// Galerie : photos de Tripack, dans l'ordre d'affichage
 export const galerie = ['threepac-portrait', 'threepac-4x4', 'sifaka-danseur', 'piste-rouge', 'sifaka-et-son-petit', 'microcebe', 'lemurien-nuit', 'coucher-soleil', 'jardin-bord-de-mer', 'baie-pirogues', 'cabane-ocean', 'jardin-baleine', 'cote-vagues', 'taxi-brousse', 'tableau-de-bord', 'interieur-vehicule'];
 
 export const videos = [
-  { src: '/videos/sur-la-piste.mp4', poster: '/videos/sur-la-piste.jpg', titre: 'Sur la piste avec ThreePac', vertical: true },
+  { src: '/videos/sur-la-piste.mp4', poster: '/videos/sur-la-piste.jpg', titre: 'Sur la piste avec Tripack', vertical: true },
   { src: '/videos/marche-aux-zebus.mp4', poster: '/videos/marche-aux-zebus.jpg', titre: 'Le marché aux zébus', vertical: true },
   { src: '/videos/piste-poussiere-4x4.mp4', poster: '/videos/piste-poussiere-4x4.jpg', titre: 'Dans la poussière des pistes du Sud', vertical: false },
 ];

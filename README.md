@@ -1,6 +1,6 @@
-# Chauffeur Madagascar – ThreePac
+# Chauffeur Madagascar – Tripack
 
-Site de **ThreePac (Patrick)**, chauffeur-guide à Madagascar : mi-vitrine, mi-guide touristique (RN7, côte Ouest, Tsingy).
+Site de **Tripack (Patrick)**, chauffeur-guide à Madagascar : mi-vitrine, mi-guide touristique (RN7, côte Ouest, Tsingy).
 Fait avec **Astro 6**, sans framework JavaScript, pour un site très rapide et bien référencé.
 
 ## Mettre en ligne gratuitement (Cloudflare Pages)
@@ -21,7 +21,7 @@ Chaque modification envoyée sur GitHub remet automatiquement le site à jour.
 | Les itinéraires (jour par jour, conseils) | `src/data/itineraires.ts` |
 | Les lieux du mini-guide (et leurs thèmes) | `src/data/lieux.ts` |
 | Les photos d'illustration et leurs crédits | `src/data/photos.ts` |
-| La présentation de ThreePac | `src/pages/threepac.astro` |
+| La présentation de Tripack | `src/pages/threepac.astro` |
 | Les tarifs | `src/pages/contact.astro` |
 | La FAQ | `src/pages/infos-pratiques.astro` |
 | Les couleurs et le style | `src/styles/global.css` |
@@ -30,7 +30,7 @@ Chaque modification envoyée sur GitHub remet automatiquement le site à jour.
 
 1. Déposez les photos dans `public/images/` (ex. `public/images/lieux/isalo.jpg`). Format paysage, 1 600 px de large maximum.
 2. Dans `src/data/lieux.ts` ou `src/data/itineraires.ts`, ajoutez `image: '/images/lieux/isalo.jpg'` au lieu ou à l'itinéraire concerné.
-3. Pour la photo de ThreePac, remplacez le bloc « Photo de ThreePac à venir » dans `src/pages/index.astro`.
+3. Pour la photo de Tripack, remplacez le bloc « Photo de Tripack à venir » dans `src/pages/index.astro`.
 
 ## Travailler en local (facultatif)
 
@@ -55,7 +55,7 @@ Après la mise en ligne, inscrivez le site dans **Google Search Console** et env
 Cherchez `[À COMPLÉTER]` et `[À VÉRIFIER]` dans le code :
 - nom définitif et domaine
 - numéro WhatsApp, e-mail, langues, véhicule
-- photos (ThreePac, véhicule, lieux)
+- photos (Tripack, véhicule, lieux)
 - origine réelle du surnom, anecdotes personnelles
 - tarifs et ce qui est inclus
 - vrais avis clients (ne pas en inventer)

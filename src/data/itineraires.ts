@@ -27,7 +27,7 @@ export const itineraires: Itineraire[] = [
     slug: 'rn7-tana-tulear',
     title: 'La Route du Sud : la RN7 de Tana à Tuléar',
     short: 'RN7 : Tana → Tuléar',
-    description: "Circuit RN7 avec chauffeur de Tana à Tuléar : Antsirabe, Ambositra, Ranomafana, Fianarantsoa, Isalo… L'itinéraire jour par jour, la route et les conseils de ThreePac.",
+    description: "Circuit RN7 avec chauffeur de Tana à Tuléar : Antsirabe, Ambositra, Ranomafana, Fianarantsoa, Isalo… L'itinéraire jour par jour, la route et les conseils de Tripack.",
     distance: 'environ 950 km',
     duree: '9 à 12 jours conseillés (2 à 3 jours en direct)',
     saison: "Toute l'année (route goudronnée), idéal d'avril à novembre",

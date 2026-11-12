@@ -9,7 +9,7 @@ const tous = [...new Set(itineraires.flatMap((it) => it.route))].map((s) => lieu
 ---
 <Base
   title="Itinéraires à Madagascar avec chauffeur : RN7, côte Ouest, Sud-Est et Nosy Be"
-  description="Les circuits de ThreePac, chauffeur à Madagascar : la RN7 de Tana à Tuléar, la côte Ouest jusqu'aux Tsingy, le Sud-Est et les Pangalanes, et la route du Nord jusqu'à Nosy Be."
+  description="Les circuits de Tripack, chauffeur à Madagascar : la RN7 de Tana à Tuléar, la côte Ouest jusqu'aux Tsingy, le Sud-Est et les Pangalanes, et la route du Nord jusqu'à Nosy Be."
   breadcrumb={[{ name: 'Accueil', url: '/' }, { name: 'Itinéraires', url: '/itineraires/' }]}
 >
   <section class="hero small">
@@ -21,7 +21,7 @@ const tous = [...new Set(itineraires.flatMap((it) => it.route))].map((s) => lieu
   </section>
   <section class="section">
     <div class="container">
-      <h2 style="margin-top:0">Toutes les routes de ThreePac</h2>
+      <h2 style="margin-top:0">Toutes les routes de Tripack</h2>
       <Carte points={tous} ligne={false} />
 
       <div class="filters" id="filtres" role="group" aria-label="Filtrer par envie">

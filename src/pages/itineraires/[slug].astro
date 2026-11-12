@@ -84,16 +84,16 @@ const trip = {
       <p class="muted" style="font-size:.9rem">Distances et temps de route indicatifs : ils varient selon la saison, l'état des routes et les arrêts. Le programme est entièrement adaptable.</p>
 
       <div class="conseil">
-        <strong>Les conseils de ThreePac</strong>
+        <strong>Les conseils de Tripack</strong>
         <ul>{it.conseils.map((c) => <li>{c}</li>)}</ul>
       </div>
 
       <div class="actions">
-        <a class="btn btn-whatsapp" href={whatsappLink(`Bonjour ThreePac, je suis intéressé(e) par l'itinéraire « ${it.short} ». Nous sommes … personnes, du … au ….`)} target="_blank" rel="noopener">Je veux faire ce trajet</a>
+        <a class="btn btn-whatsapp" href={whatsappLink(`Bonjour Tripack, je suis intéressé(e) par l'itinéraire « ${it.short} ». Nous sommes … personnes, du … au ….`)} target="_blank" rel="noopener">Je veux faire ce trajet</a>
         <a class="btn btn-ghost" href={`/contact/?itineraire=${it.slug}`}>Demander un devis</a>
       </div>
 
-      <h2>Les autres routes de ThreePac</h2>
+      <h2>Les autres routes de Tripack</h2>
       <ul>{autres.map((a) => <li><a href={`/itineraires/${a.slug}/`}>{a.title}</a></li>)}</ul>
     </div>
   </section>
