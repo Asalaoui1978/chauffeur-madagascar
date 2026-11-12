@@ -8,7 +8,7 @@ Fait avec **Astro 6**, sans framework JavaScript, pour un site très rapide et b
 1. Sur dash.cloudflare.com, ouvrez **Workers & Pages**, puis **Create** › **Pages** › **Connect to Git**.
 2. Choisissez ce dépôt `chauffeur-madagascar`.
 3. Réglages : *Framework preset* : **Astro** · *Build command* : `npm run build` · *Output directory* : `dist`.
-4. Cliquez sur **Save and Deploy**. Le site sera en ligne sur `https://chauffeur-madagascar.alexandre-salaoui.workers.dev`, ou une adresse proche si ce nom est pris.
+4. Cliquez sur **Save and Deploy**. Le site sera en ligne sur `https://chauffeur.visitbelosurmer.com`, ou une adresse proche si ce nom est pris.
 5. Si l'adresse finale est différente, mettez-la à jour dans `astro.config.mjs`, `src/data/site.ts` et `public/robots.txt`.
 
 Chaque modification envoyée sur GitHub remet automatiquement le site à jour.

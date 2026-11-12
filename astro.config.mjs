@@ -4,7 +4,7 @@ import sitemap from '@astrojs/sitemap';
 
 // ⚠️ Remplacer par le domaine définitif quand il sera choisi.
 export default defineConfig({
-  site: 'https://chauffeur-madagascar.alexandre-salaoui.workers.dev',
+  site: 'https://chauffeur.visitbelosurmer.com',
   trailingSlash: 'always',
   integrations: [sitemap()],
 });

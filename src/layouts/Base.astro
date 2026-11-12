@@ -24,7 +24,7 @@ const business = {
   description: 'Chauffeur-guide privé à Madagascar depuis 20 ans : RN7, côte Ouest et Tsingy de Bemaraha, Sud-Est et canal des Pangalanes, route du Nord jusqu\'à Nosy Be.',
   url: site.url,
   telephone: site.phoneDisplay,
-  email: site.email,
+  ...(site.email ? { email: site.email } : {}),
   areaServed: { '@type': 'Country', name: 'Madagascar' },
   address: { '@type': 'PostalAddress', addressLocality: 'Antananarivo', addressCountry: 'MG' },
   founder: { '@type': 'Person', name: `${site.driverRealName} « ${site.driver} »`, jobTitle: 'Chauffeur-guide' },
@@ -109,7 +109,7 @@ const nav = [
           <h3>Contact</h3>
           <ul>
             <li><a href={whatsappLink()}>WhatsApp : {site.phoneDisplay}</a></li>
-            <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
+            {site.email && <li><a href={`mailto:${site.email}`}>{site.email}</a></li>}
             <li><a href="/contact/">Demander un devis</a></li>
           </ul>
         </div>
