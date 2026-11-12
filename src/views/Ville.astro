@@ -1,0 +1,83 @@
+---
+import Base from '../layouts/Base.astro';
+import Carte from '../components/Carte.astro';
+import { villes, villesUi } from '../data/villes';
+import { getItineraires, getLieux } from '../data/localized';
+import { getPhoto, photoUrl } from '../data/photos';
+import { site, whatsappLink } from '../data/site';
+import { L, t, fill, parseUrl } from '../i18n';
+
+interface Props { slug: string }
+const { slug } = Astro.props;
+const { lang } = parseUrl(Astro.url);
+const tr = t(lang);
+const ui = villesUi[lang];
+const v = villes.find((x) => x.slug === slug)!;
+const vt = v.text[lang];
+const url = L(lang, `/chauffeur/${v.slug}/`);
+const photo = getPhoto(v.photo);
+const itins = getItineraires(lang).filter((it) => v.itineraires.includes(it.slug));
+const lieu = v.lieu ? getLieux(lang).find((l) => l.slug === v.lieu) : undefined;
+const autres = villes.filter((x) => x.slug !== v.slug);
+
+const ld = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: vt.h1,
+    description: vt.description,
+    url: new URL(url, site.url).href,
+    serviceType: 'Private driver',
+    provider: { '@id': `${site.url}/#threepac` },
+    areaServed: { '@type': 'Place', name: vt.name, geo: { '@type': 'GeoCoordinates', latitude: v.lat, longitude: v.lng } },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: vt.faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })),
+  },
+];
+---
+<Base
+  title={vt.title}
+  description={vt.description}
+  image={photo ? photoUrl(photo, 1200) : undefined}
+  breadcrumb={[{ name: tr.home_crumb, url: L(lang, '/') }, { name: ui.listH1, url: L(lang, '/chauffeur/') }, { name: vt.name, url }]}
+  jsonLd={ld}
+>
+  <section class="hero small" style={photo ? `--hero-img:url("${photoUrl(photo, 1920)}");padding:8rem 0 4rem` : undefined}>
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb"><ol><li><a href={L(lang, '/')}>{tr.home_crumb}</a></li><li><a href={L(lang, '/chauffeur/')}>{ui.listH1}</a></li><li>{vt.name}</li></ol></nav>
+      <p class="eyebrow">{site.driver} · {site.phoneDisplay}</p>
+      <h1>{vt.h1}</h1>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container narrow">
+      {vt.intro.map((p, i) => <p class={i === 0 ? 'lead' : undefined}>{p}</p>)}
+
+      <h2>{ui.servicesH2}</h2>
+      <ul>{vt.services.map((s) => <li>{s}</li>)}</ul>
+
+      <div class="actions">
+        <a class="btn btn-whatsapp" href={whatsappLink(fill(ui.msg, { x: vt.name }))} target="_blank" rel="noopener">{ui.cta}</a>
+      </div>
+
+      {itins.length > 0 && (
+        <>
+          <h2>{ui.tripsH2}</h2>
+          <ul>{itins.map((it) => <li><a href={L(lang, `/itineraires/${it.slug}/`)}>{it.title}</a></li>)}</ul>
+        </>
+      )}
+
+      {lieu && <p><a href={L(lang, `/guide/${lieu.slug}/`)}>{fill(ui.guideLink, { x: lieu.name })}</a></p>}
+
+      <Carte points={[{ slug: v.lieu ?? v.slug, name: vt.name, lat: v.lat, lng: v.lng } as any]} ligne={false} />
+
+      <h2>{ui.faqH2}</h2>
+      {vt.faq.map(([q, a]) => (<details><summary>{q}</summary><p>{a}</p></details>))}
+
+      <p style="margin-top:2.5rem">{autres.map((x, i) => <>{i > 0 && ' · '}<a href={L(lang, `/chauffeur/${x.slug}/`)}>{x.text[lang].h1}</a></>)}</p>
+    </div>
+  </section>
+</Base>

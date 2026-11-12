@@ -17,3 +17,14 @@ jobs:
         run: |
           grep -o '<link rel="alternate"[^>]*>' dist/it/index.html
           grep -c "<loc>" dist/sitemap-0.xml
+          ls dist/chauffeur dist/en/chauffeur dist/en/blog
+      - name: Chaque article du blog existe dans les 4 langues
+        run: |
+          ok=1
+          for f in src/pages/blog/*.md; do
+            n=$(basename "$f")
+            for l in en it es; do
+              [ -f "src/pages/$l/blog/$n" ] || { echo "MANQUE : src/pages/$l/blog/$n"; ok=0; }
+            done
+          done
+          [ $ok = 1 ]

@@ -1,0 +1,43 @@
+---
+import Base from '../layouts/Base.astro';
+import Photo from '../components/Photo.astro';
+import { L, parseUrl } from '../i18n';
+import { blogUi } from '../i18n/blog';
+
+type Post = { url: string; frontmatter: { title: string; description: string; date: string; photo?: string } };
+const { lang } = parseUrl(Astro.url);
+const b = blogUi[lang];
+const all = {
+  fr: import.meta.glob<Post>('../pages/blog/*.md', { eager: true }),
+  en: import.meta.glob<Post>('../pages/en/blog/*.md', { eager: true }),
+  it: import.meta.glob<Post>('../pages/it/blog/*.md', { eager: true }),
+  es: import.meta.glob<Post>('../pages/es/blog/*.md', { eager: true }),
+};
+const today = new Date().toISOString().slice(0, 10);
+const posts = Object.values(all[lang])
+  .filter((p) => p.frontmatter.date <= today)
+  .sort((a, c) => c.frontmatter.date.localeCompare(a.frontmatter.date));
+---
+<Base title={b.listTitle} description={b.listDesc} breadcrumb={[{ name: b.home, url: L(lang, '/') }, { name: 'Blog', url: L(lang, '/blog/') }]}>
+  <section class="hero small">
+    <div class="container">
+      <nav class="breadcrumb" aria-label={b.crumb}><ol><li><a href={L(lang, '/')}>{b.home}</a></li><li>Blog</li></ol></nav>
+      <h1>{b.listH1}</h1>
+      <p class="lead">{b.listLead}</p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container grid grid-2">
+      {posts.map((p) => (
+        <a class="card" href={p.url}>
+          <div class="card-media"><Photo photoKey={p.frontmatter.photo} width={900} label={p.frontmatter.title} /></div>
+          <div class="card-body">
+            <p class="eyebrow" style="margin:0">{new Date(p.frontmatter.date).toLocaleDateString(b.locale, { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+            <h2 style="font-size:1.35rem;margin:.3rem 0 .6rem">{p.frontmatter.title}</h2>
+            <p class="muted">{p.frontmatter.description}</p>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+</Base>

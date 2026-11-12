@@ -1,15 +1,21 @@
 ---
-// Mise en page des articles du blog (fichiers .md dans src/pages/blog/).
+// Mise en page des articles du blog : src/pages/blog/*.md (FR) et src/pages/{en,it,es}/blog/*.md.
+// Chaque article doit exister dans les 4 langues avec le même nom de fichier (hreflang).
 import Base from './Base.astro';
 import { getPhoto, photoUrl } from '../data/photos';
 import { site, whatsappLink } from '../data/site';
+import { L, t, parseUrl } from '../i18n';
+import { blogUi } from '../i18n/blog';
 
 const { frontmatter } = Astro.props;
 const { title, description, date, photo, keywords = [] } = frontmatter;
+const { lang } = parseUrl(Astro.url);
+const b = blogUi[lang];
 const p = getPhoto(photo);
 const img = p ? photoUrl(p, 1600) : undefined;
-const dateFr = new Date(date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+const dateTxt = new Date(date).toLocaleDateString(b.locale, { day: 'numeric', month: 'long', year: 'numeric' });
 const url = Astro.url.pathname;
+const blog = L(lang, '/blog/');
 
 const ld = {
   '@context': 'https://schema.org',
@@ -17,26 +23,25 @@ const ld = {
   headline: title,
   description,
   datePublished: date,
-  inLanguage: 'fr',
+  inLanguage: lang,
   image: img ? new URL(img, site.url).href : undefined,
   keywords: keywords.join(', '),
-  author: { '@type': 'Person', name: 'Patrick « Tripack »', url: new URL('/tripack/', site.url).href },
+  author: { '@type': 'Person', name: 'Patrick « Tripack »', url: new URL(L(lang, '/tripack/'), site.url).href },
   publisher: { '@id': `${site.url}/#threepac` },
   mainEntityOfPage: new URL(url, site.url).href,
 };
 ---
 <Base
-  translated={false}
   title={title}
   description={description}
   image={img}
   jsonLd={ld}
-  breadcrumb={[{ name: 'Accueil', url: '/' }, { name: 'Blog', url: '/blog/' }, { name: title, url }]}
+  breadcrumb={[{ name: b.home, url: L(lang, '/') }, { name: 'Blog', url: blog }, { name: title, url }]}
 >
   <section class="hero small" style={img ? `--hero-img:url("${img}");padding:8rem 0 4rem` : undefined}>
     <div class="container narrow">
-      <nav class="breadcrumb" aria-label="Fil d'Ariane"><ol><li><a href="/">Accueil</a></li><li><a href="/blog/">Blog</a></li><li>Article</li></ol></nav>
-      <p class="eyebrow">Carnet de route · {dateFr}</p>
+      <nav class="breadcrumb" aria-label={b.crumb}><ol><li><a href={L(lang, '/')}>{b.home}</a></li><li><a href={blog}>Blog</a></li><li>{b.eyebrow}</li></ol></nav>
+      <p class="eyebrow">{b.eyebrow} · {dateTxt}</p>
       <h1>{title}</h1>
     </div>
   </section>
@@ -45,13 +50,13 @@ const ld = {
       <p class="lead">{description}</p>
       <slot />
       <div class="conseil">
-        <strong>Envie de faire la route avec Tripack ?</strong> Patrick est chauffeur-guide à Madagascar depuis 20 ans.
+        <strong>{b.ctaTitle}</strong> {b.ctaText}
         <div class="actions" style="margin-top:.8rem">
-          <a class="btn btn-whatsapp" href={whatsappLink()} target="_blank" rel="noopener">Écrire sur WhatsApp</a>
-          <a class="btn btn-ghost" href="/itineraires/">Voir les itinéraires</a>
+          <a class="btn btn-whatsapp" href={whatsappLink(t(lang).wa_default)} target="_blank" rel="noopener">{b.ctaWa}</a>
+          <a class="btn btn-ghost" href={L(lang, '/itineraires/')}>{b.ctaItin}</a>
         </div>
       </div>
-      <p><a href="/blog/">← Tous les articles</a></p>
+      <p><a href={blog}>{b.all}</a></p>
     </article>
   </section>
 </Base>

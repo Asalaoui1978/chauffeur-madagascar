@@ -1,6 +1,6 @@
 # Plan éditorial du blog – 12 mois (nov. 2026 → oct. 2027)
 
-Objectif : un article utile par mois, en français, pour faire monter chauffeurmadagascar.com sur Google.
+Objectif : un article utile par mois, publié en 4 langues (français, anglais, italien, espagnol), pour faire monter chauffeurmadagascar.com sur Google.
 Chaque article cible une requête que tapent les voyageurs, renvoie vers les pages itinéraires et mini-guide, et se termine par un appel à contacter Tripack.
 
 Règles d'écriture (pour chaque article) :
@@ -10,6 +10,10 @@ Règles d'écriture (pour chaque article) :
 - Aucun chiffre inventé : prix, horaires, règles de visa, dates d'ouverture des parcs sont indiqués comme « à vérifier » ou appuyés sur une source récente.
 - Fichier : `src/pages/blog/<slug>.md` avec le frontmatter :
   `layout: ../../layouts/Article.astro`, `title`, `description` (≈ 155 caractères), `date: "AAAA-MM-JJ"` (entre guillemets), `photo` (clé de `src/data/photos.ts`), `keywords` (liste).
+- Traductions OBLIGATOIRES, même nom de fichier (slug français) dans `src/pages/en/blog/`, `src/pages/it/blog/`, `src/pages/es/blog/`, avec `layout: ../../../layouts/Article.astro`, même `date` et même `photo`. Titre, description et mots-clés traduits et adaptés aux recherches de chaque langue (ex. « private driver Madagascar », « autista Madagascar », « chófer Madagascar »).
+- Dans les traductions, les liens internes sont préfixés par la langue : `/en/itineraires/...`, `/it/guide/...`, `/es/contact/`. Les noms de chemin restent en français.
+- Les 4 versions doivent être publiées ensemble (les balises hreflang supposent que les 4 existent).
+- Pages ville à citer quand c'est pertinent : `/chauffeur/antananarivo/`, `/chauffeur/aeroport-ivato/`, `/chauffeur/nosy-be/`, `/chauffeur/morondava/`, `/chauffeur/tulear/` (préfixées par la langue dans les traductions).
 
 | # | Mois | Statut | Titre | Mot-clé principal | Photo | Liens internes clés |
 |---|------|--------|-------|-------------------|-------|---------------------|

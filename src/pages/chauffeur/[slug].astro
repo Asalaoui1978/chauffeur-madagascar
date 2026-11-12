@@ -1,0 +1,9 @@
+---
+import View from '../../views/Ville.astro';
+import { villes } from '../../data/villes';
+export function getStaticPaths() {
+  return villes.map((v) => ({ params: { slug: v.slug } }));
+}
+const { slug } = Astro.params;
+---
+<View slug={slug!} />

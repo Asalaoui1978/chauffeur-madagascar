@@ -1,0 +1,27 @@
+---
+import Base from '../layouts/Base.astro';
+import Photo from '../components/Photo.astro';
+import { villes, villesUi } from '../data/villes';
+import { L, t, parseUrl } from '../i18n';
+const { lang } = parseUrl(Astro.url);
+const tr = t(lang);
+const ui = villesUi[lang];
+---
+<Base title={ui.listTitle} description={ui.listDesc} breadcrumb={[{ name: tr.home_crumb, url: L(lang, '/') }, { name: ui.listH1, url: L(lang, '/chauffeur/') }]}>
+  <section class="hero small">
+    <div class="container">
+      <h1>{ui.listH1}</h1>
+      <p class="lead">{ui.listLead}</p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container grid grid-3">
+      {villes.map((v) => (
+        <a class="card" href={L(lang, `/chauffeur/${v.slug}/`)}>
+          <div class="card-media"><Photo photoKey={v.photo} width={700} /></div>
+          <div class="card-body"><h2 style="font-size:1.25rem">{v.text[lang].h1}</h2><p>{v.text[lang].description}</p></div>
+        </a>
+      ))}
+    </div>
+  </section>
+</Base>

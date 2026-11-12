@@ -3,6 +3,7 @@ import '../styles/global.css';
 import { site, whatsappLink } from '../data/site';
 import { langs, langNames, ogLocale, L, t, parseUrl } from '../i18n';
 import { getItineraires } from '../data/localized';
+import { villes, villesUi } from '../data/villes';
 
 interface Props {
   title: string;
@@ -52,7 +53,7 @@ const nav = [
   { href: L(lang, '/itineraires/'), label: tr.nav_itin },
   { href: L(lang, '/guide/'), label: tr.nav_guide },
   { href: L(lang, '/galerie/'), label: tr.nav_galerie },
-  { href: '/blog/', label: tr.nav_blog },
+  { href: L(lang, '/blog/'), label: tr.nav_blog },
   { href: L(lang, '/infos-pratiques/'), label: tr.nav_infos },
   { href: L(lang, '/contact/'), label: tr.nav_contact },
 ];
@@ -108,13 +109,15 @@ const flags: Record<string, string> = { fr: 'FR', en: 'EN', it: 'IT', es: 'ES' }
         <div>
           <h3>{tr.footer_about_title}</h3>
           <p>{tr.footer_about}</p>
+          <h3>{villesUi[lang].nav}</h3>
+          <ul>{villes.map((v) => <li><a href={L(lang, `/chauffeur/${v.slug}/`)}>{v.text[lang].h1}</a></li>)}</ul>
         </div>
         <div>
           <h3>{tr.footer_itin}</h3>
           <ul>
             {itins.map((it) => <li><a href={L(lang, `/itineraires/${it.slug}/`)}>{it.short}</a></li>)}
             <li><a href={L(lang, '/guide/')}>{tr.guide_all}</a></li>
-            <li><a href="/blog/">{tr.nav_blog}</a></li>
+            <li><a href={L(lang, '/blog/')}>{tr.nav_blog}</a></li>
             <li><a href={site.beloSurMerSite}>{tr.footer_belo}</a></li>
           </ul>
         </div>
