@@ -51,7 +51,7 @@ const routeDe = (slug: string) => itineraires.filter((it) => it.route.includes(s
   </section>
   <script>
     const state: Record<string, string> = { theme: 'tous', route: 'tous' };
-    const cards = document.querySelectorAll<HTMLElement>('#lieux .card');
+    const cards = document.querySelectorAll<HTMLElement>('#lieux > .card');
     const vide = document.getElementById('aucun');
     const apply = () => {
       let n = 0;

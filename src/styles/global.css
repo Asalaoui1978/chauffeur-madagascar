@@ -38,7 +38,7 @@ h3 { font-size: 1.3rem; margin: 1.5rem 0 .5rem; }
 .site-header { position: sticky; top: 0; z-index: 50; background: rgb(255 250 243 / .92); backdrop-filter: blur(10px); border-bottom: 1px solid rgb(31 26 23 / .07); }
 .site-header .container { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 68px; }
 .logo { font-family: var(--font-title); font-weight: 700; font-size: 1.3rem; color: var(--encre); text-decoration: none; display: flex; gap: .5rem; align-items: center; }
-.logo span { color: var(--laterite); }
+
 .nav { display: flex; gap: 1.2rem; flex-wrap: wrap; }
 .nav a { color: var(--encre); text-decoration: none; font-weight: 500; font-size: .98rem; }
 .nav a:hover, .nav a[aria-current='page'] { color: var(--laterite); }

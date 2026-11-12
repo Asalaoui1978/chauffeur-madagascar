@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://chauffeur-madagascar.pages.dev/sitemap-index.xml
+Sitemap: https://chauffeur-madagascar.alexandre-salaoui.workers.dev/sitemap-index.xml
