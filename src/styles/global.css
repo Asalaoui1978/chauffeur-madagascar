@@ -194,3 +194,9 @@ a.card:hover .photo img { transform: scale(1.06); }
 .langs a { font-size: .78rem; font-weight: 700; padding: .2rem .45rem; border-radius: 6px; border: 1px solid #e3d8cc; color: var(--gris); }
 .langs a[aria-current='true'] { background: var(--laterite); border-color: var(--laterite); color: #fff; }
 @media (max-width: 860px) { .langs { margin: .5rem 0 0; } }
+
+/* Articles */
+.prose h2 { margin-top: 2.2rem; }
+.prose ul, .prose ol { padding-left: 1.3rem; }
+.prose li { margin: .35rem 0; }
+.prose a { text-decoration-thickness: 1px; text-underline-offset: 2px; }

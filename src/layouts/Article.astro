@@ -1,0 +1,57 @@
+---
+// Mise en page des articles du blog (fichiers .md dans src/pages/blog/).
+import Base from './Base.astro';
+import { getPhoto, photoUrl } from '../data/photos';
+import { site, whatsappLink } from '../data/site';
+
+const { frontmatter } = Astro.props;
+const { title, description, date, photo, keywords = [] } = frontmatter;
+const p = getPhoto(photo);
+const img = p ? photoUrl(p, 1600) : undefined;
+const dateFr = new Date(date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+const url = Astro.url.pathname;
+
+const ld = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: title,
+  description,
+  datePublished: date,
+  inLanguage: 'fr',
+  image: img ? new URL(img, site.url).href : undefined,
+  keywords: keywords.join(', '),
+  author: { '@type': 'Person', name: 'Patrick « Tripack »', url: new URL('/tripack/', site.url).href },
+  publisher: { '@id': `${site.url}/#threepac` },
+  mainEntityOfPage: new URL(url, site.url).href,
+};
+---
+<Base
+  translated={false}
+  title={title}
+  description={description}
+  image={img}
+  jsonLd={ld}
+  breadcrumb={[{ name: 'Accueil', url: '/' }, { name: 'Blog', url: '/blog/' }, { name: title, url }]}
+>
+  <section class="hero small" style={img ? `--hero-img:url("${img}");padding:8rem 0 4rem` : undefined}>
+    <div class="container narrow">
+      <nav class="breadcrumb" aria-label="Fil d'Ariane"><ol><li><a href="/">Accueil</a></li><li><a href="/blog/">Blog</a></li><li>Article</li></ol></nav>
+      <p class="eyebrow">Carnet de route · {dateFr}</p>
+      <h1>{title}</h1>
+    </div>
+  </section>
+  <section class="section">
+    <article class="container narrow prose">
+      <p class="lead">{description}</p>
+      <slot />
+      <div class="conseil">
+        <strong>Envie de faire la route avec Tripack ?</strong> Patrick est chauffeur-guide à Madagascar depuis 20 ans.
+        <div class="actions" style="margin-top:.8rem">
+          <a class="btn btn-whatsapp" href={whatsappLink()} target="_blank" rel="noopener">Écrire sur WhatsApp</a>
+          <a class="btn btn-ghost" href="/itineraires/">Voir les itinéraires</a>
+        </div>
+      </div>
+      <p><a href="/blog/">← Tous les articles</a></p>
+    </article>
+  </section>
+</Base>
