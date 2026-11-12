@@ -1,41 +1,62 @@
 ---
 import Base from '../layouts/Base.astro';
+import Photo from '../components/Photo.astro';
 import { itineraires } from '../data/itineraires';
 import { lieux } from '../data/lieux';
-import { site, whatsappLink } from '../data/site';
+import { getPhoto, photoUrl } from '../data/photos';
+import { whatsappLink } from '../data/site';
 
-const incontournables = ['isalo', 'allee-des-baobabs', 'tsingy-de-bemaraha', 'belo-sur-mer', 'ranomafana', 'antsirabe']
-  .map((s) => lieux.find((l) => l.slug === s)!)
-  .filter(Boolean);
+const slides = ['allee-des-baobabs', 'isalo', 'tsingy-de-bemaraha', 'nosy-be', 'fianarantsoa']
+  .map((k) => getPhoto(k))
+  .filter((p): p is NonNullable<typeof p> => Boolean(p));
+
+const incontournables = ['allee-des-baobabs', 'tsingy-de-bemaraha', 'isalo', 'nosy-be', 'ranomafana', 'canal-des-pangalanes']
+  .map((s) => lieux.find((l) => l.slug === s))
+  .filter((l): l is NonNullable<typeof l> => Boolean(l));
 ---
 <Base
   title="Chauffeur à Madagascar – ThreePac, chauffeur-guide privé depuis 20 ans"
-  description="Location de voiture avec chauffeur à Madagascar : ThreePac vous emmène sur la RN7, de Tana à Tuléar, et sur la côte Ouest jusqu'à Morondava et aux Tsingy. Mini-guide et itinéraires."
+  description="Location de voiture avec chauffeur à Madagascar : ThreePac vous emmène sur la RN7, la côte Ouest et les Tsingy, le Sud-Est et les Pangalanes, et jusqu'à Nosy Be. Itinéraires et mini-guide."
 >
-  <section class="hero">
+  <section class="hero" style="padding:9rem 0 7rem">
+    <div class="slideshow" aria-hidden="true">
+      {slides.map((p, i) => <div class={`slide ${i === 0 ? 'active' : ''}`} style={`background-image:url("${photoUrl(p, 1920)}")`}></div>)}
+    </div>
     <div class="container">
       <p class="eyebrow">Chauffeur-guide privé · Madagascar</p>
       <h1>Vous connaissez Tupac ?<br />Moi, c'est ThreePac.</h1>
-      <p class="lead">Patrick de mon vrai nom. 47 ans, dont 20 passés sur les routes de Madagascar. De la RN7 aux pistes de sable de la côte Ouest, je vous emmène là où la route devient le voyage.</p>
+      <p class="lead">Patrick de mon vrai nom. 47 ans, dont 20 passés sur les routes de Madagascar. De la RN7 à Nosy Be, des pistes de l'Ouest aux Pangalanes, je vous emmène là où la route devient le voyage.</p>
       <div class="actions">
         <a class="btn btn-whatsapp" href={whatsappLink()} target="_blank" rel="noopener">Écrire sur WhatsApp</a>
         <a class="btn btn-ghost" href="/itineraires/">Voir les itinéraires</a>
       </div>
     </div>
+    <p class="hero-credit"><a href="/credits-photos/">Crédits photos</a></p>
   </section>
 
-  <section class="section">
+  <section class="section" style="padding:2.5rem 0">
+    <div class="container stats">
+      <div class="stat reveal"><strong data-count="20">20</strong><span>ans de métier</span></div>
+      <div class="stat reveal"><strong data-count={itineraires.length}>{itineraires.length}</strong><span>grandes routes</span></div>
+      <div class="stat reveal"><strong data-count={lieux.length}>{lieux.length}</strong><span>étapes dans le mini-guide</span></div>
+      <div class="stat reveal"><strong>100 %</strong><span>sur mesure</span></div>
+    </div>
+  </section>
+
+  <section class="section alt">
     <div class="container">
       <p class="eyebrow">Les itinéraires</p>
-      <h2>Deux routes, deux Madagascar</h2>
+      <h2>Quatre routes, quatre Madagascar</h2>
       <div class="grid grid-2">
-        {itineraires.map((it, i) => (
+        {itineraires.map((it) => (
           <a class="card reveal" href={`/itineraires/${it.slug}/`}>
-            <div class={`card-media ${i === 1 ? 'foret' : ''}`}>{it.image ? <img src={it.image} alt={it.title} loading="lazy" /> : it.short}</div>
+            <div class="card-media"><Photo photoKey={it.photo} width={900} label={it.short} /></div>
             <div class="card-body">
+              <p class="eyebrow" style="margin:0">{it.short} · <span class="niveau">{it.niveau}</span></p>
               <h3>{it.title}</h3>
               <p class="muted">{it.description}</p>
-              <span class="tag">{it.distance}</span><span class="tag">{it.duree}</span><span class="tag">{it.vehicule}</span>
+              {it.themes.map((t) => <span class="tag">{t}</span>)}
+              <p style="font-size:.9rem;margin:.6rem 0 0">🗓 {it.duree} · 🚙 {it.vehicule}</p>
             </div>
           </a>
         ))}
@@ -43,30 +64,30 @@ const incontournables = ['isalo', 'allee-des-baobabs', 'tsingy-de-bemaraha', 'be
     </div>
   </section>
 
-  <section class="section alt">
+  <section class="section">
     <div class="container grid grid-2" style="align-items:center">
       <div class="card-media" style="border-radius:var(--radius);aspect-ratio:4/5">
         {/* [À COMPLÉTER] remplacer par la photo de ThreePac : <img src="/images/threepac-portrait.jpg" alt="ThreePac, chauffeur-guide à Madagascar" /> */}
-        Photo de ThreePac à venir
+        <span>Photo de ThreePac à venir</span>
       </div>
       <div>
         <p class="eyebrow">Votre chauffeur</p>
         <h2>20 ans de route, zéro passager oublié</h2>
-        <p>Des nids-de-poule de la RN7 aux bacs de la Tsiribihina, j'ai tout vu, tout réparé, et je suis toujours arrivé à bon port. Je connais les bonnes gargotes, les points de vue cachés, les guides de parc de confiance, et je traduis le malgache pour vous.</p>
+        <p>Des nids-de-poule de la RN7 aux bacs de la Tsiribihina, de la descente vers Mananjary aux pistes de la RN6, j'ai tout vu, tout réparé, et je suis toujours arrivé à bon port. Je connais les bonnes gargotes, les points de vue cachés, les guides de parc de confiance, et je traduis le malgache pour vous.</p>
         <p>Mon travail, c'est que vous n'ayez à vous occuper de rien, sauf de regarder par la fenêtre.</p>
         <div class="actions"><a class="btn btn-primary" href="/threepac/">Faire connaissance</a></div>
       </div>
     </div>
   </section>
 
-  <section class="section">
+  <section class="section alt">
     <div class="container">
       <p class="eyebrow">Mini-guide</p>
       <h2>Les incontournables sur nos routes</h2>
       <div class="grid grid-3">
         {incontournables.map((l) => (
           <a class="card reveal" href={`/guide/${l.slug}/`}>
-            <div class="card-media">{l.image ? <img src={l.image} alt={l.name} loading="lazy" /> : l.name}</div>
+            <div class="card-media"><Photo photoKey={l.slug} width={700} label={l.name} /></div>
             <div class="card-body"><h3>{l.name}</h3><p class="muted">{l.description}</p></div>
           </a>
         ))}
@@ -75,16 +96,16 @@ const incontournables = ['isalo', 'allee-des-baobabs', 'tsingy-de-bemaraha', 'be
     </div>
   </section>
 
-  <section class="section alt">
+  <section class="section">
     <div class="container narrow">
       <h2>Pourquoi voyager avec un chauffeur à Madagascar ?</h2>
-      <p>À Madagascar, louer une voiture sans chauffeur est rarement une bonne idée. Les routes sont longues, parfois très abîmées, la signalisation est rare et les pistes de la côte Ouest demandent une vraie expérience du 4x4 et des traversées de fleuves.</p>
+      <p>À Madagascar, louer une voiture sans chauffeur est rarement une bonne idée. Les routes sont longues, parfois très abîmées, la signalisation est rare et les pistes demandent une vraie expérience du 4x4 et des traversées de fleuves.</p>
       <p>Un chauffeur-guide local, c'est la sécurité, mais aussi un vrai plus pour le voyage : il connaît les arrêts qui valent le coup, parle avec les villageois, négocie les bacs, trouve un mécanicien au milieu de nulle part et vous raconte le pays pendant les heures de route.</p>
       <div class="actions"><a class="btn btn-primary" href="/contact/">Demander un devis gratuit</a></div>
     </div>
   </section>
 
-  <section class="section">
+  <section class="section alt">
     <div class="container narrow">
       <p class="eyebrow">Ils ont voyagé avec ThreePac</p>
       <h2>Avis de voyageurs</h2>
@@ -92,4 +113,31 @@ const incontournables = ['isalo', 'allee-des-baobabs', 'tsingy-de-bemaraha', 'be
       <p class="muted">Les avis de nos voyageurs arrivent bientôt. Vous avez voyagé avec Patrick ? <a href={whatsappLink('Bonjour ThreePac, je voudrais laisser un avis sur mon voyage.')}>Laissez-lui un mot</a>.</p>
     </div>
   </section>
+
+  <script>
+    // Diaporama
+    const slides = document.querySelectorAll('.slideshow .slide');
+    let i = 0;
+    if (slides.length > 1 && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setInterval(() => {
+        slides[i].classList.remove('active');
+        i = (i + 1) % slides.length;
+        slides[i].classList.add('active');
+      }, 6000);
+    }
+    // Compteurs animés
+    const counters = document.querySelectorAll<HTMLElement>('[data-count]');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        const el = e.target as HTMLElement;
+        const end = Number(el.dataset.count);
+        let n = 0;
+        const step = Math.max(1, Math.round(end / 30));
+        const t = setInterval(() => { n = Math.min(end, n + step); el.textContent = String(n); if (n >= end) clearInterval(t); }, 40);
+        io.unobserve(el);
+      });
+    }, { threshold: 0.5 });
+    counters.forEach((c) => io.observe(c));
+  </script>
 </Base>

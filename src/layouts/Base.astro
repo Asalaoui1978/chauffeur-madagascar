@@ -21,7 +21,7 @@ const business = {
   '@type': 'TravelAgency',
   '@id': `${site.url}/#threepac`,
   name: `${site.driver} – ${site.name}`,
-  description: 'Chauffeur-guide privé à Madagascar depuis 20 ans : RN7, côte Ouest, Morondava, Tsingy de Bemaraha.',
+  description: 'Chauffeur-guide privé à Madagascar depuis 20 ans : RN7, côte Ouest et Tsingy de Bemaraha, Sud-Est et canal des Pangalanes, route du Nord jusqu\'à Nosy Be.',
   url: site.url,
   telephone: site.phoneDisplay,
   email: site.email,
@@ -72,6 +72,7 @@ const nav = [
     <slot name="head" />
   </head>
   <body>
+    <div class="progress" id="progress" aria-hidden="true"></div>
     <a class="sr-only" href="#contenu" style="position:absolute;left:-9999px">Aller au contenu</a>
     <header class="site-header">
       <div class="container">
@@ -91,13 +92,15 @@ const nav = [
       <div class="container grid grid-3">
         <div>
           <h3>ThreePac – Chauffeur Madagascar</h3>
-          <p>Chauffeur-guide privé depuis 20 ans. RN7, côte Ouest, Morondava, Tsingy… On fait la route ensemble.</p>
+          <p>Chauffeur-guide privé depuis 20 ans. RN7, côte Ouest, Tsingy, Sud-Est, Nosy Be… On fait la route ensemble.</p>
         </div>
         <div>
           <h3>Itinéraires</h3>
           <ul>
             <li><a href="/itineraires/rn7-tana-tulear/">RN7 : Tana → Tuléar</a></li>
             <li><a href="/itineraires/cote-ouest-tsingy/">Côte Ouest et Tsingy</a></li>
+            <li><a href="/itineraires/sud-est-manakara-pangalanes/">Sud-Est et Pangalanes</a></li>
+            <li><a href="/itineraires/tana-nosy-be/">Route du Nord : Nosy Be</a></li>
             <li><a href="/guide/">Mini-guide de Madagascar</a></li>
             <li><a href={site.beloSurMerSite}>Découvrir Belo-sur-Mer</a></li>
           </ul>
@@ -111,7 +114,7 @@ const nav = [
           </ul>
         </div>
       </div>
-      <div class="container"><p class="muted" style="color:#9c928a;margin-top:2rem;font-size:.9rem">© {new Date().getFullYear()} {site.name}. Distances et durées indicatives.</p></div>
+      <div class="container"><p class="muted" style="color:#9c928a;margin-top:2rem;font-size:.9rem">© {new Date().getFullYear()} {site.name}. Distances et durées indicatives. <a href="/credits-photos/">Crédits photos</a></p></div>
     </footer>
 
     <a class="wa-float" href={whatsappLink()} aria-label="Écrire à ThreePac sur WhatsApp" target="_blank" rel="noopener">
@@ -129,6 +132,12 @@ const nav = [
         entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
       }, { threshold: 0.12 });
       document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+      const bar = document.getElementById('progress');
+      const onScroll = () => {
+        const h = document.documentElement.scrollHeight - innerHeight;
+        if (bar) bar.style.width = h > 0 ? `${(scrollY / h) * 100}%` : '0';
+      };
+      addEventListener('scroll', onScroll, { passive: true });
     </script>
   </body>
 </html>

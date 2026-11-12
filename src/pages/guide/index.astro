@@ -1,31 +1,75 @@
 ---
 import Base from '../../layouts/Base.astro';
 import Carte from '../../components/Carte.astro';
-import { lieux } from '../../data/lieux';
+import Photo from '../../components/Photo.astro';
+import { lieux, themes, themesParLieu } from '../../data/lieux';
+import { itineraires } from '../../data/itineraires';
+
+const routeDe = (slug: string) => itineraires.filter((it) => it.route.includes(slug)).map((it) => it.slug);
 ---
 <Base
-  title="Mini-guide de Madagascar : les étapes de la RN7 et de la côte Ouest"
-  description="Mini-guide touristique de Madagascar : Antsirabe, Isalo, Tuléar, Belo-sur-Mer, Morondava, Allée des Baobabs, Tsingy de Bemaraha… Ce qu'il faut voir et les conseils d'un chauffeur local."
+  title="Mini-guide de Madagascar : RN7, côte Ouest, Sud-Est et Nosy Be"
+  description="Mini-guide touristique de Madagascar : Antsirabe, Isalo, Ranomafana, Manakara, Morondava, Tsingy de Bemaraha, Mahajanga, Nosy Be… Ce qu'il faut voir et les conseils d'un chauffeur local."
   breadcrumb={[{ name: 'Accueil', url: '/' }, { name: 'Mini-guide', url: '/guide/' }]}
 >
   <section class="hero small">
     <div class="container">
       <nav class="breadcrumb" aria-label="Fil d'Ariane"><ol><li><a href="/">Accueil</a></li><li>Mini-guide</li></ol></nav>
       <h1>Mini-guide de Madagascar</h1>
-      <p class="lead">Tous les lieux traversés par nos itinéraires, avec ce qu'il faut voir et les conseils de ThreePac.</p>
+      <p class="lead">{lieux.length} étapes sur nos routes, avec ce qu'il faut voir et les conseils de ThreePac.</p>
     </div>
   </section>
   <section class="section">
     <div class="container">
       <Carte points={lieux} ligne={false} />
-      <div class="grid grid-3">
+
+      <p style="margin:1.5rem 0 0;font-weight:600">Par envie :</p>
+      <div class="filters" data-group="theme" role="group" aria-label="Filtrer par envie">
+        <button class="on" data-f="tous">Tout</button>
+        {themes.map((t) => <button data-f={t}>{t}</button>)}
+      </div>
+      <p style="margin:0;font-weight:600">Par route :</p>
+      <div class="filters" data-group="route" role="group" aria-label="Filtrer par itinéraire">
+        <button class="on" data-f="tous">Toutes</button>
+        {itineraires.map((it) => <button data-f={it.slug}>{it.short}</button>)}
+      </div>
+
+      <div class="grid grid-3" id="lieux">
         {lieux.map((l) => (
-          <a class="card" href={`/guide/${l.slug}/`}>
-            <div class="card-media">{l.image ? <img src={l.image} alt={l.name} loading="lazy" /> : l.name}</div>
-            <div class="card-body"><span class="tag">{l.region}</span><h2 style="font-size:1.25rem;margin:.4rem 0">{l.name}</h2><p class="muted">{l.description}</p></div>
+          <a class="card" href={`/guide/${l.slug}/`} data-theme={(themesParLieu[l.slug] ?? []).join('|')} data-route={routeDe(l.slug).join('|')}>
+            <div class="card-media"><Photo photoKey={l.slug} width={700} label={l.name} /></div>
+            <div class="card-body">
+              <span class="tag">{l.region}</span>{(themesParLieu[l.slug] ?? []).map((t) => <span class="tag" style="background:#e6f0ec;color:#24513f">{t}</span>)}
+              <h2 style="font-size:1.25rem;margin:.4rem 0">{l.name}</h2>
+              <p class="muted">{l.description}</p>
+            </div>
           </a>
         ))}
       </div>
+      <p id="aucun" class="muted" hidden>Aucun lieu ne correspond à ces filtres.</p>
     </div>
   </section>
+  <script>
+    const state: Record<string, string> = { theme: 'tous', route: 'tous' };
+    const cards = document.querySelectorAll<HTMLElement>('#lieux .card');
+    const vide = document.getElementById('aucun');
+    const apply = () => {
+      let n = 0;
+      cards.forEach((c) => {
+        const okT = state.theme === 'tous' || (c.dataset.theme || '').split('|').includes(state.theme);
+        const okR = state.route === 'tous' || (c.dataset.route || '').split('|').includes(state.route);
+        c.classList.toggle('hidden', !(okT && okR));
+        if (okT && okR) n++;
+      });
+      if (vide) vide.hidden = n > 0;
+    };
+    document.querySelectorAll<HTMLElement>('.filters[data-group]').forEach((g) => {
+      const btns = g.querySelectorAll<HTMLButtonElement>('button');
+      btns.forEach((b) => b.addEventListener('click', () => {
+        btns.forEach((x) => x.classList.toggle('on', x === b));
+        state[g.dataset.group || ''] = b.dataset.f || 'tous';
+        apply();
+      }));
+    });
+  </script>
 </Base>

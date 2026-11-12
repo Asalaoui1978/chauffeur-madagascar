@@ -19,7 +19,8 @@ Chaque modification envoyée sur GitHub remet automatiquement le site à jour.
 |---|---|
 | Nom du site, WhatsApp, e-mail, langues, véhicule | `src/data/site.ts` |
 | Les itinéraires (jour par jour, conseils) | `src/data/itineraires.ts` |
-| Les lieux du mini-guide | `src/data/lieux.ts` |
+| Les lieux du mini-guide (et leurs thèmes) | `src/data/lieux.ts` |
+| Les photos d'illustration et leurs crédits | `src/data/photos.ts` |
 | La présentation de ThreePac | `src/pages/threepac.astro` |
 | Les tarifs | `src/pages/contact.astro` |
 | La FAQ | `src/pages/infos-pratiques.astro` |

@@ -129,6 +129,46 @@ summary { cursor: pointer; font-weight: 600; }
 .wa-float { position: fixed; right: 1.1rem; bottom: 1.1rem; z-index: 60; width: 60px; height: 60px; border-radius: 50%; background: #1fa855; display: grid; place-items: center; box-shadow: 0 8px 24px rgb(0 0 0 / .25); }
 .wa-float svg { width: 32px; height: 32px; fill: #fff; }
 
+/* Photos */
+.photo { position: relative; margin: 0; width: 100%; height: 100%; }
+.photo img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s ease; }
+a.card:hover .photo img { transform: scale(1.06); }
+.photo figcaption { position: absolute; right: .5rem; bottom: .4rem; font-size: .68rem; color: rgb(255 255 255 / .85); background: rgb(0 0 0 / .35); padding: .1rem .45rem; border-radius: 6px; font-family: var(--font-text); }
+.photo figcaption a { color: inherit; }
+.card-media { position: relative; overflow: hidden; padding: 0; }
+.card-media > span { padding: 1rem; }
+.hero-credit { position: absolute; right: .8rem; bottom: .6rem; font-size: .72rem; color: rgb(255 255 255 / .8); }
+.hero-credit a { color: inherit; }
+
+/* Diaporama d'accueil */
+.slideshow { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+.slideshow .slide { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0; transition: opacity 1.6s ease; animation: kenburns 14s ease-in-out infinite alternate; }
+.slideshow .slide.active { opacity: 1; }
+.slideshow::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgb(20 14 10 / .30), rgb(20 14 10 / .70)); }
+@keyframes kenburns { from { transform: scale(1); } to { transform: scale(1.08); } }
+.hero > .container { position: relative; z-index: 1; }
+.hero { overflow: hidden; }
+
+/* Compteurs */
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; text-align: center; }
+.stat strong { display: block; font-family: var(--font-title); font-size: 2.6rem; color: var(--laterite); line-height: 1; }
+.stat span { color: var(--gris); font-size: .95rem; }
+
+/* Filtres */
+.filters { display: flex; gap: .5rem; flex-wrap: wrap; margin: 1rem 0 1.5rem; }
+.filters button { font: inherit; font-size: .92rem; padding: .45rem 1rem; border-radius: 999px; border: 1px solid #d9cfc4; background: #fff; cursor: pointer; transition: all .2s ease; }
+.filters button.on, .filters button:hover { background: var(--laterite); border-color: var(--laterite); color: #fff; }
+.card.hidden { display: none; }
+
+/* Points forts */
+.highlights { list-style: none; padding: 0; display: grid; gap: .6rem; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.highlights li { background: #fff; border-radius: 12px; padding: .8rem 1rem; box-shadow: var(--shadow); }
+.highlights li::before { content: '★ '; color: var(--ocre); }
+.niveau { font-weight: 700; }
+
+/* Barre de progression de lecture */
+.progress { position: fixed; top: 0; left: 0; height: 3px; background: var(--ocre); width: 0; z-index: 100; }
+
 /* Apparition au défilement */
 .reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
 .reveal.visible { opacity: 1; transform: none; }

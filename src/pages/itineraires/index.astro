@@ -1,36 +1,64 @@
 ---
 import Base from '../../layouts/Base.astro';
+import Photo from '../../components/Photo.astro';
+import Carte from '../../components/Carte.astro';
 import { itineraires } from '../../data/itineraires';
+import { lieux, themes } from '../../data/lieux';
+
+const tous = [...new Set(itineraires.flatMap((it) => it.route))].map((s) => lieux.find((l) => l.slug === s)!).filter(Boolean);
 ---
 <Base
-  title="Itinéraires à Madagascar avec chauffeur : RN7, côte Ouest et Tsingy"
-  description="Les circuits de ThreePac, chauffeur à Madagascar : la RN7 de Tana à Tuléar et la côte Ouest de Tuléar aux Tsingy de Bemaraha, jour par jour."
+  title="Itinéraires à Madagascar avec chauffeur : RN7, côte Ouest, Sud-Est et Nosy Be"
+  description="Les circuits de ThreePac, chauffeur à Madagascar : la RN7 de Tana à Tuléar, la côte Ouest jusqu'aux Tsingy, le Sud-Est et les Pangalanes, et la route du Nord jusqu'à Nosy Be."
   breadcrumb={[{ name: 'Accueil', url: '/' }, { name: 'Itinéraires', url: '/itineraires/' }]}
 >
   <section class="hero small">
     <div class="container">
       <nav class="breadcrumb" aria-label="Fil d'Ariane"><ol><li><a href="/">Accueil</a></li><li>Itinéraires</li></ol></nav>
       <h1>Les itinéraires</h1>
-      <p class="lead">Deux grandes routes, que l'on peut faire séparément ou combiner en une boucle de trois semaines. Tout est adaptable à votre rythme.</p>
+      <p class="lead">Quatre grandes routes au départ de Tana, à faire séparément ou à combiner. Tout est adaptable à votre rythme.</p>
     </div>
   </section>
   <section class="section">
-    <div class="container grid grid-2">
-      {itineraires.map((it, i) => (
-        <a class="card" href={`/itineraires/${it.slug}/`}>
-          <div class={`card-media ${i === 1 ? 'foret' : ''}`}>{it.image ? <img src={it.image} alt={it.title} loading="lazy" /> : it.short}</div>
-          <div class="card-body">
-            <h2 style="font-size:1.5rem;margin-top:0">{it.title}</h2>
-            <p class="muted">{it.description}</p>
-            <span class="tag">{it.distance}</span><span class="tag">{it.duree}</span><span class="tag">{it.saison}</span>
-          </div>
-        </a>
-      ))}
+    <div class="container">
+      <h2 style="margin-top:0">Toutes les routes de ThreePac</h2>
+      <Carte points={tous} ligne={false} />
+
+      <div class="filters" id="filtres" role="group" aria-label="Filtrer par envie">
+        <button class="on" data-f="tous">Tout voir</button>
+        {themes.map((t) => <button data-f={t}>{t}</button>)}
+      </div>
+      <div class="grid grid-2">
+        {itineraires.map((it) => (
+          <a class="card" href={`/itineraires/${it.slug}/`} data-themes={it.themes.join('|')}>
+            <div class="card-media"><Photo photoKey={it.photo} width={900} label={it.short} /></div>
+            <div class="card-body">
+              <p class="eyebrow" style="margin:0">{it.short} · <span class="niveau">{it.niveau}</span></p>
+              <h2 style="font-size:1.45rem;margin:.3rem 0 .6rem">{it.title}</h2>
+              <p class="muted">{it.description}</p>
+              {it.themes.map((t) => <span class="tag">{t}</span>)}
+              <p style="font-size:.9rem;margin:.6rem 0 0">🗓 {it.duree} · 📏 {it.distance} · 🚙 {it.vehicule}</p>
+              <p style="font-size:.9rem;margin:.3rem 0 0">👥 Idéal pour : {it.idealPour}</p>
+            </div>
+          </a>
+        ))}
+      </div>
     </div>
     <div class="container narrow">
-      <h2>La grande boucle : RN7 + côte Ouest</h2>
-      <p>Pour les voyageurs qui ont trois semaines : descente de la RN7 jusqu'à Tuléar, quelques jours de plage, puis remontée par la piste côtière jusqu'à Belo-sur-Mer, Morondava et les Tsingy de Bemaraha. Retour à Tana par la route de Miandrivazo ou en avion. C'est le tour le plus complet de l'Ouest et du Sud de Madagascar.</p>
+      <h2>Combiner les routes</h2>
+      <p><strong>La grande boucle du Sud (3 semaines)</strong> : descente de la RN7 jusqu'à Tuléar, quelques jours de plage, puis remontée par la piste côtière jusqu'à Belo-sur-Mer, Morondava et les Tsingy de Bemaraha.</p>
+      <p><strong>Hautes Terres et Sud-Est (2 semaines)</strong> : Sud-Est et Pangalanes d'abord, puis retour sur la RN7 vers l'Isalo et Tuléar.</p>
+      <p><strong>Du Sud au Nord (4 semaines)</strong> : RN7 et côte Ouest, retour à Tana, puis la route du Nord jusqu'à Nosy Be pour finir à la plage.</p>
       <div class="actions"><a class="btn btn-primary" href="/contact/">Construire mon circuit</a></div>
     </div>
   </section>
+  <script>
+    const buttons = document.querySelectorAll<HTMLButtonElement>('#filtres button');
+    const cards = document.querySelectorAll<HTMLElement>('[data-themes]');
+    buttons.forEach((b) => b.addEventListener('click', () => {
+      buttons.forEach((x) => x.classList.toggle('on', x === b));
+      const f = b.dataset.f;
+      cards.forEach((c) => c.classList.toggle('hidden', f !== 'tous' && !(c.dataset.themes || '').split('|').includes(f || '')));
+    }));
+  </script>
 </Base>

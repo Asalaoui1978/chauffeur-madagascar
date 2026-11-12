@@ -1,0 +1,23 @@
+---
+import Base from '../layouts/Base.astro';
+import { photos, photoPage } from '../data/photos';
+---
+<Base title="Crédits photos" description="Crédits des photographies d'illustration utilisées sur le site, issues de Wikimedia Commons.">
+  <section class="hero small">
+    <div class="container">
+      <h1>Crédits photos</h1>
+      <p class="lead">Merci aux photographes qui partagent leurs images sous licence libre.</p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container narrow">
+      <p>Les photos d'illustration de ce site proviennent de <a href="https://commons.wikimedia.org">Wikimedia Commons</a> et sont publiées sous licences Creative Commons (CC BY, CC BY-SA) ou dans le domaine public. La licence exacte de chaque photo est indiquée sur sa page Wikimedia, accessible en cliquant sur son nom.</p>
+      <ul>
+        {Object.values(photos).map((p) => (
+          <li>{p.alt} : {photoPage(p) ? <a href={photoPage(p)} target="_blank" rel="noopener">{p.author}</a> : p.author}</li>
+        ))}
+      </ul>
+      <p class="muted">Les photos de ThreePac et de ses voyages seront ajoutées prochainement.</p>
+    </div>
+  </section>
+</Base>

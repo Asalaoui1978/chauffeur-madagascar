@@ -1,0 +1,17 @@
+---
+// Affiche une photo d'illustration avec le crédit de l'auteur (obligatoire pour les licences Creative Commons).
+// Si la photo ne charge pas, le dégradé de couleur reste visible.
+import { getPhoto, photoUrl, photoPage } from '../data/photos';
+
+interface Props { photoKey?: string; width?: number; eager?: boolean; credit?: boolean; label?: string }
+const { photoKey, width = 1000, eager = false, credit = true, label } = Astro.props;
+const p = getPhoto(photoKey);
+---
+{p ? (
+  <figure class="photo">
+    <img src={photoUrl(p, width)} alt={p.alt} loading={eager ? 'eager' : 'lazy'} decoding="async" onerror="this.style.display='none'" />
+    {credit && <figcaption>Photo : {photoPage(p) ? <a href={photoPage(p)} target="_blank" rel="noopener">{p.author}</a> : p.author}, CC / Wikimedia</figcaption>}
+  </figure>
+) : (
+  <span>{label}</span>
+)}

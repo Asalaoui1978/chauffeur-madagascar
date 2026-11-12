@@ -4,6 +4,7 @@ import Carte from '../../components/Carte.astro';
 import { itineraires, type Itineraire } from '../../data/itineraires';
 import { getLieu, type Lieu } from '../../data/lieux';
 import { site, whatsappLink } from '../../data/site';
+import { getPhoto, photoUrl, photoPage } from '../../data/photos';
 
 export function getStaticPaths() {
   return itineraires.map((it) => ({ params: { slug: it.slug }, props: { it } }));
@@ -12,6 +13,8 @@ export function getStaticPaths() {
 const { it } = Astro.props as { it: Itineraire };
 const points = it.route.map((s) => getLieu(s)).filter((l): l is Lieu => Boolean(l));
 const url = `/itineraires/${it.slug}/`;
+const heroPhoto = getPhoto(it.photo);
+const autres = itineraires.filter((x) => x.slug !== it.slug);
 
 const trip = {
   '@context': 'https://schema.org',
@@ -36,11 +39,13 @@ const trip = {
   breadcrumb={[{ name: 'Accueil', url: '/' }, { name: 'Itinéraires', url: '/itineraires/' }, { name: it.short, url }]}
   jsonLd={trip}
 >
-  <section class="hero small">
+  <section class="hero small" style={heroPhoto ? `--hero-img:url("${photoUrl(heroPhoto, 1920)}");padding:8rem 0 4rem` : undefined}>
     <div class="container">
       <nav class="breadcrumb" aria-label="Fil d'Ariane"><ol><li><a href="/">Accueil</a></li><li><a href="/itineraires/">Itinéraires</a></li><li>{it.short}</li></ol></nav>
+      <p class="eyebrow">{it.themes.join(' · ')}</p>
       <h1>{it.title}</h1>
     </div>
+    {heroPhoto && <p class="hero-credit">Photo : <a href={photoPage(heroPhoto)} target="_blank" rel="noopener">{heroPhoto.author}</a>, Wikimedia Commons</p>}
   </section>
 
   <section class="section">
@@ -50,8 +55,14 @@ const trip = {
         <div class="fact"><strong>Durée</strong>{it.duree}</div>
         <div class="fact"><strong>Saison</strong>{it.saison}</div>
         <div class="fact"><strong>Véhicule</strong>{it.vehicule}</div>
+        <div class="fact"><strong>Niveau</strong>{it.niveau}</div>
       </div>
       {it.intro.map((p) => <p>{p}</p>)}
+
+      <h2>Les points forts</h2>
+      <ul class="highlights">{it.pointsForts.map((p) => <li>{p}</li>)}</ul>
+      <p><strong>Idéal pour :</strong> {it.idealPour}.</p>
+      <p>{it.themes.map((t) => <span class="tag">{t}</span>)}</p>
 
       <h2>La carte de la route</h2>
       <Carte points={points} />
@@ -81,6 +92,9 @@ const trip = {
         <a class="btn btn-whatsapp" href={whatsappLink(`Bonjour ThreePac, je suis intéressé(e) par l'itinéraire « ${it.short} ». Nous sommes … personnes, du … au ….`)} target="_blank" rel="noopener">Je veux faire ce trajet</a>
         <a class="btn btn-ghost" href={`/contact/?itineraire=${it.slug}`}>Demander un devis</a>
       </div>
+
+      <h2>Les autres routes de ThreePac</h2>
+      <ul>{autres.map((a) => <li><a href={`/itineraires/${a.slug}/`}>{a.title}</a></li>)}</ul>
     </div>
   </section>
 </Base>
