@@ -7,7 +7,9 @@ import { themesParLieu } from '../data/lieux';
 import { getPhoto, photoUrl, photoPage } from '../data/photos';
 import { site, whatsappLink } from '../data/site';
 import { L, t, fill, parseUrl } from '../i18n';
-import { getGuideLong, pratiqueH2 } from '../data/guide-long';
+import { getGuideLong, pratiqueH2, guideUi } from '../data/guide-long';
+import { guideFaq } from '../data/i18n/guide-faq';
+import { villes, villesParLieu } from '../data/villes';
 
 interface Props { slug: string }
 const { slug } = Astro.props;
@@ -30,6 +32,18 @@ const galeries: Record<string, string[]> = {
 };
 const extras = galeries[l.slug] ?? [];
 const long = getGuideLong(lang, l.slug);
+const faq = guideFaq[lang][l.slug] ?? [];
+const gu = guideUi[lang];
+const villesLiees = (villesParLieu[l.slug] ?? []).map((s) => villes.find((v) => v.slug === s)!).filter(Boolean);
+type Post = { url: string; frontmatter: { title: string; date: string }; rawContent: () => string };
+const posts = {
+  fr: import.meta.glob<Post>('../pages/blog/*.md', { eager: true }),
+  en: import.meta.glob<Post>('../pages/en/blog/*.md', { eager: true }),
+  it: import.meta.glob<Post>('../pages/it/blog/*.md', { eager: true }),
+  es: import.meta.glob<Post>('../pages/es/blog/*.md', { eager: true }),
+};
+const today = new Date().toISOString().slice(0, 10);
+const articles = Object.values(posts[lang]).filter((p) => p.frontmatter.date <= today && p.rawContent().includes(`/guide/${l.slug}/`));
 const surItineraires = getItineraires(lang).filter((it) => it.route.includes(l.slug) || it.jours.some((j) => j.lieux.includes(l.slug)));
 const idx = lieux.findIndex((x) => x.slug === l.slug);
 const voisins = [lieux[idx - 1], lieux[idx + 1]].filter(Boolean);
@@ -49,7 +63,7 @@ const attraction = {
   description={l.description}
   image={l.image ?? (heroPhoto ? photoUrl(heroPhoto, 1200) : undefined)}
   breadcrumb={[{ name: tr.home_crumb, url: L(lang, '/') }, { name: tr.gl_h1, url: L(lang, '/guide/') }, { name: l.name, url }]}
-  jsonLd={attraction}
+  jsonLd={faq.length ? [attraction, { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) }] : attraction}
 >
   <section class="hero small" style={heroPhoto ? `--hero-img:url("${photoUrl(heroPhoto, 1920)}");padding:8rem 0 4rem` : undefined}>
     <div class="container">
@@ -98,6 +112,27 @@ const attraction = {
         <>
           <h2>{tr.on_itin_h2}</h2>
           <ul>{surItineraires.map((it) => <li><a href={L(lang, `/itineraires/${it.slug}/`)}>{it.title}</a></li>)}</ul>
+        </>
+      )}
+
+      {faq.length > 0 && (
+        <>
+          <h2>{gu.faq}</h2>
+          {faq.map(([q, a]) => (<details><summary>{q}</summary><p>{a}</p></details>))}
+        </>
+      )}
+
+      {villesLiees.length > 0 && (
+        <>
+          <h2>{gu.driver}</h2>
+          <ul>{villesLiees.map((v) => <li><a href={L(lang, `/chauffeur/${v.slug}/`)}>{v.text[lang].h1}</a></li>)}</ul>
+        </>
+      )}
+
+      {articles.length > 0 && (
+        <>
+          <h2>{gu.blog}</h2>
+          <ul>{articles.map((a) => <li><a href={a.url}>{a.frontmatter.title}</a></li>)}</ul>
         </>
       )}
 

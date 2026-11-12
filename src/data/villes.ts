@@ -395,3 +395,14 @@ export const villesUi: Record<Lang, { nav: string; servicesH2: string; tripsH2: 
   it: { nav: 'Zone', servicesH2: 'Cosa propone Tripack', tripsH2: 'I circuiti in partenza o di passaggio da qui', faqH2: 'Domande frequenti', guideLink: 'Cosa vedere a {x}: la scheda della mini-guida', listTitle: "Autista in Madagascar per città: Tana, aeroporto di Ivato, Nosy Be, Morondava, Tulear", listDesc: "Dove vi accompagna Tripack: Antananarivo e l'aeroporto di Ivato, Nosy Be, Morondava e gli Tsingy, Tulear e la costa Ovest.", listH1: 'Dove vi porta Tripack', listLead: 'Le città e i servizi più richiesti, con tutto quello che c\'è da sapere.', cta: 'Chiedi un preventivo', msg: 'Buongiorno Tripack, vorrei un autista per {x}. Può farmi un preventivo?' },
   es: { nav: 'Zonas', servicesH2: 'Lo que ofrece Tripack', tripsH2: 'Circuitos que salen o pasan por aquí', faqH2: 'Preguntas frecuentes', guideLink: 'Qué ver en {x}: la ficha de la miniguía', listTitle: 'Chófer en Madagascar por ciudad: Tana, aeropuerto de Ivato, Nosy Be, Morondava, Tulear', listDesc: 'Dónde le acompaña Tripack: Antananarivo y el aeropuerto de Ivato, Nosy Be, Morondava y los Tsingy, Tulear y la costa Oeste.', listH1: 'Adónde le lleva Tripack', listLead: 'Las ciudades y servicios más solicitados, con todo lo que hay que saber.', cta: 'Pedir un presupuesto', msg: 'Hola Tripack, me gustaría un chófer para {x}. ¿Puede hacerme un presupuesto?' },
 };
+
+// Fiches du mini-guide → pages ville les plus utiles (maillage interne)
+export const villesParLieu: Record<string, string[]> = {
+  antananarivo: ['antananarivo', 'aeroport-ivato'], andasibe: ['antananarivo', 'aeroport-ivato'], ambatolampy: ['antananarivo'], antsirabe: ['antananarivo'],
+  ambositra: ['antananarivo'], ranomafana: ['antananarivo'], fianarantsoa: ['antananarivo'], ambalavao: ['tulear'], 'plateau-horombe': ['tulear'],
+  isalo: ['tulear'], ilakaka: ['tulear'], zombitse: ['tulear'], tulear: ['tulear'], ifaty: ['tulear'], anakao: ['tulear'],
+  andavadoaka: ['tulear', 'morondava'], morombe: ['tulear', 'morondava'], 'belo-sur-mer': ['morondava', 'tulear'], morondava: ['morondava'],
+  'allee-des-baobabs': ['morondava'], kirindy: ['morondava'], 'belo-sur-tsiribihina': ['morondava'], 'tsingy-de-bemaraha': ['morondava'],
+  mananjary: ['antananarivo'], 'canal-des-pangalanes': ['antananarivo'], manakara: ['antananarivo'],
+  ankarafantsika: ['nosy-be'], mahajanga: ['nosy-be'], antsohihy: ['nosy-be'], ambanja: ['nosy-be'], 'nosy-be': ['nosy-be'],
+};
