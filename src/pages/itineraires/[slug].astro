@@ -1,0 +1,86 @@
+---
+import Base from '../../layouts/Base.astro';
+import Carte from '../../components/Carte.astro';
+import { itineraires, type Itineraire } from '../../data/itineraires';
+import { getLieu, type Lieu } from '../../data/lieux';
+import { site, whatsappLink } from '../../data/site';
+
+export function getStaticPaths() {
+  return itineraires.map((it) => ({ params: { slug: it.slug }, props: { it } }));
+}
+
+const { it } = Astro.props as { it: Itineraire };
+const points = it.route.map((s) => getLieu(s)).filter((l): l is Lieu => Boolean(l));
+const url = `/itineraires/${it.slug}/`;
+
+const trip = {
+  '@context': 'https://schema.org',
+  '@type': 'TouristTrip',
+  name: it.title,
+  description: it.description,
+  touristType: 'Voyageurs indépendants, familles, couples',
+  provider: { '@id': `${site.url}/#threepac` },
+  itinerary: {
+    '@type': 'ItemList',
+    itemListElement: points.map((p, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      item: { '@type': 'TouristAttraction', name: p.name, url: new URL(`/guide/${p.slug}/`, site.url).href, geo: { '@type': 'GeoCoordinates', latitude: p.lat, longitude: p.lng } },
+    })),
+  },
+};
+---
+<Base
+  title={it.title}
+  description={it.description}
+  breadcrumb={[{ name: 'Accueil', url: '/' }, { name: 'Itinéraires', url: '/itineraires/' }, { name: it.short, url }]}
+  jsonLd={trip}
+>
+  <section class="hero small">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Fil d'Ariane"><ol><li><a href="/">Accueil</a></li><li><a href="/itineraires/">Itinéraires</a></li><li>{it.short}</li></ol></nav>
+      <h1>{it.title}</h1>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container narrow">
+      <div class="facts">
+        <div class="fact"><strong>Distance</strong>{it.distance}</div>
+        <div class="fact"><strong>Durée</strong>{it.duree}</div>
+        <div class="fact"><strong>Saison</strong>{it.saison}</div>
+        <div class="fact"><strong>Véhicule</strong>{it.vehicule}</div>
+      </div>
+      {it.intro.map((p) => <p>{p}</p>)}
+
+      <h2>La carte de la route</h2>
+      <Carte points={points} />
+
+      <h2>Le programme jour par jour</h2>
+      <ol class="timeline">
+        {it.jours.map((j) => (
+          <li>
+            <span class="jour">{j.jour}</span>
+            <h3>{j.titre}</h3>
+            {j.route && <div class="route">🚙 {j.route}</div>}
+            <p>{j.texte}</p>
+            <p style="font-size:.92rem">
+              {j.lieux.map((s) => { const l = getLieu(s); return l ? <a class="tag" href={`/guide/${l.slug}/`}>{l.name}</a> : null; })}
+            </p>
+          </li>
+        ))}
+      </ol>
+      <p class="muted" style="font-size:.9rem">Distances et temps de route indicatifs : ils varient selon la saison, l'état des routes et les arrêts. Le programme est entièrement adaptable.</p>
+
+      <div class="conseil">
+        <strong>Les conseils de ThreePac</strong>
+        <ul>{it.conseils.map((c) => <li>{c}</li>)}</ul>
+      </div>
+
+      <div class="actions">
+        <a class="btn btn-whatsapp" href={whatsappLink(`Bonjour ThreePac, je suis intéressé(e) par l'itinéraire « ${it.short} ». Nous sommes … personnes, du … au ….`)} target="_blank" rel="noopener">Je veux faire ce trajet</a>
+        <a class="btn btn-ghost" href={`/contact/?itineraire=${it.slug}`}>Demander un devis</a>
+      </div>
+    </div>
+  </section>
+</Base>

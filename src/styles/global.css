@@ -1,0 +1,134 @@
+:root {
+  --laterite: #b4441f;
+  --laterite-dark: #8a3215;
+  --ocre: #d99a3e;
+  --sable: #fbeedd;
+  --creme: #fffaf3;
+  --foret: #24513f;
+  --lagon: #1f8a9e;
+  --encre: #1f1a17;
+  --gris: #5f5650;
+  --radius: 18px;
+  --shadow: 0 10px 30px rgb(31 26 23 / 0.10);
+  --max: 1160px;
+  --font-title: 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif;
+  --font-text: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { animation: none !important; transition: none !important; } }
+body { margin: 0; font-family: var(--font-text); color: var(--encre); background: var(--creme); line-height: 1.65; font-size: 1.05rem; }
+img { max-width: 100%; height: auto; display: block; }
+a { color: var(--laterite); }
+a:hover { color: var(--laterite-dark); }
+h1, h2, h3 { font-family: var(--font-title); line-height: 1.2; color: var(--encre); }
+h1 { font-size: clamp(2.1rem, 5vw, 3.6rem); margin: 0 0 .6rem; }
+h2 { font-size: clamp(1.6rem, 3.2vw, 2.4rem); margin: 2.5rem 0 1rem; }
+h3 { font-size: 1.3rem; margin: 1.5rem 0 .5rem; }
+
+.container { max-width: var(--max); margin: 0 auto; padding: 0 1.25rem; }
+.narrow { max-width: 780px; }
+.section { padding: 3.5rem 0; }
+.section.alt { background: var(--sable); }
+.lead { font-size: 1.2rem; color: var(--gris); }
+.muted { color: var(--gris); }
+
+/* En-tête */
+.site-header { position: sticky; top: 0; z-index: 50; background: rgb(255 250 243 / .92); backdrop-filter: blur(10px); border-bottom: 1px solid rgb(31 26 23 / .07); }
+.site-header .container { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 68px; }
+.logo { font-family: var(--font-title); font-weight: 700; font-size: 1.3rem; color: var(--encre); text-decoration: none; display: flex; gap: .5rem; align-items: center; }
+.logo span { color: var(--laterite); }
+.nav { display: flex; gap: 1.2rem; flex-wrap: wrap; }
+.nav a { color: var(--encre); text-decoration: none; font-weight: 500; font-size: .98rem; }
+.nav a:hover, .nav a[aria-current='page'] { color: var(--laterite); }
+.menu-toggle { display: none; background: none; border: 0; font-size: 1.6rem; cursor: pointer; color: var(--encre); }
+@media (max-width: 860px) {
+  .menu-toggle { display: block; }
+  .nav { display: none; position: absolute; top: 68px; left: 0; right: 0; background: var(--creme); flex-direction: column; padding: 1rem 1.25rem 1.5rem; border-bottom: 1px solid #eee; }
+  .nav.open { display: flex; }
+}
+
+/* Boutons */
+.btn { display: inline-flex; align-items: center; gap: .5rem; padding: .85rem 1.4rem; border-radius: 999px; font-weight: 600; text-decoration: none; transition: transform .15s ease, background .15s ease; border: 2px solid transparent; }
+.btn:hover { transform: translateY(-2px); }
+.btn-primary { background: var(--laterite); color: #fff; }
+.btn-primary:hover { background: var(--laterite-dark); color: #fff; }
+.btn-whatsapp { background: #1fa855; color: #fff; }
+.btn-whatsapp:hover { background: #188a45; color: #fff; }
+.btn-ghost { border-color: currentColor; color: inherit; }
+.actions { display: flex; gap: .8rem; flex-wrap: wrap; margin-top: 1.5rem; }
+
+/* Hero */
+.hero { position: relative; color: #fff; padding: 7rem 0 6rem; background:
+  linear-gradient(180deg, rgb(20 14 10 / .25), rgb(20 14 10 / .65)),
+  var(--hero-img, linear-gradient(135deg, #c2562a 0%, #d99a3e 45%, #24513f 100%)); background-size: cover; background-position: center; }
+.hero h1, .hero h2 { color: #fff; }
+.hero .lead { color: rgb(255 255 255 / .9); max-width: 640px; }
+.hero.small { padding: 5rem 0 3.5rem; }
+.eyebrow { text-transform: uppercase; letter-spacing: .12em; font-size: .8rem; font-weight: 700; color: var(--ocre); }
+.hero .eyebrow { color: #ffd9a0; }
+
+/* Grilles et cartes */
+.grid { display: grid; gap: 1.4rem; }
+.grid-2 { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+.grid-3 { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+.card { background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; display: flex; flex-direction: column; text-decoration: none; color: inherit; transition: transform .2s ease; }
+a.card:hover { transform: translateY(-4px); color: inherit; }
+.card-media { aspect-ratio: 16 / 10; background: linear-gradient(135deg, var(--laterite), var(--ocre)); display: grid; place-items: center; color: rgb(255 255 255 / .85); font-family: var(--font-title); font-size: 1.2rem; text-align: center; padding: 1rem; }
+.card-media.foret { background: linear-gradient(135deg, var(--foret), var(--lagon)); }
+.card-media img { width: 100%; height: 100%; object-fit: cover; }
+.card-body { padding: 1.3rem 1.4rem 1.5rem; }
+.card-body h3 { margin-top: 0; }
+.tag { display: inline-block; font-size: .78rem; font-weight: 600; padding: .2rem .6rem; border-radius: 999px; background: var(--sable); color: var(--laterite-dark); margin: 0 .3rem .3rem 0; }
+
+/* Faits clés */
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+.fact { background: #fff; border-radius: 14px; padding: 1rem 1.1rem; box-shadow: var(--shadow); }
+.fact strong { display: block; font-size: .78rem; text-transform: uppercase; letter-spacing: .08em; color: var(--gris); }
+
+/* Jour par jour */
+.timeline { list-style: none; padding: 0; margin: 1.5rem 0; border-left: 3px solid var(--ocre); }
+.timeline li { position: relative; padding: 0 0 1.8rem 1.6rem; }
+.timeline li::before { content: ''; position: absolute; left: -10px; top: .35rem; width: 17px; height: 17px; border-radius: 50%; background: var(--laterite); border: 3px solid var(--creme); }
+.timeline .jour { font-weight: 700; color: var(--laterite); text-transform: uppercase; font-size: .8rem; letter-spacing: .08em; }
+.timeline h3 { margin: .2rem 0 .2rem; }
+.timeline .route { font-size: .9rem; color: var(--gris); }
+
+/* Encadré conseil */
+.conseil { background: var(--sable); border-left: 5px solid var(--laterite); border-radius: 0 var(--radius) var(--radius) 0; padding: 1.2rem 1.4rem; margin: 1.8rem 0; }
+.conseil strong { color: var(--laterite-dark); }
+
+/* Carte */
+.map { height: 420px; border-radius: var(--radius); box-shadow: var(--shadow); margin: 1.5rem 0; z-index: 1; }
+
+/* Formulaire */
+form.devis { display: grid; gap: 1rem; background: #fff; padding: 1.6rem; border-radius: var(--radius); box-shadow: var(--shadow); }
+form.devis label { font-weight: 600; font-size: .95rem; display: grid; gap: .35rem; }
+form.devis input, form.devis select, form.devis textarea { font: inherit; padding: .75rem .9rem; border: 1px solid #d9cfc4; border-radius: 10px; background: var(--creme); }
+.row-2 { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+
+/* FAQ */
+details { background: #fff; border-radius: 14px; padding: 1rem 1.2rem; margin-bottom: .8rem; box-shadow: var(--shadow); }
+summary { cursor: pointer; font-weight: 600; }
+
+/* Fil d'Ariane */
+.breadcrumb { font-size: .9rem; margin-bottom: 1rem; }
+.breadcrumb a { color: #ffd9a0; }
+.breadcrumb ol { list-style: none; padding: 0; margin: 0; display: flex; gap: .4rem; flex-wrap: wrap; }
+.breadcrumb li:not(:last-child)::after { content: '›'; margin-left: .4rem; }
+
+/* Pied de page */
+.site-footer { background: var(--encre); color: #d8cfc6; padding: 3rem 0 2rem; margin-top: 3rem; }
+.site-footer a { color: #ffd9a0; }
+.site-footer h3 { color: #fff; font-size: 1.1rem; }
+.site-footer ul { list-style: none; padding: 0; margin: 0; }
+.site-footer li { margin: .3rem 0; }
+
+/* Bouton WhatsApp flottant */
+.wa-float { position: fixed; right: 1.1rem; bottom: 1.1rem; z-index: 60; width: 60px; height: 60px; border-radius: 50%; background: #1fa855; display: grid; place-items: center; box-shadow: 0 8px 24px rgb(0 0 0 / .25); }
+.wa-float svg { width: 32px; height: 32px; fill: #fff; }
+
+/* Apparition au défilement */
+.reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
+.reveal.visible { opacity: 1; transform: none; }

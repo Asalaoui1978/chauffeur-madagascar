@@ -1,0 +1,34 @@
+---
+// Carte interactive (Leaflet + OpenStreetMap), chargée uniquement sur les pages qui l'utilisent.
+import type { Lieu } from '../data/lieux';
+
+interface Props { points: Lieu[]; ligne?: boolean; id?: string }
+const { points, ligne = true, id = 'carte' } = Astro.props;
+const data = points.map((p) => ({ name: p.name, lat: p.lat, lng: p.lng, url: `/guide/${p.slug}/` }));
+---
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+<div class="map" id={id} data-points={JSON.stringify(data)} data-ligne={ligne ? '1' : '0'} role="img" aria-label="Carte de l'itinéraire"></div>
+<script is:inline src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="" defer></script>
+<script is:inline define:vars={{ id }}>
+  window.addEventListener('load', () => {
+    const el = document.getElementById(id);
+    if (!el || !window.L) return;
+    const pts = JSON.parse(el.dataset.points || '[]');
+    const map = L.map(el, { scrollWheelZoom: false });
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 18,
+      attribution: '&copy; contributeurs OpenStreetMap',
+    }).addTo(map);
+    const latlngs = pts.map((p) => [p.lat, p.lng]);
+    pts.forEach((p, i) => {
+      L.circleMarker([p.lat, p.lng], { radius: 8, color: '#fff', weight: 2, fillColor: '#b4441f', fillOpacity: 1 })
+        .addTo(map)
+        .bindPopup(`<strong>${i + 1}. ${p.name}</strong><br><a href="${p.url}">Voir la fiche</a>`);
+    });
+    if (el.dataset.ligne === '1' && latlngs.length > 1) {
+      L.polyline(latlngs, { color: '#b4441f', weight: 4, opacity: 0.8, dashArray: '8 8' }).addTo(map);
+    }
+    if (latlngs.length > 1) map.fitBounds(latlngs, { padding: [30, 30] });
+    else if (latlngs.length === 1) map.setView(latlngs[0], 10);
+  });
+</script>

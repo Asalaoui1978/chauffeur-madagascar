@@ -1,0 +1,73 @@
+---
+import Base from '../../layouts/Base.astro';
+import Carte from '../../components/Carte.astro';
+import { lieux, type Lieu } from '../../data/lieux';
+import { itineraires } from '../../data/itineraires';
+import { site, whatsappLink } from '../../data/site';
+
+export function getStaticPaths() {
+  return lieux.map((l) => ({ params: { slug: l.slug }, props: { l } }));
+}
+
+const { l } = Astro.props as { l: Lieu };
+const url = `/guide/${l.slug}/`;
+const surItineraires = itineraires.filter((it) => it.route.includes(l.slug) || it.jours.some((j) => j.lieux.includes(l.slug)));
+const idx = lieux.findIndex((x) => x.slug === l.slug);
+const voisins = [lieux[idx - 1], lieux[idx + 1]].filter(Boolean);
+
+const attraction = {
+  '@context': 'https://schema.org',
+  '@type': 'TouristAttraction',
+  name: l.name,
+  description: l.description,
+  url: new URL(url, site.url).href,
+  geo: { '@type': 'GeoCoordinates', latitude: l.lat, longitude: l.lng },
+  containedInPlace: { '@type': 'Country', name: 'Madagascar' },
+};
+---
+<Base
+  title={`${l.name} : que voir, conseils et accès avec chauffeur`}
+  description={l.description}
+  image={l.image}
+  breadcrumb={[{ name: 'Accueil', url: '/' }, { name: 'Mini-guide', url: '/guide/' }, { name: l.name, url }]}
+  jsonLd={attraction}
+>
+  <section class="hero small" style={l.image ? `--hero-img:url(${l.image})` : undefined}>
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Fil d'Ariane"><ol><li><a href="/">Accueil</a></li><li><a href="/guide/">Mini-guide</a></li><li>{l.name}</li></ol></nav>
+      <p class="eyebrow">{l.region}</p>
+      <h1>{l.name}</h1>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container narrow">
+      <p class="lead">{l.intro}</p>
+      <h2>À voir et à faire</h2>
+      <ul>{l.aVoir.map((a) => <li>{a}</li>)}</ul>
+
+      <div class="conseil"><strong>Le conseil de ThreePac :</strong> {l.conseil}</div>
+
+      {l.slug === 'belo-sur-mer' && (
+        <p>Pour tout savoir sur ce village unique, découvrez notre site dédié : <a href={site.beloSurMerSite}>Belo-sur-Mer, le village des goélettes</a>.</p>
+      )}
+
+      <h2>Où se trouve {l.name} ?</h2>
+      <Carte points={[l]} ligne={false} />
+
+      {surItineraires.length > 0 && (
+        <>
+          <h2>Sur quel itinéraire ?</h2>
+          <ul>{surItineraires.map((it) => <li><a href={`/itineraires/${it.slug}/`}>{it.title}</a></li>)}</ul>
+        </>
+      )}
+
+      <div class="actions">
+        <a class="btn btn-whatsapp" href={whatsappLink(`Bonjour ThreePac, je voudrais aller à ${l.name}. Pouvez-vous me faire un devis ?`)} target="_blank" rel="noopener">Y aller avec ThreePac</a>
+      </div>
+
+      {voisins.length > 0 && (
+        <p style="margin-top:2.5rem">Continuer la lecture : {voisins.map((v, i) => <>{i > 0 && ' · '}<a href={`/guide/${v.slug}/`}>{v.name}</a></>)}</p>
+      )}
+    </div>
+  </section>
+</Base>

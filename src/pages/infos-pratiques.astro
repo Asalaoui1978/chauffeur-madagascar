@@ -1,0 +1,61 @@
+---
+import Base from '../layouts/Base.astro';
+
+const faq = [
+  { q: 'Quelle est la meilleure saison pour voyager à Madagascar ?', a: "La saison sèche, d'avril à novembre, est la plus agréable sur la RN7 et la seule possible pour la côte Ouest et les Tsingy de Bemaraha. De janvier à mars, c'est la saison des pluies et des cyclones : certaines pistes deviennent impraticables." },
+  { q: 'Peut-on louer une voiture sans chauffeur à Madagascar ?', a: "C'est possible mais déconseillé. La plupart des loueurs proposent d'ailleurs la voiture avec chauffeur. Routes dégradées, pistes de sable, bacs, signalisation rare : un chauffeur local est un gage de sécurité et vous fait gagner beaucoup de temps." },
+  { q: 'Combien de temps faut-il pour faire la RN7 ?', a: "La route de Tana à Tuléar fait environ 950 km. On peut la faire en 2 ou 3 jours de route pure, mais pour visiter Antsirabe, Ranomafana, l'Isalo et les autres étapes, comptez 9 à 12 jours." },
+  { q: 'Les Tsingy de Bemaraha sont-ils accessibles toute l\'année ?', a: "Non. Le parc n'est accessible qu'en saison sèche, en général de mai à mi-novembre (dates à vérifier chaque année). L'accès se fait en 4x4 depuis Morondava, avec une traversée en bac à Belo-sur-Tsiribihina." },
+  { q: 'Que comprend le tarif du chauffeur ?', a: "[À COMPLÉTER avec Patrick] Par exemple : le véhicule, le chauffeur, le carburant, l'hébergement et les repas du chauffeur. Les entrées des parcs, les guides locaux et vos hébergements sont en général en supplément." },
+  { q: 'Quelle monnaie utiliser ?', a: "La monnaie est l'ariary (MGA). Les distributeurs se trouvent dans les villes (Tana, Antsirabe, Fianarantsoa, Tuléar, Morondava) mais deviennent rares sur la côte Ouest : prévoyez du liquide avant de partir sur les pistes. Les euros se changent facilement." },
+  { q: 'Faut-il un visa pour Madagascar ?', a: "Un visa touristique est nécessaire pour la plupart des nationalités. Il peut s'obtenir en ligne ou à l'arrivée. Les règles et tarifs changent : vérifiez sur le site officiel avant de partir." },
+  { q: 'Quels vaccins et précautions santé ?', a: "Consultez votre médecin ou un centre de vaccinations internationales avant le départ. Le paludisme est présent, surtout sur les côtes : demandez conseil pour un traitement préventif. Buvez uniquement de l'eau en bouteille." },
+];
+
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+};
+---
+<Base
+  title="Infos pratiques pour voyager à Madagascar avec chauffeur : saison, routes, budget"
+  description="Préparer son voyage à Madagascar : meilleure saison, état des routes, argent, santé, visa, pourboires et ce qu'il faut emporter. Les réponses de ThreePac, chauffeur local."
+  breadcrumb={[{ name: 'Accueil', url: '/' }, { name: 'Infos pratiques', url: '/infos-pratiques/' }]}
+  jsonLd={faqLd}
+>
+  <section class="hero small">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Fil d'Ariane"><ol><li><a href="/">Accueil</a></li><li>Infos pratiques</li></ol></nav>
+      <h1>Infos pratiques</h1>
+      <p class="lead">Tout ce qu'il faut savoir avant de prendre la route avec ThreePac.</p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container narrow">
+      <h2>Les routes à Madagascar</h2>
+      <p>Les distances sont trompeuses : à Madagascar, on compte en heures, pas en kilomètres. Sur la RN7 goudronnée, on roule en moyenne à 50 km/h à cause des nids-de-poule, des villages et des zébus. Sur les pistes de la côte Ouest, c'est souvent 20 à 30 km/h. On ne roule pas de nuit : c'est une règle de sécurité.</p>
+
+      <h2>Ce qu'il faut emporter</h2>
+      <ul>
+        <li>Une polaire et un coupe-vent pour les Hautes Terres (Antsirabe, Fianarantsoa)</li>
+        <li>Des vêtements légers, un chapeau et de la crème solaire pour le Sud et l'Ouest</li>
+        <li>De bonnes chaussures de marche fermées (Isalo, Ranomafana, Tsingy)</li>
+        <li>Une lampe frontale pour les balades de nuit et les coupures d'électricité</li>
+        <li>Un répulsif anti-moustiques et une petite pharmacie</li>
+        <li>Un foulard contre la poussière des pistes</li>
+      </ul>
+
+      <h2>Pourboires</h2>
+      <p>Les guides de parc, les piroguiers et le personnel des hôtels apprécient un pourboire, qui représente une part importante de leurs revenus. ThreePac peut vous indiquer les usages au fil du voyage.</p>
+
+      <h2>Respecter les fady</h2>
+      <p>Les fady sont des interdits traditionnels, différents d'une région à l'autre : ne pas montrer un tombeau du doigt, ne pas apporter de porc dans certains lieux, ne pas se baigner dans certains lacs… Votre chauffeur vous préviendra : c'est aussi ça, voyager avec un local.</p>
+
+      <h2>Questions fréquentes</h2>
+      {faq.map((f) => (<details><summary>{f.q}</summary><p>{f.a}</p></details>))}
+
+      <div class="actions"><a class="btn btn-primary" href="/contact/">Une autre question ? Écrivez-nous</a></div>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,36 @@
+---
+import Base from '../../layouts/Base.astro';
+import { itineraires } from '../../data/itineraires';
+---
+<Base
+  title="Itinéraires à Madagascar avec chauffeur : RN7, côte Ouest et Tsingy"
+  description="Les circuits de ThreePac, chauffeur à Madagascar : la RN7 de Tana à Tuléar et la côte Ouest de Tuléar aux Tsingy de Bemaraha, jour par jour."
+  breadcrumb={[{ name: 'Accueil', url: '/' }, { name: 'Itinéraires', url: '/itineraires/' }]}
+>
+  <section class="hero small">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Fil d'Ariane"><ol><li><a href="/">Accueil</a></li><li>Itinéraires</li></ol></nav>
+      <h1>Les itinéraires</h1>
+      <p class="lead">Deux grandes routes, que l'on peut faire séparément ou combiner en une boucle de trois semaines. Tout est adaptable à votre rythme.</p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container grid grid-2">
+      {itineraires.map((it, i) => (
+        <a class="card" href={`/itineraires/${it.slug}/`}>
+          <div class={`card-media ${i === 1 ? 'foret' : ''}`}>{it.image ? <img src={it.image} alt={it.title} loading="lazy" /> : it.short}</div>
+          <div class="card-body">
+            <h2 style="font-size:1.5rem;margin-top:0">{it.title}</h2>
+            <p class="muted">{it.description}</p>
+            <span class="tag">{it.distance}</span><span class="tag">{it.duree}</span><span class="tag">{it.saison}</span>
+          </div>
+        </a>
+      ))}
+    </div>
+    <div class="container narrow">
+      <h2>La grande boucle : RN7 + côte Ouest</h2>
+      <p>Pour les voyageurs qui ont trois semaines : descente de la RN7 jusqu'à Tuléar, quelques jours de plage, puis remontée par la piste côtière jusqu'à Belo-sur-Mer, Morondava et les Tsingy de Bemaraha. Retour à Tana par la route de Miandrivazo ou en avion. C'est le tour le plus complet de l'Ouest et du Sud de Madagascar.</p>
+      <div class="actions"><a class="btn btn-primary" href="/contact/">Construire mon circuit</a></div>
+    </div>
+  </section>
+</Base>

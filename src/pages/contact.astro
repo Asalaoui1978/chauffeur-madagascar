@@ -1,0 +1,64 @@
+---
+import Base from '../layouts/Base.astro';
+import { itineraires } from '../data/itineraires';
+import { site, whatsappLink } from '../data/site';
+---
+<Base
+  title="Devis chauffeur à Madagascar – Contacter ThreePac"
+  description="Demandez un devis gratuit à ThreePac, chauffeur-guide à Madagascar : RN7, côte Ouest, Morondava, Tsingy. Réponse rapide sur WhatsApp."
+  breadcrumb={[{ name: 'Accueil', url: '/' }, { name: 'Devis & contact', url: '/contact/' }]}
+>
+  <section class="hero small">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Fil d'Ariane"><ol><li><a href="/">Accueil</a></li><li>Devis & contact</li></ol></nav>
+      <h1>Demander un devis</h1>
+      <p class="lead">Dites-moi quand vous venez, combien vous êtes et ce que vous voulez voir. Je vous réponds rapidement avec une proposition.</p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container narrow">
+      <h2>Tarifs</h2>
+      <p class="muted">[À COMPLÉTER] Tarif par jour, ce qui est inclus (véhicule, carburant, hébergement et repas du chauffeur…) et ce qui ne l'est pas (entrées des parcs, guides locaux, vos hébergements).</p>
+
+      <h2>Votre projet</h2>
+      <form class="devis" id="devis">
+        <div class="row-2">
+          <label>Votre prénom<input name="prenom" required autocomplete="given-name" /></label>
+          <label>Nombre de voyageurs<input name="personnes" type="number" min="1" value="2" /></label>
+        </div>
+        <div class="row-2">
+          <label>Date d'arrivée<input name="debut" type="date" /></label>
+          <label>Date de départ<input name="fin" type="date" /></label>
+        </div>
+        <label>Itinéraire
+          <select name="itineraire" id="itineraire">
+            {itineraires.map((it) => <option value={it.slug}>{it.short}</option>)}
+            <option value="boucle">La grande boucle (RN7 + côte Ouest)</option>
+            <option value="sur-mesure">Sur mesure</option>
+          </select>
+        </label>
+        <label>Vos envies, questions<textarea name="message" rows="5" placeholder="Ex. : on aimerait voir des lémuriens, passer 3 jours à la plage…"></textarea></label>
+        <button class="btn btn-whatsapp" type="submit">Envoyer ma demande sur WhatsApp</button>
+        <p class="muted" style="font-size:.9rem;margin:0">Le formulaire ouvre WhatsApp avec votre message déjà rédigé. Vous pouvez aussi écrire à <a href={`mailto:${site.email}`}>{site.email}</a>.</p>
+      </form>
+
+      <div class="actions">
+        <a class="btn btn-whatsapp" href={whatsappLink()} target="_blank" rel="noopener">WhatsApp : {site.phoneDisplay}</a>
+      </div>
+    </div>
+  </section>
+  <script is:inline define:vars={{ numero: site.whatsapp }}>
+    const params = new URLSearchParams(location.search);
+    const sel = document.getElementById('itineraire');
+    if (sel && params.get('itineraire')) sel.value = params.get('itineraire');
+    document.getElementById('devis')?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const f = new FormData(e.target);
+      const opt = sel.options[sel.selectedIndex].text;
+      const msg = `Bonjour ThreePac, je m'appelle ${f.get('prenom')}.\n` +
+        `Nous sommes ${f.get('personnes')} voyageur(s), du ${f.get('debut') || '?'} au ${f.get('fin') || '?'}.\n` +
+        `Itinéraire : ${opt}.\n${f.get('message') || ''}`;
+      window.open(`https://wa.me/${numero}?text=${encodeURIComponent(msg)}`, '_blank');
+    });
+  </script>
+</Base>

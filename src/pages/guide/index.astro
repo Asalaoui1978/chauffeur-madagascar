@@ -1,0 +1,31 @@
+---
+import Base from '../../layouts/Base.astro';
+import Carte from '../../components/Carte.astro';
+import { lieux } from '../../data/lieux';
+---
+<Base
+  title="Mini-guide de Madagascar : les étapes de la RN7 et de la côte Ouest"
+  description="Mini-guide touristique de Madagascar : Antsirabe, Isalo, Tuléar, Belo-sur-Mer, Morondava, Allée des Baobabs, Tsingy de Bemaraha… Ce qu'il faut voir et les conseils d'un chauffeur local."
+  breadcrumb={[{ name: 'Accueil', url: '/' }, { name: 'Mini-guide', url: '/guide/' }]}
+>
+  <section class="hero small">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Fil d'Ariane"><ol><li><a href="/">Accueil</a></li><li>Mini-guide</li></ol></nav>
+      <h1>Mini-guide de Madagascar</h1>
+      <p class="lead">Tous les lieux traversés par nos itinéraires, avec ce qu'il faut voir et les conseils de ThreePac.</p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <Carte points={lieux} ligne={false} />
+      <div class="grid grid-3">
+        {lieux.map((l) => (
+          <a class="card" href={`/guide/${l.slug}/`}>
+            <div class="card-media">{l.image ? <img src={l.image} alt={l.name} loading="lazy" /> : l.name}</div>
+            <div class="card-body"><span class="tag">{l.region}</span><h2 style="font-size:1.25rem;margin:.4rem 0">{l.name}</h2><p class="muted">{l.description}</p></div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>

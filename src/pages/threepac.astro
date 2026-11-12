@@ -1,0 +1,65 @@
+---
+import Base from '../layouts/Base.astro';
+import { site, whatsappLink } from '../data/site';
+
+const person = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Patrick « ThreePac »',
+  jobTitle: 'Chauffeur-guide à Madagascar',
+  knowsLanguage: site.languages,
+  worksFor: { '@id': `${site.url}/#threepac` },
+};
+---
+<Base
+  title="Qui est ThreePac ? Patrick, chauffeur-guide à Madagascar depuis 20 ans"
+  description="ThreePac, c'est Patrick : 47 ans, 20 ans de métier de chauffeur à Madagascar. Son histoire, sa façon de travailler, son véhicule et ses routes préférées."
+  breadcrumb={[{ name: 'Accueil', url: '/' }, { name: 'Qui est ThreePac ?', url: '/threepac/' }]}
+  jsonLd={person}
+>
+  <section class="hero small">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Fil d'Ariane"><ol><li><a href="/">Accueil</a></li><li>Qui est ThreePac ?</li></ol></nav>
+      <h1>Qui est ThreePac ?</h1>
+      <p class="lead">Un chauffeur, un guide, un conteur… et un peu mécanicien quand il le faut.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container narrow">
+      <p class="lead">« Vous connaissez Tupac ? Moi, c'est <strong>ThreePac</strong>, ou Patrick de mon vrai nom. J'ai 47 ans, et ça fait 20 ans que j'exerce le métier de chauffeur à Madagascar. »</p>
+
+      <h2>D'où vient ce surnom ?</h2>
+      <p>Le surnom est arrivé un soir, autour d'un feu, avec des voyageurs qui écoutaient ma musique dans la voiture. Tupac, c'était déjà pris. Et comme je connais par cœur les trois grandes routes de l'île, le Sud, l'Ouest et les Hautes Terres, ils ont trouvé le nom : ThreePac. Il m'est resté.</p>
+      {/* [À VALIDER avec Patrick] l'origine réelle du surnom */}
+
+      <h2>20 ans sur les routes de Madagascar</h2>
+      <p>En vingt ans, j'ai fait la RN7 plus de fois que je ne peux compter. J'ai traversé la Tsiribihina en bac sous un soleil de plomb, sorti le 4x4 du sable entre Morombe et Belo-sur-Mer, changé des pneus sous la pluie de Ranomafana et attendu des troupeaux de zébus au milieu de l'Horombe. Et je suis toujours arrivé à bon port, avec mes passagers et leur bonne humeur.</p>
+      <p>Ma philosophie est simple : <strong>à Madagascar, la route fait partie du voyage.</strong> Je ne roule pas pour arriver vite, je roule pour que vous voyiez le pays. On s'arrête quand une scène vous plaît, on goûte les beignets au bord de la route, on discute avec les gens.</p>
+
+      <div class="conseil"><strong>Ce que je vous apporte</strong>
+        <ul>
+          <li>La sécurité : je connais chaque virage et chaque passage difficile.</li>
+          <li>La ponctualité, à l'aéroport comme au bac.</li>
+          <li>Les bonnes adresses : gargotes, hôtels, points de vue.</li>
+          <li>Mon réseau : guides de parc, piroguiers, mécaniciens, hôteliers.</li>
+          <li>La traduction malgache-français, et les explications sur nos coutumes (les fady, les tombeaux, les marchés).</li>
+        </ul>
+      </div>
+
+      <h2>Mon véhicule</h2>
+      <p>{site.vehicle}. {/* [À COMPLÉTER] modèle, nombre de places, climatisation, galerie de toit */}Entretenu avant chaque circuit, avec ce qu'il faut à bord pour les pistes de l'Ouest.</p>
+
+      <h2>Les langues</h2>
+      <p>Je parle {site.languages.join(', ').toLowerCase()}.</p>
+
+      <h2>En dehors de la route</h2>
+      <p class="muted">[À COMPLÉTER : famille, ville d'origine, musique préférée, plat préféré, anecdote de voyage préférée…]</p>
+
+      <div class="actions">
+        <a class="btn btn-whatsapp" href={whatsappLink()} target="_blank" rel="noopener">Écrire à ThreePac</a>
+        <a class="btn btn-ghost" href="/itineraires/">Voir mes itinéraires</a>
+      </div>
+    </div>
+  </section>
+</Base>
