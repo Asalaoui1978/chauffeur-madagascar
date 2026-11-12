@@ -1,10 +1,10 @@
 // Réglages généraux du site : à compléter ici, tout le site se met à jour.
 export const site = {
-  name: 'Chauffeur Madagascar', // [À COMPLÉTER] nom définitif du site
+  name: 'Chauffeur Madagascar',
   tagline: 'Votre chauffeur-guide sur les routes de Madagascar',
   driver: 'ThreePac',
   driverRealName: 'Patrick',
-  url: 'https://chauffeur.visitbelosurmer.com',
+  url: 'https://chauffeurmadagascar.com',
   whatsapp: '261347090909',
   phoneDisplay: '+261 34 70 909 09',
   email: '', // [À COMPLÉTER] e-mail (laisser vide pour le masquer)

@@ -4,7 +4,7 @@ import sitemap from '@astrojs/sitemap';
 
 // ⚠️ Remplacer par le domaine définitif quand il sera choisi.
 export default defineConfig({
-  site: 'https://chauffeur.visitbelosurmer.com',
+  site: 'https://chauffeurmadagascar.com',
   trailingSlash: 'always',
   integrations: [sitemap()],
 });

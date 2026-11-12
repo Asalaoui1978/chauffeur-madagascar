@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://chauffeur.visitbelosurmer.com/sitemap-index.xml
+Sitemap: https://chauffeurmadagascar.com/sitemap-index.xml

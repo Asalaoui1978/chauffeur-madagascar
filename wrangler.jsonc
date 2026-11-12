@@ -4,6 +4,8 @@
   "compatibility_date": "2026-11-01",
   "workers_dev": true,
   "routes": [
+    { "pattern": "chauffeurmadagascar.com", "custom_domain": true },
+    { "pattern": "www.chauffeurmadagascar.com", "custom_domain": true },
     { "pattern": "chauffeur.visitbelosurmer.com", "custom_domain": true }
   ],
   "assets": {
