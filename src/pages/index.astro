@@ -3,10 +3,10 @@ import Base from '../layouts/Base.astro';
 import Photo from '../components/Photo.astro';
 import { itineraires } from '../data/itineraires';
 import { lieux } from '../data/lieux';
-import { getPhoto, photoUrl } from '../data/photos';
+import { getPhoto, photoUrl, videos, galerie } from '../data/photos';
 import { whatsappLink } from '../data/site';
 
-const slides = ['allee-des-baobabs', 'isalo', 'tsingy-de-bemaraha', 'nosy-be', 'fianarantsoa']
+const slides = ['sifaka-danseur', 'allee-des-baobabs', 'piste-rouge', 'tsingy-de-bemaraha', 'coucher-soleil', 'isalo', 'nosy-be']
   .map((k) => getPhoto(k))
   .filter((p): p is NonNullable<typeof p> => Boolean(p));
 
@@ -66,9 +66,8 @@ const incontournables = ['allee-des-baobabs', 'tsingy-de-bemaraha', 'isalo', 'no
 
   <section class="section">
     <div class="container grid grid-2" style="align-items:center">
-      <div class="card-media" style="border-radius:var(--radius);aspect-ratio:4/5">
-        {/* [À COMPLÉTER] remplacer par la photo de ThreePac : <img src="/images/threepac-portrait.jpg" alt="ThreePac, chauffeur-guide à Madagascar" /> */}
-        <span>Photo de ThreePac à venir</span>
+      <div class="card-media reveal" style="border-radius:var(--radius);aspect-ratio:4/5">
+        <Photo photoKey="threepac-portrait" eager={false} />
       </div>
       <div>
         <p class="eyebrow">Votre chauffeur</p>
@@ -77,6 +76,25 @@ const incontournables = ['allee-des-baobabs', 'tsingy-de-bemaraha', 'isalo', 'no
         <p>Mon travail, c'est que vous n'ayez à vous occuper de rien, sauf de regarder par la fenêtre.</p>
         <div class="actions"><a class="btn btn-primary" href="/threepac/">Faire connaissance</a></div>
       </div>
+    </div>
+  </section>
+
+  <section class="section" style="background:var(--encre);color:#f3ece4">
+    <div class="container">
+      <p class="eyebrow">En images</p>
+      <h2 style="color:#fff">La route, comme si vous y étiez</h2>
+      <div class="videos">
+        {videos.map((v) => (
+          <figure class={`video reveal ${v.vertical ? 'vertical' : ''}`}>
+            <video src={v.src} poster={v.poster} muted loop playsinline preload="none" data-autoplay></video>
+            <figcaption>{v.titre}</figcaption>
+          </figure>
+        ))}
+      </div>
+      <div class="mosaic">
+        {galerie.slice(2, 8).map((k) => <a href="/galerie/" class="mosaic-item reveal"><Photo photoKey={k} width={600} /></a>)}
+      </div>
+      <div class="actions"><a class="btn btn-ghost" href="/galerie/" style="color:#fff">Toute la galerie</a></div>
     </div>
   </section>
 
@@ -139,5 +157,13 @@ const incontournables = ['allee-des-baobabs', 'tsingy-de-bemaraha', 'isalo', 'no
       });
     }, { threshold: 0.5 });
     counters.forEach((c) => io.observe(c));
+    // Vidéos : lecture automatique quand elles sont visibles
+    const vio = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        const v = e.target as HTMLVideoElement;
+        if (e.isIntersecting) v.play().catch(() => {}); else v.pause();
+      });
+    }, { threshold: 0.4 });
+    document.querySelectorAll<HTMLVideoElement>('video[data-autoplay]').forEach((v) => vio.observe(v));
   </script>
 </Base>

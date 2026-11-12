@@ -10,7 +10,7 @@ const p = getPhoto(photoKey);
 {p ? (
   <figure class="photo">
     <img src={photoUrl(p, width)} alt={p.alt} loading={eager ? 'eager' : 'lazy'} decoding="async" onerror="this.style.display='none'" />
-    {credit && <figcaption>Photo : {photoPage(p) ? <a href={photoPage(p)} target="_blank" rel="noopener">{p.author}</a> : p.author}, CC / Wikimedia</figcaption>}
+    {credit && p.author && <figcaption>Photo : {photoPage(p) ? <a href={photoPage(p)} target="_blank" rel="noopener">{p.author}</a> : p.author}, CC / Wikimedia</figcaption>}
   </figure>
 ) : (
   <span>{label}</span>

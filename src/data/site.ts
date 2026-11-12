@@ -9,7 +9,7 @@ export const site = {
   phoneDisplay: '+261 34 70 909 09',
   email: '', // [À COMPLÉTER] e-mail (laisser vide pour le masquer)
   languages: ['Malgache', 'Français'], // [À COMPLÉTER] ajouter Anglais, Italien… si parlé
-  vehicle: '4x4 climatisé (modèle à préciser)', // [À COMPLÉTER]
+  vehicle: '4x4 Kia Sportage', // [À VÉRIFIER] modèle, places, climatisation
   beloSurMerSite: 'https://visitbelosurmer.com/',
 };
 

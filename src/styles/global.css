@@ -172,3 +172,19 @@ a.card:hover .photo img { transform: scale(1.06); }
 /* Apparition au défilement */
 .reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
 .reveal.visible { opacity: 1; transform: none; }
+
+/* Vidéos et mosaïque */
+.videos { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); align-items: start; margin: 1.5rem 0; }
+.video { margin: 0; border-radius: var(--radius); overflow: hidden; background: #000; position: relative; }
+.video video { width: 100%; display: block; aspect-ratio: 16 / 9; object-fit: cover; }
+.video.vertical video { aspect-ratio: 9 / 14; }
+.video figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: .8rem 1rem; background: linear-gradient(transparent, rgb(0 0 0 / .7)); color: #fff; font-weight: 600; font-size: .95rem; }
+.mosaic { display: grid; gap: .6rem; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+.mosaic-item { aspect-ratio: 1; border-radius: 12px; overflow: hidden; display: block; background: #333; }
+.mosaic-item .photo img { transition: transform .5s ease; }
+.mosaic-item:hover .photo img { transform: scale(1.08); }
+.lightbox { position: fixed; inset: 0; background: rgb(0 0 0 / .92); z-index: 200; display: none; place-items: center; padding: 1rem; }
+.lightbox.open { display: grid; }
+.lightbox img { max-width: 100%; max-height: 85vh; border-radius: 10px; }
+.lightbox p { color: #ddd; text-align: center; margin-top: .6rem; }
+.lightbox button { position: absolute; top: 1rem; right: 1rem; background: none; border: 0; color: #fff; font-size: 2rem; cursor: pointer; }

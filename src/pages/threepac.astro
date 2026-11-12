@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import { site, whatsappLink } from '../data/site';
+import Photo from '../components/Photo.astro';
 
 const person = {
   '@context': 'https://schema.org',
@@ -27,6 +28,10 @@ const person = {
 
   <section class="section">
     <div class="container narrow">
+      <div class="grid grid-2" style="align-items:center;margin-bottom:1.5rem">
+        <div class="card-media" style="border-radius:var(--radius);aspect-ratio:3/4"><Photo photoKey="threepac-portrait" eager={true} /></div>
+        <div class="card-media" style="border-radius:var(--radius);aspect-ratio:3/4"><Photo photoKey="threepac-4x4" /></div>
+      </div>
       <p class="lead">« Vous connaissez Tupac ? Moi, c'est <strong>ThreePac</strong>, ou Patrick de mon vrai nom. J'ai 47 ans, et ça fait 20 ans que j'exerce le métier de chauffeur à Madagascar. »</p>
 
       <h2>D'où vient ce surnom ?</h2>
@@ -49,6 +54,11 @@ const person = {
 
       <h2>Mon véhicule</h2>
       <p>{site.vehicle}. {/* [À COMPLÉTER] modèle, nombre de places, climatisation, galerie de toit */}Entretenu avant chaque circuit, avec ce qu'il faut à bord pour les pistes de l'Ouest.</p>
+
+      <div class="grid grid-2" style="margin:1rem 0">
+        <div class="card-media" style="border-radius:var(--radius)"><Photo photoKey="tableau-de-bord" /></div>
+        <div class="card-media" style="border-radius:var(--radius)"><Photo photoKey="interieur-vehicule" /></div>
+      </div>
 
       <h2>Les langues</h2>
       <p>Je parle {site.languages.join(', ').toLowerCase()}.</p>
