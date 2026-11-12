@@ -10,7 +10,7 @@ export const site = {
   email: 'contact@exemple.com', // [À COMPLÉTER]
   languages: ['Malgache', 'Français'], // [À COMPLÉTER] ajouter Anglais, Italien… si parlé
   vehicle: '4x4 climatisé (modèle à préciser)', // [À COMPLÉTER]
-  beloSurMerSite: 'https://asalaoui1978.github.io/belo-sur-mer/', // [À VÉRIFIER] URL du site Belo-sur-Mer
+  beloSurMerSite: 'https://visitbelosurmer.com/',
 };
 
 export const whatsappLink = (message = 'Bonjour ThreePac, je prépare un voyage à Madagascar et je voudrais un devis.') =>
