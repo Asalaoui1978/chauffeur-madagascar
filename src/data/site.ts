@@ -9,7 +9,7 @@ export const site = {
   phoneDisplay: '+261 34 70 909 09',
   facebookName: 'Tripack Patty Andriamalala',
   // [À COMPLÉTER] remplacer par l'adresse exacte du profil (ex. https://www.facebook.com/xxxx)
-  facebook: 'https://www.facebook.com/search/top?q=Tripack%20Patty%20Andriamalala',
+  facebook: 'https://www.facebook.com/share/14uCRcZVfkL/',
   email: '', // [À COMPLÉTER] e-mail (laisser vide pour le masquer)
   languages: ['Malgache', 'Français'], // [À COMPLÉTER] ajouter Anglais, Italien… si parlé
   vehicle: '4x4 Kia Sportage', // [À VÉRIFIER] modèle, places, climatisation
