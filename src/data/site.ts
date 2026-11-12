@@ -12,7 +12,7 @@ export const site = {
   facebook: 'https://www.facebook.com/share/14uCRcZVfkL/',
   email: '', // [À COMPLÉTER] e-mail (laisser vide pour le masquer)
   languages: ['Malgache', 'Français'], // [À COMPLÉTER] ajouter Anglais, Italien… si parlé
-  vehicle: 'Kia Sportage 4x4', // quatre roues motrices, climatisé (confirmé nov. 2026) ; nombre de places à préciser
+  vehicle: 'Kia Sportage 4x4', // quatre roues motrices, climatisé, 5 places (confirmé nov. 2026)
   beloSurMerSite: 'https://visitbelosurmer.com/',
 };
 
