@@ -5,8 +5,8 @@ export const site = {
   driver: 'ThreePac',
   driverRealName: 'Patrick',
   url: 'https://chauffeur-madagascar.alexandre-salaoui.workers.dev', // [À COMPLÉTER] domaine définitif
-  whatsapp: '261340000000', // [À COMPLÉTER] numéro WhatsApp au format international, sans + ni espaces
-  phoneDisplay: '+261 34 00 000 00', // [À COMPLÉTER]
+  whatsapp: '261347090909',
+  phoneDisplay: '+261 34 70 909 09',
   email: 'contact@exemple.com', // [À COMPLÉTER]
   languages: ['Malgache', 'Français'], // [À COMPLÉTER] ajouter Anglais, Italien… si parlé
   vehicle: '4x4 climatisé (modèle à préciser)', // [À COMPLÉTER]
