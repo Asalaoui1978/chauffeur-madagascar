@@ -29,6 +29,21 @@ export const lieux: Lieu[] = [
     conseil: "Évitez de traverser Tana aux heures de pointe : on peut mettre deux heures pour faire dix kilomètres. Je pars très tôt le matin, on prend le petit-déjeuner sur la route.",
   },
   {
+    slug: 'andasibe',
+    name: 'Andasibe-Mantadia',
+    region: 'Est',
+    lat: -18.938, lng: 48.418,
+    description: "Andasibe-Mantadia, à 3 h de Tana par la RN2 : la forêt humide de l'indri, le plus grand lémurien, balades de jour et de nuit avec chauffeur.",
+    intro: "À environ 150 km à l'est de Tana, Andasibe est la forêt humide la plus facile d'accès de Madagascar. On y vient pour entendre et voir l'indri, le plus grand des lémuriens.",
+    aVoir: [
+      "Les familles d'indris de la réserve d'Analamazaotra, et leur chant au lever du jour",
+      'Le secteur de Mantadia, plus sauvage, et le propithèque à diadème',
+      'La balade de nuit : caméléons, grenouilles et microcèbes',
+      'Les réserves communautaires autour du village',
+    ],
+    conseil: "Dormez au moins une nuit sur place : on entre dans la forêt tôt le matin, quand les indris chantent. C'est une excursion idéale en début ou en fin de voyage.",
+  },
+  {
     slug: 'ambatolampy',
     name: 'Ambatolampy',
     region: 'Hautes Terres',
@@ -453,6 +468,7 @@ export const lieux: Lieu[] = [
 export const themes = ['Lémuriens', 'Plages', 'Randonnée', 'Culture', 'Paysages', 'Aventure'] as const;
 export const themesParLieu: Record<string, string[]> = {
   antananarivo: ['Culture'],
+  andasibe: ['Lémuriens', 'Randonnée'],
   ambatolampy: ['Culture'],
   antsirabe: ['Culture', 'Paysages'],
   ambositra: ['Culture'],

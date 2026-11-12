@@ -20,3 +20,8 @@ export type LieuText = {
   aVoir: string[];
   conseil: string;
 };
+
+export type GuideLong = {
+  sections: { h: string; p: string[] }[];
+  pratique: [string, string][];
+};

@@ -200,3 +200,7 @@ a.card:hover .photo img { transform: scale(1.06); }
 .prose ul, .prose ol { padding-left: 1.3rem; }
 .prose li { margin: .35rem 0; }
 .prose a { text-decoration-thickness: 1px; text-underline-offset: 2px; }
+.pratique { width: 100%; border-collapse: collapse; margin: 1rem 0 2rem; background: #fff; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
+.pratique th, .pratique td { text-align: left; vertical-align: top; padding: .75rem 1rem; border-bottom: 1px solid rgb(0 0 0 / .06); }
+.pratique th { width: 32%; font-weight: 600; }
+@media (max-width: 600px) { .pratique th, .pratique td { display: block; width: auto; } .pratique th { padding-bottom: 0; } }

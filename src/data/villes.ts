@@ -38,7 +38,7 @@ export const villes: Ville[] = [
           "Tana est la base de Tripack. C'est d'ici que partent presque tous les circuits : la RN7 vers le Sud, la route du Sud-Est vers les Pangalanes, et la route du Nord vers Nosy Be.",
           "Circuler dans la capitale demande de l'expérience : embouteillages, collines, ruelles. Patrick connaît les horaires à éviter et les raccourcis, pour que votre voyage commence sans stress.",
         ],
-        services: ["Accueil à l'aéroport d'Ivato et transfert à l'hôtel", 'Visite de Tana : Rova, marché d\'Analakely, lac Anosy', "Excursion à la colline royale d'Ambohimanga (UNESCO)", 'Départ des circuits RN7, Sud-Est et route du Nord', 'Mise à disposition à la journée'],
+        services: ["Accueil à l'aéroport d'Ivato et transfert à l'hôtel", 'Visite de Tana : Rova, marché d\'Analakely, lac Anosy', "Excursion à la colline royale d'Ambohimanga (UNESCO)", 'Excursion de 1 ou 2 jours à Andasibe, la forêt des indris (≈ 3 h de route)', 'Départ des circuits RN7, Sud-Est et route du Nord', 'Mise à disposition à la journée'],
         faq: [
           ['Combien de temps entre l\'aéroport et le centre de Tana ?', "Comptez de 30 minutes à plus d'une heure selon la circulation. Aux heures de pointe, mieux vaut prévoir large."],
           ['Peut-on réserver un chauffeur seulement pour une journée à Tana ?', 'Oui, sur demande : visites de la ville ou excursion à Ambohimanga. Écrivez à Tripack sur WhatsApp avec la date.'],
@@ -54,7 +54,7 @@ export const villes: Ville[] = [
           "Tana is Tripack's home base. Almost every tour starts here: the RN7 to the South, the South-East road to the Pangalanes, and the northern road to Nosy Be.",
           'Driving in the capital takes experience: traffic jams, hills, narrow lanes. Patrick knows the times to avoid and the shortcuts, so your trip starts stress-free.',
         ],
-        services: ['Pick-up at Ivato airport and transfer to your hotel', 'Tana city tour: Rova, Analakely market, Lake Anosy', 'Day trip to the royal hill of Ambohimanga (UNESCO)', 'Departures for the RN7, South-East and northern road tours', 'Driver at your disposal by the day'],
+        services: ['Pick-up at Ivato airport and transfer to your hotel', 'Tana city tour: Rova, Analakely market, Lake Anosy', 'Day trip to the royal hill of Ambohimanga (UNESCO)', '1- or 2-day trip to Andasibe, the forest of the indri (≈ 3 h drive)', 'Departures for the RN7, South-East and northern road tours', 'Driver at your disposal by the day'],
         faq: [
           ['How long from the airport to central Tana?', 'From 30 minutes to over an hour depending on traffic. At rush hour, allow plenty of time.'],
           ['Can I book a driver for just one day in Tana?', 'Yes, on request: city tour or a trip to Ambohimanga. Message Tripack on WhatsApp with the date.'],
@@ -70,7 +70,7 @@ export const villes: Ville[] = [
           'Tana è la base di Tripack. Da qui partono quasi tutti i circuiti: la RN7 verso il Sud, la strada del Sud-Est verso le Pangalanes e la strada del Nord verso Nosy Be.',
           'Guidare nella capitale richiede esperienza: ingorghi, colline, vicoli. Patrick conosce gli orari da evitare e le scorciatoie, perché il vostro viaggio cominci senza stress.',
         ],
-        services: ["Accoglienza all'aeroporto di Ivato e trasferimento in hotel", "Visita di Tana: Rova, mercato di Analakely, lago Anosy", "Escursione alla collina reale di Ambohimanga (UNESCO)", 'Partenza dei circuiti RN7, Sud-Est e strada del Nord', 'Autista a disposizione per la giornata'],
+        services: ["Accoglienza all'aeroporto di Ivato e trasferimento in hotel", "Visita di Tana: Rova, mercato di Analakely, lago Anosy", "Escursione alla collina reale di Ambohimanga (UNESCO)", 'Escursione di 1 o 2 giorni ad Andasibe, la foresta degli indri (≈ 3 ore di strada)', 'Partenza dei circuiti RN7, Sud-Est e strada del Nord', 'Autista a disposizione per la giornata'],
         faq: [
           ["Quanto tempo dall'aeroporto al centro di Tana?", "Da 30 minuti a più di un'ora secondo il traffico. Nelle ore di punta conviene prevedere margine."],
           ['Si può prenotare un autista per una sola giornata a Tana?', 'Sì, su richiesta: visita della città o escursione ad Ambohimanga. Scrivete a Tripack su WhatsApp con la data.'],
@@ -86,7 +86,7 @@ export const villes: Ville[] = [
           'Tana es la base de Tripack. Desde aquí salen casi todos los circuitos: la RN7 hacia el Sur, la ruta del Sudeste hacia las Pangalanes y la ruta del Norte hacia Nosy Be.',
           'Circular por la capital exige experiencia: atascos, colinas, callejuelas. Patrick conoce las horas a evitar y los atajos, para que su viaje empiece sin estrés.',
         ],
-        services: ['Recogida en el aeropuerto de Ivato y traslado al hotel', 'Visita de Tana: Rova, mercado de Analakely, lago Anosy', 'Excursión a la colina real de Ambohimanga (UNESCO)', 'Salida de los circuitos RN7, Sudeste y ruta del Norte', 'Chófer a disposición por días'],
+        services: ['Recogida en el aeropuerto de Ivato y traslado al hotel', 'Visita de Tana: Rova, mercado de Analakely, lago Anosy', 'Excursión a la colina real de Ambohimanga (UNESCO)', 'Excursión de 1 o 2 días a Andasibe, el bosque de los indris (≈ 3 h de carretera)', 'Salida de los circuitos RN7, Sudeste y ruta del Norte', 'Chófer a disposición por días'],
         faq: [
           ['¿Cuánto se tarda del aeropuerto al centro de Tana?', 'De 30 minutos a más de una hora según el tráfico. En hora punta, mejor prever margen.'],
           ['¿Se puede reservar un chófer solo un día en Tana?', 'Sí, bajo petición: visita de la ciudad o excursión a Ambohimanga. Escriba a Tripack por WhatsApp con la fecha.'],

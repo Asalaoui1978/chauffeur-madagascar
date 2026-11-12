@@ -7,6 +7,7 @@ import { themesParLieu } from '../data/lieux';
 import { getPhoto, photoUrl, photoPage } from '../data/photos';
 import { site, whatsappLink } from '../data/site';
 import { L, t, fill, parseUrl } from '../i18n';
+import { getGuideLong, pratiqueH2 } from '../data/guide-long';
 
 interface Props { slug: string }
 const { slug } = Astro.props;
@@ -28,6 +29,7 @@ const galeries: Record<string, string[]> = {
   kirindy: ['microcebe'],
 };
 const extras = galeries[l.slug] ?? [];
+const long = getGuideLong(lang, l.slug);
 const surItineraires = getItineraires(lang).filter((it) => it.route.includes(l.slug) || it.jours.some((j) => j.lieux.includes(l.slug)));
 const idx = lieux.findIndex((x) => x.slug === l.slug);
 const voisins = [lieux[idx - 1], lieux[idx + 1]].filter(Boolean);
@@ -62,6 +64,20 @@ const attraction = {
       <p class="lead">{l.intro}</p>
       <h2>{tr.to_see_h2}</h2>
       <ul>{l.aVoir.map((a) => <li>{a}</li>)}</ul>
+
+      {long && long.sections.map((sec) => (
+        <>
+          <h2>{sec.h}</h2>
+          {sec.p.map((x) => <p>{x}</p>)}
+        </>
+      ))}
+
+      {long && (
+        <>
+          <h2>{pratiqueH2[lang]}</h2>
+          <table class="pratique"><tbody>{long.pratique.map(([k, v]) => <tr><th scope="row">{k}</th><td>{v}</td></tr>)}</tbody></table>
+        </>
+      )}
 
       <div class="conseil"><strong>{tr.tip_label}</strong> {l.conseil}</div>
 
