@@ -1,0 +1,9 @@
+---
+import View from '../../views/Duree.astro';
+import { durees } from '../../data/durees';
+export function getStaticPaths() {
+  return durees.map((d) => ({ params: { slug: d.slug } }));
+}
+const { slug } = Astro.params;
+---
+<View slug={slug!} />

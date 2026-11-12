@@ -4,6 +4,7 @@ import { site, whatsappLink } from '../data/site';
 import { langs, langNames, ogLocale, L, t, parseUrl } from '../i18n';
 import { getItineraires } from '../data/localized';
 import { villes, villesUi } from '../data/villes';
+import { durees } from '../data/durees';
 
 interface Props {
   title: string;
@@ -116,6 +117,7 @@ const flags: Record<string, string> = { fr: 'FR', en: 'EN', it: 'IT', es: 'ES' }
           <h3>{tr.footer_itin}</h3>
           <ul>
             {itins.map((it) => <li><a href={L(lang, `/itineraires/${it.slug}/`)}>{it.short}</a></li>)}
+            {durees.map((d) => <li><a href={L(lang, `/circuits/${d.slug}/`)}>{d.text[lang].short}</a></li>)}
             <li><a href={L(lang, '/guide/')}>{tr.guide_all}</a></li>
             <li><a href={L(lang, '/blog/')}>{tr.nav_blog}</a></li>
             <li><a href={site.beloSurMerSite}>{tr.footer_belo}</a></li>

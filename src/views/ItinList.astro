@@ -5,6 +5,7 @@ import Carte from '../components/Carte.astro';
 import { getItineraires, getLieux } from '../data/localized';
 import { themes } from '../data/lieux';
 import { L, t, parseUrl } from '../i18n';
+import { durees, dureesUi } from '../data/durees';
 
 const { lang } = parseUrl(Astro.url);
 const tr = t(lang);
@@ -53,6 +54,8 @@ const tous = [...new Set(itineraires.flatMap((it) => it.route))].map((s) => lieu
     <div class="container narrow">
       <h2>{tr.il_combine_h2}</h2>
       {tr.il_combos.map(([h, p]) => <p><strong>{h}</strong> : {p}</p>)}
+      <h3>{dureesUi[lang].listH2}</h3>
+      <ul>{durees.map((d) => <li><a href={L(lang, `/circuits/${d.slug}/`)}>{d.text[lang].title}</a></li>)}</ul>
       <div class="actions"><a class="btn btn-primary" href={L(lang, '/contact/')}>{tr.il_build}</a></div>
     </div>
   </section>

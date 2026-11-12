@@ -1,0 +1,9 @@
+---
+import View from '../../../views/Duree.astro';
+import { durees } from '../../../data/durees';
+export function getStaticPaths() {
+  return ['en', 'it', 'es'].flatMap((lang) => durees.map((d) => ({ params: { lang, slug: d.slug } })));
+}
+const { slug } = Astro.params;
+---
+<View slug={slug!} />

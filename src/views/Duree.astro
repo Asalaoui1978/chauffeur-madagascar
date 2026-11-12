@@ -1,0 +1,80 @@
+---
+import Base from '../layouts/Base.astro';
+import { durees, dureesUi } from '../data/durees';
+import { getItineraires } from '../data/localized';
+import { getPhoto, photoUrl } from '../data/photos';
+import { site, whatsappLink } from '../data/site';
+import { L, t, fill, parseUrl } from '../i18n';
+
+interface Props { slug: string }
+const { slug } = Astro.props;
+const { lang } = parseUrl(Astro.url);
+const tr = t(lang);
+const ui = dureesUi[lang];
+const d = durees.find((x) => x.slug === slug)!;
+const dt = d.text[lang];
+const url = L(lang, `/circuits/${d.slug}/`);
+const photo = getPhoto(d.photo);
+const itins = getItineraires(lang);
+const itinTitle = (s: string) => itins.find((i) => i.slug === s)?.title ?? s;
+const autres = durees.filter((x) => x.slug !== d.slug);
+
+const ld = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'TouristTrip',
+    name: dt.h1,
+    description: dt.description,
+    url: new URL(url, site.url).href,
+    touristType: dt.options.map((o) => o.h),
+    provider: { '@id': `${site.url}/#threepac` },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: dt.faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })),
+  },
+];
+---
+<Base
+  title={dt.title}
+  description={dt.description}
+  image={photo ? photoUrl(photo, 1200) : undefined}
+  breadcrumb={[{ name: tr.home_crumb, url: L(lang, '/') }, { name: tr.nav_itin, url: L(lang, '/itineraires/') }, { name: dt.h1, url }]}
+  jsonLd={ld}
+>
+  <section class="hero small" style={photo ? `--hero-img:url("${photoUrl(photo, 1920)}");padding:8rem 0 4rem` : undefined}>
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb"><ol><li><a href={L(lang, '/')}>{tr.home_crumb}</a></li><li><a href={L(lang, '/itineraires/')}>{tr.nav_itin}</a></li><li>{dt.h1}</li></ol></nav>
+      <p class="eyebrow">{site.driver} · {dt.short}</p>
+      <h1>{dt.h1}</h1>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container narrow">
+      {dt.intro.map((p, i) => <p class={i === 0 ? 'lead' : undefined}>{p}</p>)}
+
+      <h2>{ui.optionsH2}</h2>
+      {dt.options.map((o) => (
+        <div class="card" style="padding:1.4rem 1.6rem;margin:1.2rem 0">
+          <h3 style="margin-top:0">{o.h}</h3>
+          <p>{o.resume}</p>
+          <ul>{o.etapes.map((e) => <li>{e}</li>)}</ul>
+          <p style="margin-bottom:0">{o.itins.map((s, i) => <>{i > 0 && ' · '}<a href={L(lang, `/itineraires/${s}/`)}>{ui.seeItin} : {itinTitle(s)}</a></>)}</p>
+        </div>
+      ))}
+
+      <h2>{ui.tipsH2}</h2>
+      <ul>{dt.conseils.map((c) => <li>{c}</li>)}</ul>
+
+      <div class="actions">
+        <a class="btn btn-whatsapp" href={whatsappLink(fill(ui.msg, { x: String(d.jours) }))} target="_blank" rel="noopener">{ui.cta}</a>
+      </div>
+
+      <h2>{ui.faqH2}</h2>
+      {dt.faq.map(([q, a]) => (<details><summary>{q}</summary><p>{a}</p></details>))}
+
+      <p style="margin-top:2.5rem">{autres.map((x) => <a href={L(lang, `/circuits/${x.slug}/`)}>{x.text[lang].h1}</a>)}</p>
+    </div>
+  </section>
+</Base>

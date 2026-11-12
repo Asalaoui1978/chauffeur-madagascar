@@ -1,18 +1,30 @@
 ---
 import Base from '../layouts/Base.astro';
 import { galerie, videos, getPhoto, photoUrl } from '../data/photos';
-import { whatsappLink } from '../data/site';
+import { site, whatsappLink } from '../data/site';
 import { L, t, parseUrl } from '../i18n';
 
 const { lang } = parseUrl(Astro.url);
 const tr = t(lang);
 const items = galerie.map((k) => getPhoto(k)).filter((p): p is NonNullable<typeof p> => Boolean(p));
 const videoTitles = [tr.vid_piste, tr.vid_zebus, tr.vid_dust];
+const videoLd = videos.map((v, i) => ({
+  '@context': 'https://schema.org',
+  '@type': 'VideoObject',
+  name: videoTitles[i] ?? v.titre,
+  description: `${videoTitles[i] ?? v.titre} – Tripack, ${tr.ga_h1}`,
+  thumbnailUrl: new URL(v.poster, site.url).href,
+  contentUrl: new URL(v.src, site.url).href,
+  uploadDate: '2026-11-12',
+  inLanguage: lang,
+  publisher: { '@id': `${site.url}/#threepac` },
+}));
 ---
 <Base
   title={tr.ga_title}
   description={tr.ga_desc}
   image="/images/threepac/sifaka-danseur-piste-rouge.jpg"
+  jsonLd={videoLd}
   breadcrumb={[{ name: tr.home_crumb, url: L(lang, '/') }, { name: tr.nav_galerie, url: L(lang, '/galerie/') }]}
 >
   <section class="hero small">
