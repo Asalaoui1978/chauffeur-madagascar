@@ -1,3 +1,5 @@
+import wmLocal from './wm-local.json';
+
 // Photos d'illustration libres de droits (Wikimedia Commons, licences Creative Commons ou domaine public).
 // Elles sont affichées directement depuis Wikimedia, avec le nom de l'auteur, comme l'exigent les licences.
 // Pour mettre vos propres photos : déposez-les dans public/images/ et remplacez `file` par `src: '/images/...'`.
@@ -53,8 +55,15 @@ export const photos: Record<string, Photo> = {
   mananjary: { file: 'Canal des Pangalanes à Mananjary.jpg', author: 'voir Wikimedia Commons', alt: 'Le canal des Pangalanes à Mananjary' },
 };
 
-export const photoUrl = (p: Photo, width = 1280) =>
-  p.src ?? `https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(p.file ?? '')}?width=${width}`;
+// Les photos Wikimedia sont copiées sur le site (public/images/wm, voir scripts/fetch-wikimedia.mjs) ;
+// à défaut, elles sont chargées depuis Wikimedia.
+const local = wmLocal as Record<string, string>;
+export const photoUrl = (p: Photo, width = 1280) => {
+  if (p.src) return p.src;
+  const base = p.file ? local[p.file] : undefined;
+  if (base) return `${base}-${width <= 900 ? 800 : 1600}.jpg`;
+  return `https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(p.file ?? '')}?width=${width}`;
+};
 
 export const photoPage = (p: Photo) =>
   p.file && !p.src ? `https://commons.wikimedia.org/wiki/File:${encodeURIComponent(p.file.replace(/ /g, '_'))}` : undefined;
