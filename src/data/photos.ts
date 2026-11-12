@@ -17,6 +17,7 @@ export const photos: Record<string, Photo> = {
   'tableau-de-bord': { src: '/images/threepac/tableau-de-bord.jpg', author: '', alt: 'Le poste de conduite de Tripack' },
   'piste-rouge': { src: '/images/threepac/piste-rouge.jpg', author: '', alt: "Piste de terre rouge dans le Sud de Madagascar" },
   'sifaka-danseur': { src: '/images/threepac/sifaka-danseur-piste-rouge.jpg', author: '', alt: 'Un sifaka traverse la piste rouge en dansant' },
+  andasibe: { src: '/images/threepac/andasibe.jpg', author: '', alt: "Cascade et bassin dans la forêt humide d'Andasibe" },
   'sifaka-et-son-petit': { src: '/images/threepac/sifaka-et-son-petit.jpg', author: '', alt: 'Une maman sifaka et son petit dans la forêt sèche' },
   kirindy: { src: '/images/threepac/sifaka-et-son-petit.jpg', author: '', alt: 'Une maman sifaka et son petit dans la forêt sèche de l\'Ouest' },
   'microcebe': { src: '/images/threepac/microcebe-nuit.jpg', author: '', alt: 'Un microcèbe observé pendant une balade de nuit' },
