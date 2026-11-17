@@ -26,16 +26,37 @@ const videoTitles = [tr.vid_piste, tr.vid_zebus, tr.vid_dust];
     <div class="slideshow" aria-hidden="true">
       {slides.map((p, i) => <div class={`slide ${i === 0 ? 'active' : ''}`} style={`background-image:url("${photoUrl(p, 1920)}")`}></div>)}
     </div>
-    <div class="container">
-      <p class="eyebrow">{tr.home_eyebrow}</p>
-      <h1>{tr.home_h1a}<br />{tr.home_h1b}</h1>
-      <p class="lead">{tr.home_lead}</p>
-      <div class="actions">
-        <a class="btn btn-whatsapp" href={whatsappLink(tr.wa_default)} target="_blank" rel="noopener">{tr.write_wa}</a>
-        <a class="btn btn-ghost" href={L(lang, '/itineraires/')}>{tr.see_itins}</a>
+    <div class="container hero-split">
+      <div>
+        <p class="eyebrow">{tr.home_eyebrow}</p>
+        <h1>{tr.home_h1a}<br />{tr.home_h1b}</h1>
+        <p class="lead">{tr.home_lead}</p>
+        <div class="actions">
+          <a class="btn btn-whatsapp" href={whatsappLink(tr.wa_default)} target="_blank" rel="noopener">{tr.write_wa}</a>
+          <a class="btn btn-ghost" href={L(lang, '/tripack/')}>{tr.meet}</a>
+        </div>
       </div>
+      <a class="hero-portrait" href={L(lang, '/tripack/')}>
+        <Photo photoKey="threepac-portrait" width={700} />
+        <span class="hp-badge"><small>{tr.hero_badge}</small><b>Patrick « Tripack »</b><em>{tr.hero_sub}</em></span>
+      </a>
     </div>
     <p class="hero-credit"><a href="/credits-photos/">{tr.credits}</a></p>
+  </section>
+
+  <section class="section">
+    <div class="container grid grid-2" style="align-items:center">
+      <div class="card-media reveal" style="border-radius:var(--radius);aspect-ratio:4/5">
+        <Photo photoKey="threepac-4x4" />
+      </div>
+      <div>
+        <p class="eyebrow">{tr.driver_eyebrow}</p>
+        <h2>{tr.driver_h2}</h2>
+        <p>{tr.driver_p1}</p>
+        <p>{tr.driver_p2}</p>
+        <div class="actions"><a class="btn btn-primary" href={L(lang, '/tripack/')}>{tr.meet}</a></div>
+      </div>
+    </div>
   </section>
 
   <section class="section" style="padding:2.5rem 0">
@@ -68,20 +89,6 @@ const videoTitles = [tr.vid_piste, tr.vid_zebus, tr.vid_dust];
     </div>
   </section>
 
-  <section class="section">
-    <div class="container grid grid-2" style="align-items:center">
-      <div class="card-media reveal" style="border-radius:var(--radius);aspect-ratio:4/5">
-        <Photo photoKey="threepac-portrait" />
-      </div>
-      <div>
-        <p class="eyebrow">{tr.driver_eyebrow}</p>
-        <h2>{tr.driver_h2}</h2>
-        <p>{tr.driver_p1}</p>
-        <p>{tr.driver_p2}</p>
-        <div class="actions"><a class="btn btn-primary" href={L(lang, '/tripack/')}>{tr.meet}</a></div>
-      </div>
-    </div>
-  </section>
 
   <section class="section" style="background:var(--encre);color:#f3ece4">
     <div class="container">
