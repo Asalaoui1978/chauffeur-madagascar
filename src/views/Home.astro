@@ -29,7 +29,8 @@ const videoTitles = [tr.vid_piste, tr.vid_zebus, tr.vid_dust];
     <div class="container hero-split">
       <div>
         <p class="eyebrow">{tr.home_eyebrow}</p>
-        <h1>{tr.home_h1a}<br />{tr.home_h1b}</h1>
+        <p class="hook">{tr.home_h1a} {tr.home_h1b}</p>
+        <h1>{tr.home_h1}</h1>
         <p class="lead">{tr.home_lead}</p>
         <div class="actions">
           <a class="btn btn-whatsapp" href={whatsappLink(tr.wa_default)} target="_blank" rel="noopener">{tr.write_wa}</a>
@@ -131,6 +132,14 @@ const videoTitles = [tr.vid_piste, tr.vid_zebus, tr.vid_dust];
       <p>{tr.why_p1}</p>
       <p>{tr.why_p2}</p>
       <div class="actions"><a class="btn btn-primary" href={L(lang, '/contact/')}>{tr.quote_free}</a></div>
+    </div>
+  </section>
+
+  <section class="section alt">
+    <div class="container narrow">
+      <h2>{tr.home_faq_h2}</h2>
+      {[6, 1, 2, 4].map((i) => tr.faq[i]).map(([q, a]) => (<details><summary>{q}</summary><p>{a}</p></details>))}
+      <p style="margin-top:1.2rem"><a href={L(lang, '/infos-pratiques/')}>{tr.home_faq_more}</a> · <a href={L(lang, '/chauffeur/aeroport-ivato/')}>{tr.home_faq_ivato}</a></p>
     </div>
   </section>
 
