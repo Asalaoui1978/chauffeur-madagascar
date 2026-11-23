@@ -225,4 +225,4 @@ a.card:hover .photo img { transform: scale(1.06); }
 /* Portrait de Patrick : photo verticale, le visage est dans le haut de l'image */
 img[src*="threepac-portrait"] { object-position: 50% 8%; }
 @media (max-width: 860px) { .hero-portrait img { object-position: 50% 12%; } }
-.hero .hook { font-family: var(--font-display, inherit); font-size: clamp(1.1rem, 2.2vw, 1.45rem); color: #ffd9a0; margin: 0 0 .4rem; font-weight: 600; }
+.hero .hook { font-family: var(--font-title); font-size: clamp(1.1rem, 2.2vw, 1.45rem); color: #ffd9a0; margin: 0 0 .4rem; font-weight: 600; }
