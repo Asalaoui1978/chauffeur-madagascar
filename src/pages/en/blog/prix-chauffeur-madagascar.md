@@ -50,6 +50,8 @@ A good driver answers all these questions without hesitation, in writing.
 
 ## How I make my quotes
 
+My rate is simple: **€50 per day** for me and my air-conditioned Kia Sportage 4x4 (up to 4 passengers), **excluding fuel and tolls**. Fuel depends mainly on the route: paved road or tracks.
+
 Every trip is different, so I make a tailor-made quote: tell me your dates, how many of you there are and what you want to see, and I'll send you a detailed price showing what is and isn't included. The easiest way is to use [the quote form](/en/contact/), which sends your request straight to me on WhatsApp.
 
 ## In short

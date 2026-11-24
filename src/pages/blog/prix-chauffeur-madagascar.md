@@ -50,6 +50,8 @@ Un bon chauffeur répond à toutes ces questions sans hésiter, par écrit.
 
 ## Comment je fais mes devis
 
+Mon tarif est simple : **50 € par jour** pour moi et mon 4x4 Kia Sportage climatisé (jusqu'à 4 passagers), **hors carburant et péages**. Le carburant dépend surtout de la route : goudron ou pistes.
+
 Chaque voyage est différent, alors je fais un devis sur mesure : dites-moi vos dates, combien vous êtes et ce que vous voulez voir, et je vous envoie un prix détaillé avec ce qui est inclus et ce qui ne l'est pas. Le plus simple est de passer par [le formulaire de devis](/contact/), qui m'envoie directement votre demande sur WhatsApp.
 
 ## En résumé

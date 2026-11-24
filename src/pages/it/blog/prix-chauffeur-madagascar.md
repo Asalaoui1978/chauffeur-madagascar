@@ -50,6 +50,8 @@ Un buon autista risponde a tutte queste domande senza esitare, per iscritto.
 
 ## Come faccio i miei preventivi
 
+La mia tariffa è semplice: **50 € al giorno** per me e il mio 4x4 Kia Sportage climatizzato (fino a 4 passeggeri), **carburante e pedaggi esclusi**. Il carburante dipende soprattutto dalla strada: asfalto o piste.
+
 Ogni viaggio è diverso, quindi faccio un preventivo su misura: ditemi le date, quanti siete e cosa volete vedere, e vi mando un prezzo dettagliato con cosa è incluso e cosa no. La cosa più semplice è usare [il modulo di preventivo](/it/contact/), che mi invia direttamente la vostra richiesta su WhatsApp.
 
 ## In sintesi

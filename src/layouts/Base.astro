@@ -33,6 +33,7 @@ const business = {
   description: tr.footer_about,
   url: site.url,
   telephone: site.phoneDisplay,
+  priceRange: '50 EUR / jour, hors carburant et péages',
   ...(site.email ? { email: site.email } : {}),
   areaServed: { '@type': 'Country', name: 'Madagascar' },
   address: { '@type': 'PostalAddress', addressLocality: 'Antananarivo', addressCountry: 'MG' },
