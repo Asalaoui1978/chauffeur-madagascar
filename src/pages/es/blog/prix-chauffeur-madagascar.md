@@ -50,7 +50,7 @@ Un buen chófer responde a todas estas preguntas sin dudar, y por escrito.
 
 ## Cómo hago mis presupuestos
 
-Mi tarifa es sencilla: **50 € al día** por mí y mi 4x4 Kia Sportage climatizado (hasta 4 pasajeros), **sin combustible ni peajes**. El combustible depende sobre todo de la ruta: asfalto o pistas.
+Mi tarifa es sencilla: **50 € al día** por mí y mi 4x4 Kia Sportage climatizado (hasta 4 pasajeros), **sin combustible ni peajes**. Me encargo yo mismo de mis comidas y mi alojamiento: no paga nada más por mí. El combustible depende sobre todo de la ruta: asfalto o pistas.
 
 Cada viaje es distinto, así que hago un presupuesto a medida: dígame sus fechas, cuántos son y qué quieren ver, y le envío un precio detallado con lo que está incluido y lo que no. Lo más sencillo es usar [el formulario de presupuesto](/es/contact/), que me envía su solicitud directamente por WhatsApp.
 
