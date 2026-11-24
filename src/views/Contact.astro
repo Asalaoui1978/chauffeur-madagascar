@@ -3,10 +3,13 @@ import Base from '../layouts/Base.astro';
 import { getItineraires } from '../data/localized';
 import { site, whatsappLink } from '../data/site';
 import { L, t, parseUrl } from '../i18n';
+import { prixUi } from '../i18n/prix';
 
 const { lang } = parseUrl(Astro.url);
 const tr = t(lang);
 const itineraires = getItineraires(lang);
+const pu = prixUi[lang];
+const joursParItin = Object.fromEntries(itineraires.map((it) => [it.slug, it.joursMin]));
 const msg = { hello: tr.m_hello, we: tr.m_we, trav: tr.m_trav, to: tr.m_to, itin: tr.m_itin };
 ---
 <Base
@@ -43,6 +46,11 @@ const msg = { hello: tr.m_hello, we: tr.m_we, trav: tr.m_trav, to: tr.m_to, itin
             <option value="sur-mesure">{tr.f_custom}</option>
           </select>
         </label>
+        <div class="estim" aria-live="polite">
+          <label>{pu.est_days}<input name="jours" id="jours" type="number" min="1" max="60" value="9" /></label>
+          <p class="estim-v"><strong>{pu.est_h} :</strong> <span id="estim">{pu.est_txt(9, 450)}</span></p>
+          <p class="muted estim-n">{pu.est_note}</p>
+        </div>
         <label>{tr.f_msg}<textarea name="message" rows="5" placeholder={tr.f_msg_ph}></textarea></label>
         <button class="btn btn-whatsapp" type="submit">{tr.f_send}</button>
         <p class="muted" style="font-size:.9rem;margin:0">{tr.f_note}{site.email && <> <a href={`mailto:${site.email}`}>{site.email}</a></>}</p>
@@ -54,17 +62,36 @@ const msg = { hello: tr.m_hello, we: tr.m_we, trav: tr.m_trav, to: tr.m_to, itin
       </div>
     </div>
   </section>
-  <script is:inline define:vars={{ numero: site.whatsapp, msg }}>
+  <script is:inline define:vars={{ numero: site.whatsapp, msg, tarif: site.tarifJour, joursParItin, lang, estTpl: { fr: ['jour', 'jours'], en: ['day', 'days'], it: ['giorno', 'giorni'], es: ['día', 'días'] }[lang], estLabel: pu.est_h, estSuffix: { fr: 'hors carburant et péages', en: 'excluding fuel and tolls', it: 'carburante e pedaggi esclusi', es: 'sin combustible ni peajes' }[lang] }}>
     const params = new URLSearchParams(location.search);
     const sel = document.getElementById('itineraire');
     if (sel && params.get('itineraire')) sel.value = params.get('itineraire');
+    const jours = document.getElementById('jours');
+    const out = document.getElementById('estim');
+    const debut = document.querySelector('[name=debut]'), fin = document.querySelector('[name=fin]');
+    const eur = (n) => (lang === 'en' ? '€' + n : n + ' €');
+    const maj = () => {
+      const n = Math.max(1, parseInt(jours.value, 10) || 1);
+      out.textContent = n + ' ' + estTpl[n > 1 ? 1 : 0] + ' × ' + eur(tarif) + ' = ' + eur(n * tarif);
+    };
+    const depuisDates = () => {
+      if (debut.value && fin.value) {
+        const n = Math.round((new Date(fin.value) - new Date(debut.value)) / 86400000) + 1;
+        if (n > 0 && n < 120) { jours.value = n; maj(); }
+      }
+    };
+    const depuisItin = () => { if (!(debut.value && fin.value) && joursParItin[sel.value]) { jours.value = joursParItin[sel.value]; maj(); } };
+    jours.addEventListener('input', maj); debut.addEventListener('change', depuisDates); fin.addEventListener('change', depuisDates); sel.addEventListener('change', depuisItin);
+    depuisItin(); maj();
     document.getElementById('devis')?.addEventListener('submit', (e) => {
       e.preventDefault();
       const f = new FormData(e.target);
       const opt = sel.options[sel.selectedIndex].text;
       const text = `${msg.hello} ${f.get('prenom')}.\n` +
         `${msg.we} ${f.get('personnes')} ${msg.trav} ${f.get('debut') || '?'} ${msg.to} ${f.get('fin') || '?'}.\n` +
-        `${msg.itin} : ${opt}.\n${f.get('message') || ''}`;
+        `${msg.itin} : ${opt}.\n` +
+        `${estLabel} : ${out.textContent} (${estSuffix}).` + '\n' +
+        `${f.get('message') || ''}`;
       window.open(`https://wa.me/${numero}?text=${encodeURIComponent(text)}`, '_blank');
     });
   </script>

@@ -4,6 +4,8 @@ import Carte from '../components/Carte.astro';
 import { getItineraires, getLieux } from '../data/localized';
 import { site, whatsappLink } from '../data/site';
 import { getPhoto, photoUrl, photoPage } from '../data/photos';
+import { prixUi } from '../i18n/prix';
+import { site } from '../data/site';
 import { L, t, fill, parseUrl } from '../i18n';
 
 interface Props { slug: string }
@@ -60,6 +62,7 @@ const trip = {
         <div class="fact"><strong>{tr.f_duree}</strong>{it.duree}</div>
         <div class="fact"><strong>{tr.f_saison}</strong>{it.saison}</div>
         <div class="fact"><strong>{tr.f_vehicule}</strong>{it.vehicule}</div>
+        <div class="fact"><strong>{prixUi[lang].fact}</strong>{prixUi[lang].range(it.joursMin * site.tarifJour, it.joursMax * site.tarifJour, it.joursMin, it.joursMax)}</div>
         <div class="fact"><strong>{tr.f_niveau}</strong>{tt(`lvl_${it.niveau}`)}</div>
       </div>
       {it.intro.map((p) => <p>{p}</p>)}

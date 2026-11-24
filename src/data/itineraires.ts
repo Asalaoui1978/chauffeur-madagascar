@@ -8,6 +8,8 @@ export type Itineraire = {
   description: string;
   distance: string;
   duree: string;
+  joursMin: number; // pour le prix du chauffeur
+  joursMax: number;
   saison: string;
   vehicule: string;
   intro: string[];
@@ -25,6 +27,7 @@ export type Itineraire = {
 export const itineraires: Itineraire[] = [
   {
     slug: 'rn7-tana-tulear',
+    joursMin: 9, joursMax: 12,
     title: 'La Route du Sud : la RN7 de Tana à Tuléar',
     short: 'RN7 : Tana → Tuléar',
     description: "Circuit RN7 avec chauffeur de Tana à Tuléar : Antsirabe, Ambositra, Ranomafana, Fianarantsoa, Isalo… L'itinéraire jour par jour, la route et les conseils de Tripack.",
@@ -61,6 +64,7 @@ export const itineraires: Itineraire[] = [
   },
   {
     slug: 'cote-ouest-tsingy',
+    joursMin: 11, joursMax: 13,
     title: 'La Côte Ouest et les Tsingy : de Tuléar à Belo-sur-Mer, Morondava et Bemaraha',
     short: 'Côte Ouest : Tuléar → Tsingy',
     description: "Circuit aventure en 4x4 avec chauffeur de Tuléar aux Tsingy de Bemaraha par Andavadoaka, Belo-sur-Mer, Morondava et l'Allée des Baobabs. Jour par jour.",
@@ -100,6 +104,7 @@ export const itineraires: Itineraire[] = [
   },
   {
     slug: 'sud-est-manakara-pangalanes',
+    joursMin: 9, joursMax: 11,
     title: 'Le Sud-Est : de Tana à Ranomafana, Mananjary et Manakara',
     short: 'Sud-Est : Tana → Manakara',
     description: "Circuit avec chauffeur de Tana vers le Sud-Est de Madagascar : Antsirabe, Ranomafana, Mananjary, le canal des Pangalanes et Manakara, terminus du train FCE.",
@@ -137,6 +142,7 @@ export const itineraires: Itineraire[] = [
   },
   {
     slug: 'tana-nosy-be',
+    joursMin: 8, joursMax: 10,
     title: 'La Route du Nord : de Tana à Nosy Be',
     short: 'Nord : Tana → Nosy Be',
     description: "Circuit avec chauffeur de Tana à Nosy Be par la RN4 et la RN6 : Ankarafantsika, Mahajanga, la vallée du cacao à Ambanja, puis l'île aux parfums.",

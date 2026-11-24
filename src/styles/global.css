@@ -226,3 +226,7 @@ a.card:hover .photo img { transform: scale(1.06); }
 img[src*="threepac-portrait"] { object-position: 50% 8%; }
 @media (max-width: 860px) { .hero-portrait img { object-position: 50% 12%; } }
 .hero .hook { font-family: var(--font-title); font-size: clamp(1.1rem, 2.2vw, 1.45rem); color: #ffd9a0; margin: 0 0 .4rem; font-weight: 600; }
+.estim { background: var(--sable, #f6efe4); border-radius: var(--radius); padding: .9rem 1rem; display: grid; gap: .3rem; }
+.estim label { max-width: 260px; }
+.estim-v { margin: .2rem 0 0; font-size: 1.05rem; }
+.estim-n { margin: 0; font-size: .88rem; }
