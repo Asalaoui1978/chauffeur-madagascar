@@ -91,7 +91,7 @@ export const getPhoto = (key?: string) => (key ? photos[key] : undefined);
 export const galerie = ['threepac-portrait', 'threepac-4x4', 'sportage-noir', 'sifaka-danseur', 'piste-rouge', 'sifaka-et-son-petit', 'microcebe', 'lemurien-nuit', 'coucher-soleil', 'jardin-bord-de-mer', 'baie-pirogues', 'cabane-ocean', 'jardin-baleine', 'cote-vagues', 'taxi-brousse', 'tableau-de-bord', 'interieur-vehicule', 'allee-baobabs-pousse', 'baobabs-amoureux', 'pirogue-fleuve', 'pirogue-riviere', 'coffre-sportage', 'anakao', 'anakao-vezo', 'piste-sable-sud-ouest'];
 
 export const videos = [
-  { src: '/videos/sur-la-piste.mp4', poster: '/videos/sur-la-piste.jpg', titre: 'Sur la piste avec Tripack', vertical: true },
-  { src: '/videos/marche-aux-zebus.mp4', poster: '/videos/marche-aux-zebus.jpg', titre: 'Le marché aux zébus', vertical: true },
-  { src: '/videos/piste-poussiere-4x4.mp4', poster: '/videos/piste-poussiere-4x4.jpg', titre: 'Dans la poussière des pistes du Sud', vertical: false },
+  { src: '/videos/sur-la-piste.mp4', poster: '/videos/sur-la-piste.jpg', titre: "La piste de sable d'Itampolo vers Anakao", vertical: true },
+  { src: '/videos/marche-aux-zebus.mp4', poster: '/videos/marche-aux-zebus.jpg', titre: "Le marché aux zébus d'Ambalavao", vertical: true },
+  { src: '/videos/piste-poussiere-4x4.mp4', poster: '/videos/piste-poussiere-4x4.jpg', titre: 'Dans la poussière, sur la piste de Morondava vers Bekopaka', vertical: false },
 ];
