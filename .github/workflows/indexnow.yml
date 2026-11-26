@@ -1,0 +1,23 @@
+name: indexnow
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Attendre le déploiement
+        run: |
+          for i in $(seq 1 30); do
+            if curl -fsS https://chauffeurmadagascar.com/b447c54ea2065a9314ae3a3ede686ce1.txt | grep -q b447c54ea2065a9314ae3a3ede686ce1; then exit 0; fi
+            sleep 20
+          done
+          exit 1
+      - name: Soumettre les URL à IndexNow (Bing, Yandex, Seznam, Naver)
+        run: |
+          sleep 120
+          URLS=$(curl -fsS https://chauffeurmadagascar.com/sitemap-0.xml | grep -o '<loc>[^<]*' | sed 's/<loc>//' | head -9000 | python3 -c "import sys,json;print(json.dumps([l.strip() for l in sys.stdin if l.strip()]))")
+          echo "$URLS" | python3 -c "import sys,json;print(len(json.load(sys.stdin)),'URL')"
+          printf '{"host":"chauffeurmadagascar.com","key":"b447c54ea2065a9314ae3a3ede686ce1","keyLocation":"https://chauffeurmadagascar.com/b447c54ea2065a9314ae3a3ede686ce1.txt","urlList":%s}' "$URLS" > body.json
+          curl -sS -o /dev/stderr -w "HTTP %{http_code}\n" -X POST https://api.indexnow.org/indexnow -H 'Content-Type: application/json; charset=utf-8' --data @body.json
