@@ -11,7 +11,7 @@ export const site = {
   // [À COMPLÉTER] remplacer par l'adresse exacte du profil (ex. https://www.facebook.com/xxxx)
   facebook: 'https://www.facebook.com/share/14uCRcZVfkL/',
   email: '', // [À COMPLÉTER] e-mail (laisser vide pour le masquer)
-  languages: ['Malgache', 'Français'], // [À COMPLÉTER] ajouter Anglais, Italien… si parlé
+  languages: ["mg", "fr", "en"], // codes de langue (schema.org knowsLanguage)
   tarifJour: 50, // € par jour, chauffeur + véhicule, hors carburant et péages (confirmé nov. 2026)
   vehicle: 'Kia Sportage 4x4', // quatre roues motrices, climatisé, 5 places (confirmé nov. 2026)
   beloSurMerSite: 'https://visitbelosurmer.com/',

@@ -63,7 +63,7 @@ const person = {
       </div>
 
       <h2>{tr.tp_h_lang}</h2>
-      <p>{tr.tp_lang_p} : {site.languages.join(', ')}.</p>
+      <p>{tr.tp_lang_p}{lang === 'fr' ? ' :' : ':'} {tr.tp_langs}.</p>
 
       <div class="actions">
         <a class="btn btn-whatsapp" href={whatsappLink(tr.wa_default)} target="_blank" rel="noopener">{tr.tp_write}</a>
