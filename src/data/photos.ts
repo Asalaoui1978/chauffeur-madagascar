@@ -1,4 +1,5 @@
 import wmLocal from './wm-local.json';
+import { photosAlt } from './i18n/photos-alt';
 
 // Photos d'illustration libres de droits (Wikimedia Commons, licences Creative Commons ou domaine public).
 // Elles sont affichées directement depuis Wikimedia, avec le nom de l'auteur, comme l'exigent les licences.
@@ -76,6 +77,13 @@ export const photoUrl = (p: Photo, width = 1280) => {
 
 export const photoPage = (p: Photo) =>
   p.file && !p.src ? `https://commons.wikimedia.org/wiki/File:${encodeURIComponent(p.file.replace(/ /g, '_'))}` : undefined;
+
+// Description de la photo dans la langue de la page (le français par défaut)
+export const altFor = (key: string | undefined, lang: string) => {
+  const p = key ? photos[key] : undefined;
+  if (!p) return '';
+  return lang === 'fr' ? p.alt : (photosAlt[key!] as Record<string, string> | undefined)?.[lang] ?? p.alt;
+};
 
 export const getPhoto = (key?: string) => (key ? photos[key] : undefined);
 

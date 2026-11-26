@@ -1,12 +1,12 @@
 ---
 import Base from '../layouts/Base.astro';
-import { galerie, videos, getPhoto, photoUrl } from '../data/photos';
+import { galerie, videos, getPhoto, photoUrl, altFor } from '../data/photos';
 import { site, whatsappLink } from '../data/site';
 import { L, t, parseUrl } from '../i18n';
 
 const { lang } = parseUrl(Astro.url);
 const tr = t(lang);
-const items = galerie.map((k) => getPhoto(k)).filter((p): p is NonNullable<typeof p> => Boolean(p));
+const items = galerie.filter((k) => getPhoto(k)).map((k) => ({ ...getPhoto(k)!, alt: altFor(k, lang) }));
 const videoTitles = [tr.vid_piste, tr.vid_zebus, tr.vid_dust];
 const videoLd = videos.map((v, i) => ({
   '@context': 'https://schema.org',
