@@ -15,6 +15,7 @@ export const photos: Record<string, Photo> = {
   // ——— Photos de Tripack (libres de droits, fournies par le propriétaire du site) ———
   'threepac-portrait': { src: '/images/threepac/threepac-portrait.jpg', author: '', alt: 'Patrick « Tripack », chauffeur-guide à Madagascar' },
   'pirogue-riviere': { src: '/images/threepac/pirogue-riviere.jpg', author: '', alt: 'Pirogue chargée de bois au bord d\'une rivière, dans la forêt' },
+  'sportage-noir': { src: '/images/threepac/sportage-4x4-noir.jpg', author: '', alt: 'Le Kia Sportage 4x4 noir de Tripack, pare-buffle et phares longue portée, en pleine nature à Madagascar' },
   'coffre-sportage': { src: '/images/threepac/coffre-sportage.jpg', author: '', alt: 'Trois grandes valises dans le coffre du Kia Sportage de Tripack' },
   'allee-baobabs-pousse': { src: '/images/threepac/allee-baobabs-pousse.jpg', author: '', alt: "Pousse-pousse sur la piste de l'Allée des Baobabs, près de Morondava" },
   'pirogue-fleuve': { src: '/images/threepac/pirogue-fleuve.jpg', author: '', alt: 'Pirogue et vélo sur un large fleuve, vus depuis le bac' },
@@ -79,7 +80,7 @@ export const photoPage = (p: Photo) =>
 export const getPhoto = (key?: string) => (key ? photos[key] : undefined);
 
 // Galerie : photos de Tripack, dans l'ordre d'affichage
-export const galerie = ['threepac-portrait', 'threepac-4x4', 'sifaka-danseur', 'piste-rouge', 'sifaka-et-son-petit', 'microcebe', 'lemurien-nuit', 'coucher-soleil', 'jardin-bord-de-mer', 'baie-pirogues', 'cabane-ocean', 'jardin-baleine', 'cote-vagues', 'taxi-brousse', 'tableau-de-bord', 'interieur-vehicule', 'allee-baobabs-pousse', 'baobabs-amoureux', 'pirogue-fleuve', 'pirogue-riviere', 'coffre-sportage', 'anakao', 'anakao-vezo', 'piste-sable-sud-ouest'];
+export const galerie = ['threepac-portrait', 'threepac-4x4', 'sportage-noir', 'sifaka-danseur', 'piste-rouge', 'sifaka-et-son-petit', 'microcebe', 'lemurien-nuit', 'coucher-soleil', 'jardin-bord-de-mer', 'baie-pirogues', 'cabane-ocean', 'jardin-baleine', 'cote-vagues', 'taxi-brousse', 'tableau-de-bord', 'interieur-vehicule', 'allee-baobabs-pousse', 'baobabs-amoureux', 'pirogue-fleuve', 'pirogue-riviere', 'coffre-sportage', 'anakao', 'anakao-vezo', 'piste-sable-sud-ouest'];
 
 export const videos = [
   { src: '/videos/sur-la-piste.mp4', poster: '/videos/sur-la-piste.jpg', titre: 'Sur la piste avec Tripack', vertical: true },
